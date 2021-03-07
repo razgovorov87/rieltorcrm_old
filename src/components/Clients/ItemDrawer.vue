@@ -1,6 +1,6 @@
 <template>
     <div class="absolute inset-0 ml-divider h-screen z-50 flex items-center justify-center transition">
-        <div class="w-5/12 h-full bg-white flex flex-col">
+        <div class="w-5/12 h-full bg-white flex flex-col relative shadow-2xl z-20">
             <div class="bg-darkDivider px-8 pt-8 w-full">  
                 <div class="-ml-7 flex items-center mb-4 cursor-pointer">
                     <button class="outline-none mt-1 mr-1" @click="closeDrawer">
@@ -49,16 +49,24 @@
             </div>
 
             
-            <HouseTab v-if="selectableTab === 0" />
-            <div v-if="selectableTab === 1">
-                1
-            </div>
-            <div v-if="selectableTab === 2">
-                2
+            <div class="flex-grow">
+                <HouseTab v-if="selectableTab === 0" />
+                <div v-if="selectableTab === 1">
+                    1
+                </div>
             </div>
 
+            <transition name="slideUp">
+                <div v-if="saveItem" class="flex-shrink-0 w-full h-divider border-t flex items-center px-8 absolute bottom-0">
+                    <button class="bg-blue-600 text-white font-semibold focus:outline-none py-2 px-4 transition hover:bg-blue-500 focus:ring-2 rounded">Сохранить</button>
+                    <button class="text-gray-500 font-semibold focus:outline-none ml-4">Отменить</button>
+                </div>
+            </transition>
+
         </div>
-        <div class="w-4/12 h-full bg-yellow-400"></div>
+        <div class="w-4/12 h-full bg-gray-200 relative px-1.5">
+            <Logs />
+        </div>
         <div class="w-3/12 h-full bg-gray-300">
             <Info />
         </div>
@@ -69,10 +77,12 @@
 <script>
 import HouseTab from '@/components/Clients/Tab/HouseTab'
 import Info from '@/components/Clients/Info'
+import Logs from '@/components/Clients/Logs'
 export default {
     data: () => ({
         infoMenu: true,
         categoriesMenu: false,
+        startId: 0,
         categoriesId: 0,
         categories: [
           {id: 0, title: 'Не обработано', color: 'gray-500'},
@@ -83,9 +93,8 @@ export default {
         ],
         selectableTab: 0,
         tabs: [
-            {id: 0, name: 'Квартиры'},
+            {id: 0, name: 'Объекты'},
             {id: 1, name: 'Договор'},
-            {id: 2, name: 'Статистика'},
         ],
     }),
 
@@ -104,13 +113,18 @@ export default {
         categoryName() {
             const category = this.categories.filter( category => category.id === this.categoriesId)
             return category[0].title
+        },
+
+        saveItem() {
+            return this.startId !== this.categoriesId ? true : false
         }
     },
 
 
     components: {
         HouseTab,
-        Info
+        Info,
+        Logs
     }
 }
 </script>
@@ -123,5 +137,14 @@ export default {
 .opacity-enter,
 .opacity-leave-to {
     opacity: 0;
+}
+
+.slideUp-enter-active,
+.slideUp-leave-active {
+  transition: transform .3s ease;
+}
+.slideUp-enter,
+.slideUp-leave-to {
+    transform: translateY(100%);
 }
 </style>

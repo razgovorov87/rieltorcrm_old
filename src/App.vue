@@ -1,28 +1,30 @@
 <template>
   <div class="flex h-screen bg-gray-100">
     <Divider />
-    <Header />
-    <main id="page" class="pt-divider flex-grow">
-      <router-view/>
+    <Header v-if="disableHeader" />
+    <main id="page" class="flex-grow" :class="disableHeader ? 'pt-divider' : 'pageFull'">
+      <router-view />
     </main>
   </div>
 </template>
-
 
 <script>
 import Divider from '@/components/Layout/Divider'
 import Header from '@/components/Layout/Header'
 export default {
-
+  name: 'App',
   data: () => ({
-
+    //
   }),
 
-  components: {
-    Divider,
-    Header
-  }
-}
+  computed: {
+    disableHeader() {
+      return this.$route.path === '/object' ? false : true
+    }
+  },
+
+  components: {Divider, Header}
+};
 </script>
 
 <style>
@@ -33,6 +35,9 @@ body {
   height: calc(100vh - 100px);
 }
 
+.pageFull {
+  height: 100vh !important;
+}
 ::-webkit-scrollbar {
     width: 3px;
 }
