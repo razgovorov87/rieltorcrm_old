@@ -24,13 +24,13 @@
         </div>
         <div class="w-full h-36 px-4 py-6">
             <textarea 
-            v-model="note"
-            rows="3" 
-            class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:border-blue-300 flex" 
-            placeholder="Примечание, введите текст..."
-            @keydown.enter.exact.prevent
-            @keydown.enter.exact="saveNote"
-            @keydown.enter.shift.exact="newline"></textarea>
+                v-model="note"
+                rows="3" 
+                class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:border-blue-300 flex" 
+                placeholder="Примечание, введите текст..."
+                @keydown.enter.exact.prevent
+                @keydown.enter.exact="saveNote"
+                @keydown.enter.shift.exact="newline"></textarea>
         </div>
     </div>
 </template>

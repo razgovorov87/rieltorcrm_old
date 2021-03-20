@@ -17,7 +17,7 @@ export default {
 
 
   data: () => ({
-      itemsDrawer: true,
+      itemsDrawer: false,
       categories: [
           {id: 0, title: 'Не обработано', color: 'gray-500'},
           {id: 1, title: 'Обработано', color: 'blue-500'},

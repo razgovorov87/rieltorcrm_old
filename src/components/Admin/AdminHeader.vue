@@ -1,9 +1,8 @@
 <template>
-    <header class="absolute pl-divider h-divider bg-white z-10 w-full flex">
+    <header class="absolute h-divider bg-white z-10 w-full flex">
 
         <div class="flex items-center py-4 px-8 h-full border-r flex-shrink-0">
-            <span class="uppercase font-bold">{{routeName}}</span>
-            <span class="text-xs text-gray-400 ml-2">Свободных в базе: 15</span>
+            <span class="uppercase font-bold">Панель администратора</span>
             <div class="text-gray-400 flex items-center ml-4 space-x-2">
                 <div class="cursor-pointer group" @click="changeTypeDisplay('column')">
                     <svg class="w-6 transform rotate-90 group-hover:text-blue-500 transition" :class="typeDisplay === 'column' ? 'text-blue-500' : ''"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -20,7 +19,7 @@
         </div>
 
         <div class="flex flex-grow text-right items-center px-4">
-            <div class="text-gray-400 w-full">0 сделок: <span class="text-gray-900">0 &#8381;</span> </div>
+            
         </div>
 
         <div class="flex items-center py-4 px-8 h-full border-l flex-shrink-0">
@@ -32,10 +31,15 @@
 
 <script>
 export default {
-    computed: {
-        routeName() {
-            return this.$route.name
+    props: ['typeDisplay'],
+
+
+    methods: {
+        changeTypeDisplay(type) {
+            if( this.typeDisplay === type ) return
+            
+            this.$emit('changeTypeDisplay', type)
         }
-    }
+    },
 }
 </script>
