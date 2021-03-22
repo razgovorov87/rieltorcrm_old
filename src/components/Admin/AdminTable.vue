@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white shadow-md rounded my-6 w-2/3">
+    <div class="bg-white shadow-md rounded my-6">
         <table class="w-full">
             <thead>
                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal flex w-full">
@@ -10,7 +10,7 @@
                     <th class="py-3 px-6 text-center w-2/12">Действия</th>
                 </tr>
             </thead>
-                <tbody class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full" style="max-height: 84vh;">
+                <tbody class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full" style="max-height: 82vh;">
                     <transition-group tag="tr" name="list">
                         <tr v-for="i in 50" :key="i" class="border-b border-gray-200 hover:bg-gray-100 flex items-center">
                             <td class="w-1/4 py-3 px-6 text-left whitespace-nowrap">
@@ -33,11 +33,11 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                         </svg> 
                                     </div>
-                                    <span class="font-medium border-b border-gray-400">+7 (900) 123 45 69</span>
+                                    <span class="font-medium border-b border-gray-400 truncate">+7 (900) 123 45 69</span>
                                 </div>
                             </td>
                             <td class="w-2/12 py-3 px-6 text-center">
-                                <span class="bg-gray-500 text-white py-1 px-3 rounded-full text-xs">Не обработано</span>
+                                <span class="bg-gray-500 text-white py-1 px-3 rounded-full text-xs truncate">Не обработано</span>
                             </td>
                             <td class="w-2/12 py-3 px-6 text-center">
                                 <div class="flex item-center justify-center">

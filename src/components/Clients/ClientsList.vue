@@ -1,7 +1,7 @@
 <template>
     <div class="flex space-x-2 justify-center mt-1 h-full">
 
-        <div class="list-column space-y-0">
+        <div class="list-column space-y-0" style="margin: 0;">
             <div class="w-full py-2 px-2 border-2 text-gray-400 cursor-pointer bg-transparent text-center hover:bg-gray-200 transition" @click="addNewItem">Взять нового клиента</div>
                 <transition-group name="list" tag="div">
                     <div v-for="item in list.slice().reverse()" :key="item.id" class="w-full px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition" :class="item.name ? 'py-1' : 'py-2'" @click="openItemDrawer(item)">

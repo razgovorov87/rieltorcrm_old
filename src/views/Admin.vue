@@ -1,7 +1,7 @@
 <template>
     <div>
         <AdminHeader @changeTypeDisplay="changeTypeDisplay" :typeDisplay="typeDisplay"/>
-        <div class="relative flex-grow pt-divider px-4">
+        <div class="relative flex-grow pt-divider">
             <!-- <Loading /> -->
             <AdminTable />
         </div>
