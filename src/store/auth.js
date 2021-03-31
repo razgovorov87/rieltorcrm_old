@@ -49,8 +49,9 @@ export default {
 
         async checkLogin({dispatch}, login) {
             const users = await (await firebase.database().ref(`/users/`).once('value')).val()
-            const idx = Object.keys(users).map(key => users[key].login === login)
-            return idx ? true : false
+            // const idx = Object.keys(users).map(key => users[key].login === login)
+            // return idx ? true : false
+            return false
         },
 
         async logout({dispatch, commit}) {
