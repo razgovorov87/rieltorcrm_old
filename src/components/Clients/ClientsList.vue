@@ -1,16 +1,16 @@
 <template>
     <div class="flex space-x-2 justify-center mt-1 h-full">
 
-        <div class="list-column space-y-0">
-            <div class="w-full py-2 px-2 border-2 text-gray-400 cursor-pointer bg-transparent text-center hover:bg-gray-200 transition" @click="addNewItem">Взять нового клиента</div>
+        <div class="w-1/5 flex flex-col space-y-0 flex-shrink-0 overflow-y-auto h-full" style="margin: 0;">
+            <div v-show="!disableBtn" class="w-full py-2 px-2 mb-2 border-2 text-gray-400 cursor-pointer bg-transparent text-center hover:bg-gray-200 transition" @click="addNewItem">Взять нового клиента</div>
                 <transition-group name="list" tag="div">
-                    <div v-for="item in list.slice().reverse()" :key="item.id" class="w-full px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition" :class="item.name ? 'py-1' : 'py-2'" @click="openItemDrawer(item)">
+                    <div v-for="item in list" :key="item.id" class="w-full px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition" :class="item.fio ? 'py-1' : 'py-2'" @click="openItemDrawer(item)">
                         <div class="flex flex-col flex-grow">
-                            <span v-if="item.name" class="text-sm text-gray-500">{{item.name}}</span>
+                            <span v-if="item.fio" class="text-sm text-gray-500">{{item.fio}}</span>
                             <h2 class="text-blue-500 font-semibold truncate" style="max-width: 234px;">{{item.phone}}</h2>
                         </div>
                         <div class="flex flex-shrink-0 items-center">
-                            <span class="text-xs text-gray-500">31.08.2020</span>
+                            <span class="text-xs text-gray-500">{{item.createdAt | date}}</span>
                         </div>
                     </div>
                 </transition-group>
@@ -29,89 +29,73 @@
             </div>
         </div> -->
 
-        <draggable 
-            v-model="processed"
+        <div
             class="list-column"
-            v-bind="dragOptions"
-            @start="drag=true" @end="drag=false"
-            @change="log"
-        >
-            <transition-group type="transition" name="flip-list">
-                <div v-for="i in processed" :key="i.id" class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none">
-                    <div class="flex flex-col flex-grow">
-                        <span class="text-sm text-gray-500">{{ i.client }}</span>
-                        <h2 class="text-blue-500 font-semibold mb-1 truncate" style="max-width: 234px;">{{i.title}}</h2>
-                        <span class="text-sm text-gray-500">{{ 13000000 | currency }}</span>
-                    </div>
-                    <div class="flex flex-shrink-0 items-start">
-                        <span class="text-xs text-gray-500">31.08.2020</span>
-                    </div>
-                </div>
-            </transition-group>
-        </draggable>
-
-        <draggable 
-            v-model="conversation"
-            class="list-column"
-            v-bind="dragOptions"
-            @start="drag=true" @end="drag=false"
-            @change="log"
-        >
-            <transition-group type="transition" name="flip-list">
-                <div v-for="i in conversation" :key="i.id" class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none">
-                    <div class="flex flex-col flex-grow">
-                        <span class="text-sm text-gray-500">{{ i.client }}</span>
-                        <h2 class="text-blue-500 font-semibold mb-1 truncate" style="max-width: 234px;">{{i.title}}</h2>
-                        <span class="text-sm text-gray-500">{{ 13000000 | currency }}</span>
-                    </div>
-                    <div class="flex flex-shrink-0 items-start">
-                        <span class="text-xs text-gray-500">31.08.2020</span>
-                    </div>
-                </div>
-            </transition-group>
-        </draggable>
-
-        <draggable 
-            v-model="view"
-            class="list-column"
-            v-bind="dragOptions"
-            @start="drag=true" @end="drag=false"
-            @change="log"
-        >
-            <transition-group type="transition" name="flip-list">
-                <div v-for="i in view" :key="i.id" class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none">
-                    <div class="flex flex-col flex-grow">
-                        <span class="text-sm text-gray-500">{{ i.client }}</span>
-                        <h2 class="text-blue-500 font-semibold mb-1 truncate" style="max-width: 234px;">{{i.title}}</h2>
-                        <span class="text-sm text-gray-500">{{ 13000000 | currency }}</span>
-                    </div>
-                    <div class="flex flex-shrink-0 items-start">
-                        <span class="text-xs text-gray-500">31.08.2020</span>
-                    </div>
-                </div>
-            </transition-group>
-        </draggable>
-
-        <draggable 
-            v-model="success"
-            class="list-column"
-            v-bind="dragOptions"
-            @start="drag=true" @end="drag=false"
-            @change="log"
         >
             <transition-group type="transition" name="list">
-                <div v-for="i in success" :key="i.id" class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none">
+                <div v-for="i in processed" :key="i.id" class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none" @click="openItemDrawer(i)">
                     <div class="flex flex-col flex-grow">
-                        <span class="text-sm text-gray-500">{{ i.client }}</span>
-                        <h2 class="text-blue-500 font-semibold mb-1 truncate" style="max-width: 234px;">{{i.title}}</h2>
-                        <span class="text-sm text-gray-500">{{ 13000000 | currency }}</span>
+                        <span class="text-sm text-gray-500">{{ i.phone }}</span>
+                        <h2 class="text-blue-500 font-semibold mb-1 truncate" style="max-width: 234px;">{{i.fio}}</h2>
+                        <span class="text-sm text-gray-500">{{ i.budget | currency }}</span>
                     </div>
                     <div class="flex flex-shrink-0 items-start">
-                        <span class="text-xs text-gray-500">31.08.2020</span>
+                        <span class="text-xs text-gray-500">{{i.createdAt | date}}</span>
                     </div>
                 </div>
             </transition-group>
-        </draggable>
+        </div>
+
+        <div
+            class="list-column"
+        >
+            <transition-group type="transition" name="list">
+                <div v-for="i in conversation" :key="i.id" class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none" @click="openItemDrawer(i)">
+                    <div class="flex flex-col flex-grow">
+                        <span class="text-sm text-gray-500">{{ i.phone }}</span>
+                        <h2 class="text-blue-500 font-semibold mb-1 truncate" style="max-width: 234px;">{{i.fio}}</h2>
+                        <span class="text-sm text-gray-500">{{ i.budget | currency }}</span>
+                    </div>
+                    <div class="flex flex-shrink-0 items-start">
+                        <span class="text-xs text-gray-500">{{i.createdAt | date}}</span>
+                    </div>
+                </div>
+            </transition-group>
+        </div>
+
+        <div
+            class="list-column"
+        >
+            <transition-group type="transition" name="list">
+                <div v-for="i in view" :key="i.id" class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none" @click="openItemDrawer(i)">
+                    <div class="flex flex-col flex-grow">
+                        <span class="text-sm text-gray-500">{{ i.phone }}</span>
+                        <h2 class="text-blue-500 font-semibold mb-1 truncate" style="max-width: 234px;">{{i.fio}}</h2>
+                        <span class="text-sm text-gray-500">{{ i.budget | currency }}</span>
+                    </div>
+                    <div class="flex flex-shrink-0 items-start">
+                        <span class="text-xs text-gray-500">{{i.createdAt | date}}</span>
+                    </div>
+                </div>
+            </transition-group>
+        </div>
+
+        <div
+            class="list-column"
+        >
+            <transition-group type="transition" name="list">
+                <div v-for="i in success" :key="i.id" class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none" @click="openItemDrawer(i)">
+                    <div class="flex flex-col flex-grow">
+                        <span class="text-sm text-gray-500">{{ i.phone }}</span>
+                        <h2 class="text-blue-500 font-semibold mb-1 truncate" style="max-width: 234px;">{{i.fio}}</h2>
+                        <span class="text-sm text-gray-500">{{ i.budget | currency }}</span>
+                    </div>
+                    <div class="flex flex-shrink-0 items-start">
+                        <span class="text-xs text-gray-500">{{i.createdAt | date}}</span>
+                    </div>
+                </div>
+            </transition-group>
+        </div>
 
 
 
@@ -123,38 +107,35 @@
 <script>
 import draggable from 'vuedraggable';
 export default {
-    props: ['categories'],
+    props: ['categories', 'clients', 'disableBtn'],
 
     data: () => ({
-        list: [
-            {id: 0, phone: '+7 (923) 123 45 67'},
-            {id: 1, phone: '+7 (923) 123 45 67'},
-            {id: 2, phone: '+7 (123) 456 78 90', name: 'Иванов Иван'},
-        ],
-        processed: [
-            {id: 10, title: 'asdasdasd', price: 2000000, client: 'Сергей', date: '26.02.20'},
-            {id: 11, title: 'asdasdasd', price: 2000000, client: 'Сергей', date: '26.02.20'},
-            {id: 12, title: 'asdasdasd', price: 2000000, client: 'Сергей', date: '26.02.20'},
-            {id: 13, title: 'asdasdasd', price: 2000000, client: 'Сергей', date: '26.02.20'}
-        ],
-        conversation: [
-            {id: 0, title: 'ф123123123', price: 2000000, client: 'Алексей', date: '26.02.20'},
-            {id: 1, title: 'ф123123123', price: 2000000, client: 'Алексей', date: '26.02.20'},
-            {id: 2, title: 'ф123123123', price: 2000000, client: 'Алексей', date: '26.02.20'},
-            {id: 3, title: 'ф123123123', price: 2000000, client: 'Алексей', date: '26.02.20'},
-            {id: 4, title: 'ф123123123', price: 2000000, client: 'Алексей', date: '26.02.20'}
-        ],
+        list: [],
+        processed: [],
+        conversation: [],
         view: [],
         success: [],
-        drag: false
+        drag: false,
+        loading: true
     }),
 
+    mounted() {
+        this.filterClients()
+        this.loading = false
+    },
+
     methods: {
-        addNewItem() {
-            this.list.push({
-                id: this.list.length + 1,
-                phone: '123 123 123'
-            })
+        async addNewItem() {
+            const item = await this.$store.dispatch('catchNewClient')
+            if(item === 'empty_list') {
+                this.$toasts.push({
+                    type: 'error',
+                    message: 'В базе нет свободных клиентов. Попробуйте позже'
+                })
+                return
+            }
+            this.list.push(item)
+            this.$emit('catchNewClient')
         },
 
         openItemDrawer(item) {
@@ -163,6 +144,15 @@ export default {
 
         log: function(e) {
             window.console.log(e);
+        },
+
+        async filterClients() {
+            const clients = await this.$store.dispatch('fetchUserClients') 
+            this.list = clients.filter(item => item.status === 'Не обработано')
+            this.processed = clients.filter(item => item.status === 'Обработано')
+            this.conversation = clients.filter(item => item.status === 'Переговоры')
+            this.view = clients.filter(item => item.status === 'Просмотр квартир')
+            this.success = clients.filter(item => item.status === 'Успешно')
         }
     },
 
@@ -192,9 +182,11 @@ export default {
   display: inline-block;
   margin-right: 10px;
 }
+
 .list-enter-active, .list-leave-active {
   transition: all 1s;
 }
+
 .list-enter, .list-leave-to{
   opacity: 0;
   transform: translateY(30px);

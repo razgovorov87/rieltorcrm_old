@@ -3,7 +3,7 @@
 
     <div v-for="category in categories" :key="category.id" class="column-header" :class="'border-' + category.color">
       <h3 class="uppercase font-semibold text-sm">{{category.title}}</h3>
-      <div class="text-sm">Клиентов: <span>0</span></div>
+      <div class="text-sm">Клиентов: <span>{{clients.filter(item => item.status === category.title).length}}</span></div>
     </div>
 
   </div>
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    props: ['categories']
+    props: ['categories', 'clients']
 }
 </script>
 

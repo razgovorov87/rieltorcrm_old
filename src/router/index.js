@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import firebase from 'firebase/app'
 
 Vue.use(VueRouter)
 
@@ -26,20 +27,24 @@ const routes = [
   {
     path: '/',
     name: 'Клиенты',
-    meta: {layout: 'main'},
+    meta: {layout: 'main', auth: true},
     component: () => import(/* webpackChunkName: "about" */ '../views/Clients.vue')
   },
   {
     path: '/object',
     name: 'Объекты',
-    meta: {layout: 'main'},
+    meta: {layout: 'main', auth: true},
     component: () => import(/* webpackChunkName: "about" */ '../views/Object.vue')
   },
   {
     path: '/admin',
     name: 'Панель администратора',
-    meta: {layout: 'main'},
+    meta: {layout: 'main', auth: true},
     component: () => import(/* webpackChunkName: "about" */ '../views/Admin.vue')
+  },
+  {
+    path: '*',
+    redirect: '/login'
   }
 ]
 
@@ -47,6 +52,18 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const currentUser = firebase.auth().currentUser
+  const requireAuth = to.matched.some(record => record.meta.auth)
+
+  if(requireAuth && !currentUser) {
+    next('/login')
+  } else {
+    next()
+  }
+  
 })
 
 export default router

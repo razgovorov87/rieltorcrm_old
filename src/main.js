@@ -11,6 +11,7 @@ import VueMyToasts from 'vue-my-toasts'
 import 'vue-my-toasts/dist/vue-my-toasts.css'
 import Alert from '@/components/Alert'
 import Loading from '@/components/Loading'
+import VueCollapse from 'vue2-collapse'
 
 Vue.component('Loading', Loading)
 Vue.use(VueMyToasts, {
@@ -21,6 +22,9 @@ Vue.use(VueMyToasts, {
     padding: '1rem'
   }
 })
+
+
+Vue.use(VueCollapse)
 
 import firebase from 'firebase/app'
 import 'firebase/auth'

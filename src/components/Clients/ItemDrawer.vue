@@ -2,26 +2,30 @@
     <div class="absolute inset-0 ml-divider h-screen z-50 flex items-center justify-center transition">
         <div class="w-5/12 h-full bg-white flex flex-col relative shadow-2xl z-20">
             <div class="bg-darkDivider px-8 pt-8 w-full">  
-                <div class="-ml-7 flex items-center mb-4 cursor-pointer">
-                    <button class="outline-none mt-1 mr-1" @click="closeDrawer">
+                <div class="-ml-7 flex items-center mb-4">
+                    <button class="outline-none mt-1 mr-1 cursor-pointer" @click="closeDrawer">
                         <svg class="w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
-                    <h1 class="text-white text-2xl font-bold truncate flex-grow" style="max-width: 100%;" @click="closeDrawer">Куплю квартиру в центре</h1>
-                    <!-- <button class="focus:outline-none rounded-full hover:bg-gray-400 p-1 flex items-center justify-center transition relative" @click="infoMenu = true">
-                        <svg class="w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                        </svg>
-                        <div v-if="infoMenu" class="absolute right-full mr-1 bg-white top-1/2 rounded flex flex-col">
-                            <span class="text-gray-400 font-semibold px-4 py-1 text-sm hover:bg-gray-100 rounded">Освободить</span>
-                            <span class="text-red-600 font-semibold border-t px-4 py-1 text-sm hover:bg-gray-100 rounded">Удалить</span>
-                        </div>
-                    </button> -->
+                    <div class="flex justify-between w-full">
+                        <h1 class="text-white text-2xl font-bold truncate" @click="closeDrawer">
+                            <span class="cursor-pointer">{{client.phone}}</span>
+                        </h1>
+                        <button class="focus:outline-none rounded-full hover:bg-gray-400 p-1 flex items-center justify-center transition relative flex-shrink-0 w-8 h-8 cursor-pointer" @click.stop="infoMenu = !infoMenu">
+                            <svg class="w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                            </svg>
+                            <div v-if="infoMenu" class="absolute right-full mr-1 bg-white top-1/2 rounded flex flex-col">
+                                <span class="text-gray-400 font-semibold px-4 py-1 text-sm hover:bg-gray-100 rounded">Освободить</span>
+                                <span class="text-red-600 font-semibold border-t px-4 py-1 text-sm hover:bg-gray-100 rounded">Удалить</span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
                 <div class="text-gray-600 text-lg flex items-center mb-4">
-                    <span class="mr-2">#11396378</span>
-                    <span class="uppercase text-sm py-1 px-2 border rounded border-gray-600 hover:border-gray-400 hover:text-gray-400 cursor-pointer">Скопировать</span>
+                    <span class="mr-2 uppercase">#{{client.id}}</span>
+                    <!-- <span class="uppercase text-sm py-1 px-2 border rounded border-gray-600 hover:border-gray-400 hover:text-gray-400 cursor-pointer">Скопировать</span> -->
                 </div>
                 <div class="w-full flex flex-col mb-5">
                     <span class="text-gray-600 text-sm">Клиенты</span>
@@ -57,18 +61,18 @@
             </div>
 
             <transition name="slideUp">
-                <div v-if="saveItem" class="flex-shrink-0 w-full h-divider border-t flex items-center px-8 absolute bottom-0">
-                    <button class="bg-blue-600 text-white font-semibold focus:outline-none py-2 px-4 transition hover:bg-blue-500 focus:ring-2 rounded">Сохранить</button>
-                    <button class="text-gray-500 font-semibold focus:outline-none ml-4">Отменить</button>
+                <div v-if="saveItem || saveBlock" class="flex-shrink-0 w-full h-divider border-t flex items-center px-8 absolute bottom-0">
+                    <button class="bg-blue-600 text-white font-semibold focus:outline-none py-2 px-4 transition hover:bg-blue-500 focus:ring-2 rounded" @click="saveEdit">Сохранить</button>
+                    <button class="text-gray-500 font-semibold focus:outline-none ml-4" @click="cancel()">Отменить</button>
                 </div>
             </transition>
 
         </div>
         <div class="w-4/12 h-full bg-gray-200 relative px-1.5">
-            <Logs />
+            <Logs :logs="client.logs" @saveNote="saveNote" ref="logsBlock" />
         </div>
         <div class="w-3/12 h-full bg-gray-300">
-            <Info />
+            <Info :info="client" @openSave="openSave" ref="infoBlock" />
         </div>
     </div>
 </template>
@@ -79,8 +83,9 @@ import HouseTab from '@/components/Clients/Tab/HouseTab'
 import Info from '@/components/Clients/Info'
 import Logs from '@/components/Clients/Logs'
 export default {
+    props: ['client'],
     data: () => ({
-        infoMenu: true,
+        infoMenu: false,
         categoriesMenu: false,
         startId: 0,
         categoriesId: 0,
@@ -96,9 +101,57 @@ export default {
             {id: 0, name: 'Объекты'},
             {id: 1, name: 'Договор'},
         ],
+        saveBlock: false
     }),
 
+    mounted() {
+        this.categoriesId = this.categories.find(category => category.title === this.client.status).id
+        this.startId = this.categoriesId
+    },
+
     methods: {
+        saveEdit() {
+            const fioVerify = this.$refs.infoBlock.fioVerify()
+            if(!fioVerify) {
+                this.$toasts.push({
+                    type: 'error',
+                    message: 'Поле ФИО должно быть заполнено'
+                })
+                return
+            }
+            if(this.categoriesId !== this.startId) {
+                this.logCategory()
+                this.startId = this.categoriesId
+                this.$emit('reloadList')
+            }
+        },
+
+        async logCategory() {
+            const category = this.categories.find(category => category.id === this.categoriesId)
+            const data = {
+                categories: category.title,
+                categoriesColor: category.color,
+                msgType: 'Новый этап',
+                logType: 'system',
+                clientId: this.client.id
+            }
+            try {
+                const log = await this.$store.dispatch('saveCategory', data)
+                this.$refs.logsBlock.pushLog(log)
+            } catch (e) {
+                throw e
+            }
+        },
+
+        cancel() {
+            this.categoriesId = this.startId
+            this.$refs.infoBlock.cancel()
+        },
+
+        openSave(value) {
+            this.saveBlock = value
+        },
+
         closeDrawer() {
             this.$emit('closeDrawer')
         },
@@ -106,6 +159,22 @@ export default {
         selectCategories(category) {
             this.categoriesId = category.id
             this.categoriesMenu = false
+        },
+
+        async saveNote({today, text, time, noteId, uid}) {
+            const data = {
+                text,
+                today,
+                time,
+                clientId: this.client.id,
+                agent: uid,
+                noteId
+            }
+            try {
+                await this.$store.dispatch('saveNote', data)
+            } catch (e) {
+                throw e
+            }
         }
     },
 

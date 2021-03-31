@@ -18,7 +18,6 @@ export default {
                 .once('value')).val()
               return info ? info : null
             } catch (e) {
-              commit('setError', e)
               throw e
             }
         },
