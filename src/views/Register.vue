@@ -61,10 +61,10 @@
 
             <div class="flex justify-between items-center text-sm text-gray-500 my-4">
 
-               <div class="flex items-center cursor-pointer" @click="showPassword = !showPassword">
+                <div class="flex items-center cursor-pointer" @click="showPassword = !showPassword">
                     <span class="mr-3 select-none">Показать пароль</span>
                     <span class="relative">
-                        <span id="checkboxBg" class="block w-10 h-6 rounded-full shadow-inner" :class="showPassword ? 'bg-blue-200' : 'bg-gray-400'"></span>
+                        <span id="checkboxBg" class="block w-10 h-6 rounded-full shadow-inner" :class="showPassword ? 'bg-gray-200' : 'bg-gray-400'"></span>
                             <span id="checkbox" class="absolute block w-4 h-4 mt-1 rounded-full shadow inset-y-0 focus-within:shadow-outline ml-1 left-0" :class="showPassword ? 'open' : 'bg-white'">
                                 <input id="showPassword" type="checkbox" class="absolute opacity-0 w-0 h-0" />
                             </span>
@@ -125,6 +125,7 @@ export default {
             }
 
             const checkLogin = await this.$store.dispatch('checkLogin', this.login)
+            console.log(checkLogin)
             if(checkLogin) {
                 this.$toasts.push({type:'error', message: 'Пользователь с таким логином уже существует'})
                 this.btnLoading = false
@@ -150,7 +151,7 @@ export default {
 
 #checkbox.open {
     transform: translateX(100%);
-    @apply bg-blue-600;
+    @apply bg-dividerBg;
 }
 
 </style>

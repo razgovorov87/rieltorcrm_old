@@ -10,6 +10,12 @@ export default function dateFilter(value, format = 'date') {
         options.month = 'long'
         options.day = '2-digit'
     }
+
+    if ( format.includes('fullmonthDayAndYear') ) {
+        options.month = 'long'
+        options.day = '2-digit'
+        options.year = 'numeric'
+    }
     
     if ( format.includes('fullmonthDayPlusTime') ) {
         options.month = 'long'

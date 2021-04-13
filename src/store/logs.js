@@ -3,8 +3,14 @@ import firebase from 'firebase/app'
 export default {
     actions: { 
 
-        async saveNote({dispatch}, {text, today, time, clientId, agent, noteId}) {
-            await firebase.database().ref(`/clients/${clientId}/logs/${today}/${noteId}`).update({
+        async saveNote({dispatch}, {text, today, time, clientId, agent}) {
+            const date = new Date()
+            const dateId = date.toISOString().slice(0, -14)
+            const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+            const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+            const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+            const noteId = hours.toString() + minutes.toString() + seconds.toString()
+            await firebase.database().ref(`/clients/${clientId}/logs/${dateId}/${noteId}`).update({
                 text,
                 time,
                 agent,
@@ -14,7 +20,7 @@ export default {
 
         async addCatchLog({dispatch}, {itemId, uid}) {
             const date = new Date()
-            const dateId = Intl.DateTimeFormat('ru-RU', {month: 'long', day: '2-digit'}).format(date).toString()
+            const dateId = date.toISOString().slice(0, -14)
             const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
             const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
             const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
@@ -27,7 +33,7 @@ export default {
 
         async saveCategory({dispatch}, {categories, categoriesColor, msgType, logType, clientId}) {
             const date = new Date()
-            const dateId = Intl.DateTimeFormat('ru-RU', {month: 'long', day: '2-digit'}).format(date).toString()
+            const dateId = date.toISOString().slice(0, -14)
             const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
             const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
             const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()

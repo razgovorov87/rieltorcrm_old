@@ -12,6 +12,7 @@ import 'vue-my-toasts/dist/vue-my-toasts.css'
 import Alert from '@/components/Alert'
 import Loading from '@/components/Loading'
 import VueCollapse from 'vue2-collapse'
+import vClickOutside from 'v-click-outside'
 
 Vue.component('Loading', Loading)
 Vue.use(VueMyToasts, {
@@ -23,7 +24,7 @@ Vue.use(VueMyToasts, {
   }
 })
 
-
+Vue.use(vClickOutside)
 Vue.use(VueCollapse)
 
 import firebase from 'firebase/app'

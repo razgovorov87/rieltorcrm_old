@@ -42,7 +42,7 @@
 
             <div class="flex justify-between items-center text-sm text-gray-500 my-4">
 
-               <div class="flex items-center cursor-pointer" @click="showPassword = !showPassword">
+                <div class="flex items-center cursor-pointer" @click="showPassword = !showPassword">
                     <span class="mr-3 select-none">Показать пароль</span>
                     <span class="relative">
                         <span id="checkboxBg" class="block w-10 h-6 rounded-full shadow-inner" :class="showPassword ? 'bg-gray-200' : 'bg-gray-400'"></span>

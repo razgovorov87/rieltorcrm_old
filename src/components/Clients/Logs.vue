@@ -4,7 +4,7 @@
             <template v-for="(day, idx) in logs">
                 <div class="w-full h-px bg-gray-200 relative" :key="idx">
                     <span class="text-sm bg-white border rounded-xl px-4 text-gray-500 absolute top-0 right-1/2 transform -translate-y-1/2 translate-x-1/2">
-                        {{idx}}
+                        {{idx | date('fullmonthDayAndYear')}}
                     </span>
                 </div>
                 <transition-group tag="div" name="list" class="grid mt-6 mb-6 space-y-4 w-full">
@@ -71,10 +71,40 @@ export default {
 
     mounted() {
         this.agentsInfo()
+        this.filterDate()
         this.$refs.logsList.scrollTop = this.$refs.logsList.scrollHeight
     },
 
     methods: {
+        filterDate() {
+            const months = [
+                {num: '01', name: 'января'},
+                {num: '02', name: 'февраля'},
+                {num: '03', name: 'марта'},
+                {num: '04', name: 'апреля'},
+                {num: '05', name: 'мая'},
+                {num: '06', name: 'июня'},
+                {num: '07', name: 'июля'},
+                {num: '08', name: 'августа'},
+                {num: '09', name: 'сентября'},
+                {num: '10', name: 'октября'},
+                {num: '11', name: 'ноября'},
+                {num: '12', name: 'декабря'},
+            ]
+            
+            let test = ['01 апреля 2021 г', '12 января 2021 г', '25 марта 2020 г', '14 января 2021 г']
+            const arr = []
+            const order = []
+            test.forEach((date, idx) => {
+                const monthId = months.find(m => m.name === date.replace(/[0-9]+\s/g, '').slice(0, -2)).num
+                date = date.slice(0, -2)
+                const orderId = date.slice(0, 2) + monthId + date.substr(date.length - 4)
+                arr.push({
+                    idx,
+                    orderId
+                })
+            })
+        },
         pushLog(log) {
             const id = log.logId
             const today = log.dateId
@@ -89,6 +119,13 @@ export default {
         },
 
         async saveNote() {
+            const date = new Date()
+            const today = date.toISOString().slice(0, -14)
+            const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+            const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+            const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+            const noteId = hours.toString() + minutes.toString() + seconds.toString()
+            const time = hours.toString() + ':' + minutes.toString()
             if(this.timer !== 0) {
                 this.$toasts.push({
                     type: 'error',
@@ -97,17 +134,12 @@ export default {
                 return
             }
             if(this.note !== '') {
-                const date = new Date()
-                const today = this.$options.filters.date(new Date(), 'fullmonthDay').toString()
-                const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-                const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-                const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-                const time = hours + ':' + minutes
                 const uid = await this.$store.dispatch('getUid')
-                const noteId = hours.toString() + minutes.toString() + seconds.toString()
                 this.pushNote(today, time, uid, noteId)
-                this.$emit('saveNote', {today, text: this.note, time, noteId, uid})
-                this.startTimer()
+                try {
+                    this.$emit('saveNote', {today, text: this.note, time, noteId, uid})
+                    this.startTimer()
+                } catch (e) {throw e}
             }
 
             this.note = ''
