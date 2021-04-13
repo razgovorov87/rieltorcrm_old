@@ -112,8 +112,7 @@
 					</button>
 				</div>
 			</div>
-			<NoData v-if="!objects" />
-			<div v-else class="flex-grow overflow-y-auto">
+			<div class="flex-grow overflow-y-auto">
 				<div
 					class="flex items-center object bg-white border-b hover:bg-gray-100 cursor-pointer"
 					v-for="obj in filterObject()"
@@ -199,7 +198,6 @@
 </template>
 
 <script>
-import NoData from '@/components/NoData';
 import ObjectDrawer from '@/components/Objects/ObjectDrawer';
 export default {
 	data: () => ({
@@ -271,7 +269,7 @@ export default {
 		},
 	},
 
-	components: { ObjectDrawer, NoData },
+	components: { ObjectDrawer },
 };
 </script>
 
