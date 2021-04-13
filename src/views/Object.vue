@@ -1,5 +1,4 @@
 <template>
-	<NoData v-if="!objects" />
 	<div v-else class="flex flex-col h-full">
 		<div id="objectWrapper" ref="objectWrapper" class="pt-10 py-4 relative">
 			<div class="absolute inset-0 bg-white z-10 opacity-70"></div>
@@ -113,7 +112,8 @@
 					</button>
 				</div>
 			</div>
-			<div class="flex-grow overflow-y-auto">
+			<NoData v-if="!objects" />
+			<div v-else class="flex-grow overflow-y-auto">
 				<div
 					class="flex items-center object bg-white border-b hover:bg-gray-100 cursor-pointer"
 					v-for="obj in filterObject()"
