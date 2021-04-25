@@ -86,9 +86,9 @@
 			<div class="headerTable">
 				<div class="headerTable-item borderNone"></div>
 				<div class="headerTable-item textLeft">Адрес</div>
-				<div class="headerTable-item">Этаж</div>
+				<div class="headerTable-item">Кол-во комнат</div>
 				<div class="headerTable-item">Стоимость</div>
-				<div class="headerTable-item">Тип</div>
+				<div class="headerTable-item">URL</div>
 				<div class="headerTable-item flex justify-center">
 					<button
 						class="flex items-center bg-blue-600 text-white font-semibold focus:outline-none py-1 px-2 transition hover:bg-blue-500 focus:ring-2"
@@ -124,16 +124,14 @@
 							{{ obj.adress }}
 						</h2>
 					</div>
-					<div v-if="obj.floor && obj.numStoreys" class="flex items-center justify-center">
-						{{ obj.floor + '/' + obj.numStoreys }}
+					<div v-if="obj.room" class="flex items-center justify-center">
+						{{ obj.room }}
 					</div>
 					<div v-else class="flex items-center justify-center">-</div>
 					<div class="flex justify-center items-center">{{ obj.price | currency }}</div>
-					<div class="flex items-center justify-center">
-						<span class="py-1 px-2 text-sm text-gray-800 bg-yellow-500 rounded">{{
-							obj.type
-						}}</span>
-					</div>
+					<a class="flex items-center justify-center" :href="obj.url" target="_blank">
+						<span class="py-1 px-2 text-sm text-blue-800 truncate underline" style="max-width: 300px;">{{obj.url}}</span>
+					</a>
 
 					<div class="flex justify-center items-center">
 						<div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer">
@@ -275,43 +273,43 @@ export default {
 
 <style scoped>
 .headerTable {
-	display: grid;
-	/* grid-template-columns: auto 0.5fr 0.6fr 1fr 1fr 1fr 1fr; */
-	grid-template-columns: 150px 500px 1fr 1fr 1fr 0.8fr;
-	background-color: #fff;
-	@apply border-b shadow items-center;
+  display: grid;
+  /* grid-template-columns: auto 0.5fr 0.6fr 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 150px 500px 1fr 1fr 1fr 0.8fr;
+  background-color: #fff;
+  @apply border-b shadow items-center;
 }
 
 .object {
-	display: grid;
-	/* grid-template-columns: auto 0.5fr 0.6fr 1fr 1fr 1fr 1fr; */
-	grid-template-columns: 150px 500px 1fr 1fr 1fr 0.8fr;
+  display: grid;
+  /* grid-template-columns: auto 0.5fr 0.6fr 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 150px 500px 1fr 1fr 1fr 0.8fr;
 }
 
 .headerTable-item {
-	@apply text-center py-3 border-r text-gray-400 uppercase font-semibold text-sm tracking-widest;
+  @apply text-center py-3 border-r text-gray-400 uppercase font-semibold text-sm tracking-widest;
 }
 
 .headerTable-item.borderNone {
-	@apply border-transparent !important;
+  @apply border-transparent !important;
 }
 
 .headerTable-item.textLeft {
-	@apply text-left !important;
+  @apply text-left !important;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
-input[type='number'] {
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	appearance: none;
+input[type="number"] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 #objectWrapper {
-	background: url('../assets/city.jpg') bottom no-repeat;
-	background-size: cover;
+  background: url("../assets/city.jpg") bottom no-repeat;
+  background-size: cover;
 }
 </style>

@@ -21,7 +21,7 @@ export default {
 	actions: {
 		async addNewClient(
 			{ dispatch, commit },
-			{ phone, name, surname, company, budget, city, adress, interestingObj },
+			{ phone, name, surname, missedCall, interestingObj },
 		) {
 			const fio = name && surname ? name + ' ' + surname : '';
 			await firebase
@@ -30,14 +30,23 @@ export default {
 				.push({
 					phone,
 					fio,
-					company,
-					budget,
-					city,
-					adress,
 					status: 'Не обработано',
 					interestingObj,
+					missedCall,
+					budget: 0,
 					createdAt: new Date().toString(),
 				});
+		},
+		
+		async saveClientComposition({dispatch}, [clientId, data, compositionType]) {
+			await firebase.database().ref(`/clients/${clientId}/composition`).set(data)
+			await firebase.database().ref(`/clients/${clientId}/`).update({
+				compositionType
+			})
+		},
+
+		async saveCriterion({dispatch}, {data, clientId}) {
+			await firebase.database().ref(`/clients/${clientId}/criterion`).set(data)
 		},
 
 		async fetchClients({ dispatch, commit }) {
@@ -94,14 +103,14 @@ export default {
 					.once('value')
 			).val();
 			arr = Object.keys(arr).map((key) => ({ ...arr[key], id: key }));
-			let item = arr.find((item) => !item.agent);
+			const today = new Date().toISOString().slice(0, -14)
+			let item = arr.find((item) => !item.agent && (!item.lastCause || item.lastCause !== today));
 			if (!item) return 'empty_list';
 			await firebase
 				.database()
 				.ref(`/clients/${item.id}`)
 				.update({
-					agent: uid,
-					logs: {},
+					agent: uid
 				});
 			await dispatch('fetchClients');
 			const itemId = item.id;
@@ -114,6 +123,29 @@ export default {
 			).val();
 			return { ...item, id: itemId };
 		},
+
+		async refuseClient({dispatch}, {cause, otherCause, comment, clientId}) {
+			await firebase.database().ref(`/clients/${clientId}`).update({
+				agent: '',
+				status: 'Не обработано',
+				lastCause: new Date().toISOString().slice(0, -14)
+			})
+			await firebase.database().ref(`/clients/${clientId}/causes`).push({
+				cause,
+				otherCause,
+				comment
+			})
+			dispatch('refuseLog', clientId)
+		},
+
+
+		async removeNewClients({dispatch}, clients) {
+			clients.forEach( async client => {
+				await firebase.database().ref(`/clients/${client.id}/`).update({
+					notification: null
+				})
+			});
+		}
 	},
 
 	getters: {

@@ -109,6 +109,12 @@ export default {
             }
 
             try {
+                const response = await this.$store.dispatch('checkVerify', formData)
+                if(!response) {
+                    this.btnLoading = false
+                    this.$router.push('/verify')
+                    return
+                }
                 await this.$store.dispatch('login', formData)
                 this.btnLoading = false
                 this.$router.push('/')
@@ -125,13 +131,13 @@ export default {
 </script>
 
 <style>
-#checkbox, #checkboxBg {
-    transition: .3s ease-in-out;
+#checkbox,
+#checkboxBg {
+  transition: 0.3s ease-in-out;
 }
 
 #checkbox.open {
-    transform: translateX(100%);
-    @apply bg-dividerBg;
+  transform: translateX(100%);
+  @apply bg-dividerBg;
 }
-
 </style>

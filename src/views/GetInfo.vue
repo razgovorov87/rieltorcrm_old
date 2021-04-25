@@ -9,16 +9,44 @@
             <div>
                 <div class="flex items-center border-b pb-4 transition"
                     :class="{
-                        'border-dividerBg': coloredBorderFio && !($v.fio.$dirty && !$v.fio.required),
-                        'border-red-500': ($v.fio.$dirty && !$v.fio.required)
+                        'border-dividerBg': coloredBorderSurname && !($v.surname.$dirty && !$v.surname.required),
+                        'border-red-500': ($v.surname.$dirty && !$v.surname.required)
                     }"
                 >
-                    <svg class="w-6 mr-2" :class="$v.fio.$dirty && !$v.fio.required ? 'text-red-500' : 'text-dividerBg'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="w-6 mr-2" :class="$v.surname.$dirty && !$v.surname.required ? 'text-red-500' : 'text-dividerBg'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <input v-model.trim="$v.fio.$model" type="text" placeholder="ФИО" class="focus:outline-none text-sm" @focus.exact="coloredBorderFio = true" @blur="coloredBorderFio = false">
+                    <input v-model.trim="$v.surname.$model" type="text" placeholder="Фамилия" class="focus:outline-none text-sm" @focus.exact="coloredBorderSurname = true" @blur="coloredBorderSurname = false">
                 </div>
-                <span v-if="!$v.fio.required && $v.fio.$dirty" class="text-xs text-red-600 italic">Введите ФИО</span>
+                <span v-if="!$v.surname.required && $v.surname.$dirty" class="text-xs text-red-600 italic">Введите фамилию</span>
+            </div>
+
+            <div>
+                <div class="flex items-center border-b pb-4 transition mt-4"
+                    :class="{
+                        'border-dividerBg': coloredBorderName && !($v.name.$dirty && !$v.name.required),
+                        'border-red-500': ($v.name.$dirty && !$v.name.required)
+                    }"
+                >
+                    <svg class="w-6 mr-2" :class="$v.name.$dirty && !$v.name.required ? 'text-red-500' : 'text-dividerBg'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <input v-model.trim="$v.name.$model" type="text" placeholder="Имя" class="focus:outline-none text-sm" @focus.exact="coloredBorderName = true" @blur="coloredBorderName = false">
+                </div>
+                <span v-if="!$v.name.required && $v.name.$dirty" class="text-xs text-red-600 italic">Введите имя</span>
+            </div>
+
+             <div>
+                <div class="flex items-center border-b pb-4 transition mt-4"
+                    :class="{
+                        'border-dividerBg': coloredBorderSecondName,
+                    }"
+                >
+                    <svg class="w-6 mr-2 text-dividerBg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <input v-model.trim="secondName" type="text" placeholder="Отчество" class="focus:outline-none text-sm" @focus.exact="coloredBorderSecondName = true" @blur="coloredBorderSecondName = false">
+                </div>
             </div>
 
             <div>
@@ -62,16 +90,21 @@ import {required, minLength} from 'vuelidate/lib/validators'
 export default {
     props: ['formData'],
     data: () => ({
-        fio: '',
+        surname: '',
+        name: '',
+        secondName: '',
         phone: '',
         phoneError: false,
-        coloredBorderFio: false,
+        coloredBorderSurname: false,
+        coloredBorderName: false,
+        coloredBorderSecondName: false,
         coloredBorderPhone: false,
         btnLoading: false
     }),
 
     validations: {
-        fio: {required},
+        surname: {required},
+        name: {required},
         phone: {required, minLength: minLength(6)},
     },
 
@@ -98,13 +131,15 @@ export default {
             let data = this.formData
             data = {
                 ...this.formData,
-                fio: this.fio,
+                surname: this.surname,
+                name: this.name,
+                secondName: this.secondName,
                 phone: this.phone
             }
 
             try {
                 await this.$store.dispatch('register', data)
-                this.$router.push('/')
+                this.$router.push('/verify')
             } catch (e) {
                 
             }
@@ -120,10 +155,10 @@ export default {
 <style>
 .opacity-enter-active,
 .opacity-leave-active {
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
 }
 .opacity-enter,
 .opacity-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 </style>

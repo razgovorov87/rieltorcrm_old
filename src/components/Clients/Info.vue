@@ -1,312 +1,259 @@
 <template>
-	<div v-if="info" class="py-4 px-6 flex flex-col">
-		<div class="flex justify-between">
-			<h3 class="text-xl font-semibold items-center flex-grow">Информация о клиенте</h3>
-		</div>
+  <div v-if="info" class="py-4 px-6 flex flex-col">
+    <div class="flex justify-between">
+      <h3 class="text-xl font-semibold items-center flex-grow">
+        Информация о клиенте
+      </h3>
+    </div>
 
-		<div class="flex flex-col space-y-3 mt-4">
-			<div class="flex text-sm">
-				<div class="w-1/3 font-semibold text-gray-600 flex-shrink-0 leading-3">
-					Мобильный телефон
-				</div>
-				<div class="w-2/3 italic border-b flex-grow border-gray-800 border-b border-dashed">
-					{{ info.phone }}
-				</div>
-			</div>
+    <div class="flex flex-col space-y-3 mt-4">
+      <div class="flex items-center">
+        <label class="font-medium w-24 text-gray-600">Телефон</label>
+        <div class="flex flex-grow bg-white rounded border-2 border-gray-300">
+          <div
+            class="flex items-center justify-center py-2 px-3 bg-gray-200 flex-shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+              />
+            </svg>
+          </div>
+          <div class="w-2/3 flex-grow flex items-center pl-2">
+            {{ info.phone }}
+          </div>
+        </div>
+      </div>
 
-			<div class="flex text-sm items-center">
-				<div class="w-1/3 font-semibold text-gray-600 flex-shrink-0">ФИО</div>
-				<div
-					class="w-2/3 italic border-b flex-grow border-gray-800 border-b border-dashed flex justify-between items-center pb-1 relative cursor-pointer h-6"
-					@click="editName = true"
-				>
-					<span v-show="!editName">{{ fio }}</span>
-					<svg
-						v-show="!editName"
-						class="w-4"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="1.5"
-							d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-						/>
-					</svg>
-					<span v-if="editName" class="absolute">
-						<input
-							v-model="fio"
-							class="focus:outline-none bg-transparent italic"
-							type="text"
-							@keydown.enter="
-								() => {
-									editName = false;
-									openSave;
-								}
-							"
-						/>
-					</span>
-				</div>
-			</div>
+      <div class="flex items-center">
+        <label class="font-medium text-gray-600 w-24">ФИО</label>
+        <div
+          class="flex flex-grow bg-white rounded border-2 border-gray-300 group focus:ring-2 ring-blue-500"
+        >
+          <div
+            class="flex items-center justify-center py-2 px-3 bg-gray-200 flex-shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+          </div>
+          <input
+            v-model="fio"
+            class="w-2/3 flex-grow flex items-center pl-2 focus:outline-none"
+          />
+        </div>
+      </div>
 
-			<div class="flex text-sm items-center">
-				<div class="w-1/3 font-semibold text-gray-600 flex-shrink-0">Компания</div>
-				<div
-					class="w-2/3 italic border-b flex-grow border-gray-800 border-b border-dashed flex justify-between items-center pb-1 relative cursor-pointer h-6"
-					@click="editCompany = true"
-				>
-					<span v-show="!editCompany">{{ company }}</span>
-					<svg
-						v-show="!editCompany"
-						class="w-4"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="1.5"
-							d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-						/>
-					</svg>
-					<span v-if="editCompany" class="absolute">
-						<input
-							v-model="company"
-							class="focus:outline-none bg-transparent italic"
-							type="text"
-							v-click-outside="
-								() => {
-									editCompany = false;
-									openSave;
-								}
-							"
-							@keydown.enter="
-								() => {
-									editCompany = false;
-									openSave;
-								}
-							"
-						/>
-					</span>
-				</div>
-			</div>
+      <div class="flex items-center">
+        <label class="font-medium text-gray-600 w-24">Компания</label>
+        <div
+          class="flex flex-grow bg-white rounded border-2 border-gray-300 group focus:ring-2 ring-blue-500"
+        >
+          <div
+            class="flex items-center justify-center py-2 px-3 bg-gray-200 flex-shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          <input
+            v-model="company"
+            class="w-2/3 flex-grow flex items-center pl-2 focus:outline-none"
+          />
+        </div>
+      </div>
 
-			<div class="flex text-sm items-center">
-				<div class="w-1/3 font-semibold text-gray-600 flex-shrink-0">Бюджет</div>
-				<div
-					class="w-2/3 italic border-b flex-grow border-gray-800 border-b border-dashed flex justify-between items-center pb-1 relative cursor-pointer h-6"
-					@click="editBudget = true"
-				>
-					<span v-show="!editBudget">{{ budget | currency }}</span>
-					<svg
-						v-show="!editBudget"
-						class="w-4"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="1.5"
-							d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-						/>
-					</svg>
-					<span v-if="editBudget" class="absolute">
-						<currency-input
-							v-model="budget"
-							currency="RUB"
-							:precision="0"
-							:distraction-free="false"
-							class="focus:outline-none bg-transparent italic"
-							type="text"
-							@keydown.enter="
-								() => {
-									editBudget = false;
-									openSave;
-								}
-							"
-						/>
-					</span>
-				</div>
-			</div>
+      <div class="flex items-center">
+        <label class="font-medium w-24 text-gray-600">Бюджет</label>
+        <div
+          class="flex flex-grow bg-white rounded border-2 border-gray-300 group focus:ring-2 ring-blue-500"
+        >
+          <div
+            class="flex items-center justify-center py-2 px-3 bg-gray-200 flex-shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+              />
+            </svg>
+          </div>
+          <currency-input
+            v-model="budget"
+            class="w-2/3 flex-grow flex items-center pl-2 focus:outline-none"
+            currency="RUB"
+            :precision="0"
+            :distraction-free="false"
+          />
+        </div>
+      </div>
 
-			<div class="flex text-sm items-center">
-				<div class="w-1/3 font-semibold text-gray-600 flex-shrink-0">Город</div>
-				<div
-					class="w-2/3 italic border-b flex-grow border-gray-800 border-b border-dashed flex justify-between items-center pb-1 relative cursor-pointer h-6"
-					@click="editCity = true"
-				>
-					<span v-show="!editCity">{{ city }}</span>
-					<svg
-						v-show="!editCity"
-						class="w-4"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="1.5"
-							d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-						/>
-					</svg>
-					<span v-if="editCity" class="absolute">
-						<input
-							v-model="city"
-							class="focus:outline-none bg-transparent italic"
-							type="text"
-							v-click-outside="
-								() => {
-									editCity = false;
-									openSave;
-								}
-							"
-							@keydown.enter="
-								() => {
-									editCity = false;
-									openSave;
-								}
-							"
-						/>
-					</span>
-				</div>
-			</div>
-
-			<div class="flex text-sm items-center">
-				<div class="w-1/3 font-semibold text-gray-600 flex-shrink-0">Адрес</div>
-				<div
-					class="w-2/3 italic border-b flex-grow border-gray-800 border-b border-dashed flex justify-between items-center pb-1 relative cursor-pointer h-6"
-					@click="editAdress = true"
-				>
-					<span v-show="!editAdress">{{ adress }}</span>
-					<svg
-						v-show="!editAdress"
-						class="w-4"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="1.5"
-							d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-						/>
-					</svg>
-					<span v-if="editAdress" class="absolute">
-						<input
-							v-model="adress"
-							class="focus:outline-none bg-transparent italic"
-							type="text"
-							v-click-outside="
-								() => {
-									editAdress = false;
-									openSave;
-								}
-							"
-							@keydown.enter="
-								() => {
-									editAdress = false;
-									openSave;
-								}
-							"
-						/>
-					</span>
-				</div>
-			</div>
-		</div>
-	</div>
+      <div class="flex items-center">
+        <label class="font-medium w-24 text-gray-600">Адрес</label>
+        <div
+          class="flex flex-grow bg-white rounded border-2 border-gray-300 group focus:ring-2 ring-blue-500"
+        >
+          <div
+            class="flex items-center justify-center py-2 px-3 bg-gray-200 flex-shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
+            </svg>
+          </div>
+          <input
+            v-model="adress"
+            class="w-2/3 flex-grow flex items-center pl-2 focus:outline-none"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { CurrencyInput } from 'vue-currency-input';
+import { CurrencyInput } from "vue-currency-input";
 export default {
-	props: ['info'],
-	data: () => ({
-		fio: '',
-		editName: false,
-		company: '',
-		editCompany: false,
-		budget: 0,
-		editBudget: false,
-		city: '',
-		editCity: false,
-		adress: '',
-		editAdress: false,
-	}),
+  props: ["info"],
+  data: () => ({
+    fio: "",
+    company: "",
+    budget: 0,
+    adress: "",
+  }),
 
-	created() {
-		if (Object.keys(this.info).length !== 0) {
-			this.fio = this.info.fio;
-			this.company = this.info.company;
-			this.budget = this.info.budget;
-			this.city = this.info.city;
-			this.adress = this.info.adress;
-		}
-	},
+  watch: {
+    fio() {
+      if (this.fio !== this.info.fio && this.fio !== "")
+        this.$emit("openSave", true);
+      else this.$emit("openSave", false);
+    },
 
-	methods: {
-		updateInfo({ fio, budget, company, city, adress }) {
-			this.fio = fio;
-			this.company = company;
-			this.budget = budget;
-			this.city = city;
-			this.adress = adress;
-		},
-		fioVerify() {
-			if (this.fio.length < 3) return false;
-			else return true;
-		},
+    company() {
+      if (this.company !== this.info.company && this.company !== "")
+        this.$emit("openSave", true);
+      else this.$emit("openSave", false);
+    },
 
-		cancel() {
-			this.fio = this.info.fio;
-			this.company = this.info.company;
-			this.budget = this.info.budget;
-			this.city = this.info.city;
-			this.adress = this.info.adress;
-			this.$emit('openSave', false);
-		},
+    budget() {
+      if (this.budget !== this.info.budget && this.budget !== "")
+        this.$emit("openSave", true);
+      else this.$emit("openSave", false);
+    },
 
-		getClientInfo() {
-			return {
-				fio: this.fio,
-				company: this.company,
-				budget: this.budget,
-				city: this.city,
-				adress: this.adress,
-			};
-		},
-	},
+    adress() {
+      if (this.adress !== this.info.adress && this.adress !== "")
+        this.$emit("openSave", true);
+      else this.$emit("openSave", false);
+    },
+  },
 
-	computed: {
-		openSave() {
-			const fio = this.info.fio;
-			if (
-				fio !== this.fio ||
-				this.info.company !== this.company ||
-				this.info.budget !== this.budget ||
-				this.info.city !== this.city ||
-				this.info.adress !== this.adress
-			) {
-				this.$emit('openSave', true);
-			} else {
-				this.$emit('openSave', false);
-			}
-		},
-	},
+  created() {
+    if (Object.keys(this.info).length !== 0) {
+      this.fio = this.info.fio ? this.info.fio : "";
+      this.company = this.info.company ? this.info.company : "";
+      this.budget = this.info.budget ? this.info.budget : 0;
+      this.adress = this.info.adress ? this.info.adress : "";
+    }
+  },
 
-	components: {
-		CurrencyInput,
-	},
+  methods: {
+    updateInfo({ fio, budget, company, city, adress }) {
+      this.fio = fio;
+      this.company = company;
+      this.budget = budget;
+      this.adress = adress;
+    },
+    fioVerify() {
+      if (this.fio.length < 3) return false;
+      else return true;
+    },
+
+    cancel() {
+      this.fio = this.info.fio;
+      this.company = this.info.company;
+      this.budget = this.info.budget;
+      this.adress = this.info.adress;
+      this.$emit("openSave", false);
+    },
+
+    getClientInfo() {
+      return {
+        fio: this.fio,
+        company: this.company,
+        budget: this.budget,
+        adress: this.adress,
+      };
+    },
+  },
+
+  computed: {
+    openSave() {
+      const fio = this.info.fio;
+      if (
+        fio !== this.fio ||
+        this.info.company !== this.company ||
+        this.info.budget !== this.budget ||
+        this.info.adress !== this.adress
+      ) {
+        this.$emit("openSave", true);
+      } else {
+        this.$emit("openSave", false);
+      }
+    },
+  },
+
+  components: {
+    CurrencyInput,
+  },
 };
 </script>

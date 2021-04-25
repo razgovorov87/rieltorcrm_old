@@ -29,8 +29,10 @@ export default {
 		},
 
 		ClientsLength() {
-			if (Object.keys(this.$store.getters.clients).length !== 0)
-				return this.$store.getters.clients.filter((client) => !client.agent).length;
+			if (Object.keys(this.$store.getters.clients).length !== 0) {
+				const today = new Date().toISOString().slice(0, -14)
+				return this.$store.getters.clients.filter((client) => !client.agent && (!client.lastCause || client.lastCause !== today)).length;
+			}
 			else return 0;
 		},
 	},

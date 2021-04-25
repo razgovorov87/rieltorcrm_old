@@ -25,5 +25,12 @@ export default {
 					author: uid,
 				});
 		},
+
+		async saveInterestingObj({ dispatch }, { client, obj }) {
+			await firebase
+				.database()
+				.ref(`/clients/${client.id}/interestingObj/`)
+				.set(obj);
+		},
 	},
 };

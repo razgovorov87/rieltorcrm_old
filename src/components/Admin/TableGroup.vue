@@ -39,23 +39,18 @@
 				:key="client.id"
 				class="border-b border-gray-200 hover:bg-gray-100 flex items-center"
 			>
-				<td class="w-1/4 py-3 px-6 text-left whitespace-nowrap">
+				<td class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
 					<div class="flex items-center">
 						<span class="font-medium">{{ client.fio }}</span>
 					</div>
 				</td>
-				<td class="w-1/4 py-3 px-6 text-left">
+
+				<td class="w-2/12 py-3 px-6 text-left">
 					<div class="flex items-center">
-						<div class="mr-2">
-							<img
-								v-if="client.agent"
-								class="w-6 h-6 rounded-full"
-								src="https://randomuser.me/api/portraits/men/5.jpg"
-							/>
-						</div>
-						<span>{{ takeAgentInfo(client.agent) }}</span>
+						<span class="border-b border-gray-500">{{ takeAgentInfo(client.agent) }}</span>
 					</div>
 				</td>
+
 				<td class="w-2/12 py-3 px-6 text-center">
 					<div class="flex items-center justify-center">
 						<div class="mr-2">
@@ -77,13 +72,37 @@
 						<span class="font-medium border-b border-gray-400">{{ client.phone }}</span>
 					</div>
 				</td>
+
 				<td class="w-2/12 py-3 px-6 text-center">
 					<span class="text-white py-1 px-3 rounded-full text-xs" :class="'bg-' + category.color">
 						{{ client.status }}</span
 					>
 				</td>
+				
+				<td class="w-1/12 py-3 px-6 text-center">
+					<div class="flex items-center justify-center">
+						<span class="font-medium">{{ offerCount(client.proposedObjects) }}</span>
+					</div>
+				</td>
+				<td class="w-1/12 py-3 px-6 text-center">
+					<div class="flex items-center justify-center">
+						<span v-if="refuseCount(client.causes) >= 3" class="font-medium p-2 bg-red-600 rounded-full h-8 w-8 flex items-center justify-center text-white">{{ refuseCount(client.causes) }}</span>
+						<span v-else class="font-medium">{{ refuseCount(client.causes) }}</span>
+					</div>
+				</td>
+
 				<td class="w-2/12 py-3 px-6 text-center">
-					<div class="flex item-center justify-center">
+					<div class="flex items-center justify-center">
+
+						<div
+							class="w-5 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer"
+							@click="$emit('switchAgent', client)"
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+							</svg>
+						</div>
+
 						<div
 							class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer"
 							@click="$emit('openClient', client)"
@@ -102,7 +121,8 @@
 								/>
 							</svg>
 						</div>
-						<div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer">
+
+						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -140,9 +160,25 @@ export default {
 		takeAgentInfo(id) {
 			if (this.agents) {
 				const agent = this.agents.filter((agent) => agent.id === id);
-				if (agent[0]) return agent[0].fio;
+				if (agent[0]) return agent[0].surname + ' ' + agent[0].name;
 			}
 		},
+
+		offerCount(objects) {
+			if(!objects) return 0
+				
+			let count = 0;
+			objects.forEach(obj => {
+				if(obj.status === 'offered') count++
+			});
+
+			return count
+		},
+
+		refuseCount(causes) {
+			if(!causes) return 0
+			return Object.keys(causes).length
+		}
 	},
 };
 </script>

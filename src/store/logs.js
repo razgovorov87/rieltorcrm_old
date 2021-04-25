@@ -6,9 +6,9 @@ export default {
         async saveNote({dispatch}, {text, today, time, clientId, agent}) {
             const date = new Date()
             const dateId = date.toISOString().slice(0, -14)
-            const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-            const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-            const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+            const hours = date.getUTCHours() < 10 ? '0' + date.getUTCHours() : date.getUTCHours()
+            const minutes = date.getUTCMinutes() < 10 ? '0' + date.getUTCMinutes() : date.getUTCMinutes()
+            const seconds = date.getUTCSeconds() < 10 ? '0' + date.getUTCSeconds() : date.getUTCSeconds()
             const noteId = hours.toString() + minutes.toString() + seconds.toString()
             await firebase.database().ref(`/clients/${clientId}/logs/${dateId}/${noteId}`).update({
                 text,
@@ -21,9 +21,9 @@ export default {
         async addCatchLog({dispatch}, {itemId, uid}) {
             const date = new Date()
             const dateId = date.toISOString().slice(0, -14)
-            const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-            const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-            const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+            const hours = date.getUTCHours() < 10 ? '0' + date.getUTCHours() : date.getUTCHours()
+            const minutes = date.getUTCMinutes() < 10 ? '0' + date.getUTCMinutes() : date.getUTCMinutes()
+            const seconds = date.getUTCSeconds() < 10 ? '0' + date.getUTCSeconds() : date.getUTCSeconds()
             const logId = hours.toString() + minutes.toString() + seconds.toString()
             await firebase.database().ref(`/clients/${itemId}/logs/${dateId}/${logId}`).update({
                 logType: 'catch',
@@ -31,12 +31,35 @@ export default {
             })
         },
 
+        async addOfferObjectLog({dispatch}, {itemId, link, pdfNumber}) {
+            const date = new Date()
+            const uid = await dispatch('getUid')
+            const dateId = date.toISOString().slice(0, -14)
+            const hours = date.getUTCHours() < 10 ? '0' + date.getUTCHours() : date.getUTCHours()
+            const minutes = date.getUTCMinutes() < 10 ? '0' + date.getUTCMinutes() : date.getUTCMinutes()
+            const seconds = date.getUTCSeconds() < 10 ? '0' + date.getUTCSeconds() : date.getUTCSeconds()
+            const logId = hours.toString() + minutes.toString() + seconds.toString()
+            const time = hours + ':' + minutes
+
+            const log = {
+                logType: 'offerObject',
+                link,
+                pdfNumber,
+                agent: uid,
+                time,
+                dateId,
+                logId
+            }
+            await firebase.database().ref(`/clients/${itemId}/logs/${dateId}/${logId}`).update(log)
+            return log
+        },
+
         async saveCategory({dispatch}, {categories, categoriesColor, msgType, logType, clientId}) {
             const date = new Date()
             const dateId = date.toISOString().slice(0, -14)
-            const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-            const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-            const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+            const hours = date.getUTCHours() < 10 ? '0' + date.getUTCHours() : date.getUTCHours()
+            const minutes = date.getUTCMinutes() < 10 ? '0' + date.getUTCMinutes() : date.getUTCMinutes()
+            const seconds = date.getUTCSeconds() < 10 ? '0' + date.getUTCSeconds() : date.getUTCSeconds()
             const time = hours + ':' + minutes
             const logId = hours.toString() + minutes.toString() + seconds.toString()
             const uid = await dispatch('getUid')
@@ -56,6 +79,24 @@ export default {
             }
             await firebase.database().ref(`/clients/${clientId}/logs/${dateId}/${logId}`).update(log)
             return log
+        },
+
+        async refuseLog({dispatch}, clientId) {
+            const date = new Date()
+            const dateId = date.toISOString().slice(0, -14)
+            const hours = date.getUTCHours() < 10 ? '0' + date.getUTCHours() : date.getUTCHours()
+            const minutes = date.getUTCMinutes() < 10 ? '0' + date.getUTCMinutes() : date.getUTCMinutes()
+            const seconds = date.getUTCSeconds() < 10 ? '0' + date.getUTCSeconds() : date.getUTCSeconds()
+            const time = hours + ':' + minutes
+            const logId = hours.toString() + minutes.toString() + seconds.toString()
+            const uid = await dispatch('getUid')
+
+            const log = {
+                logType: 'refuseClient',
+                agent: uid
+            }
+
+            await firebase.database().ref(`/clients/${clientId}/logs/${dateId}/${logId}`).update(log)
         }
 
     },

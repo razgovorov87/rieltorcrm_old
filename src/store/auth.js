@@ -11,6 +11,15 @@ export default {
       }
     },
 
+    async checkVerify({dispatch}, {login, password}) {
+        const email = login + '@median24.ru';
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        const uid = await dispatch('getUid');
+        const info = (await firebase.database().ref(`/users/${uid}`).once('value')).val();
+        await firebase.auth().signOut();
+        return info.verify
+    },
+
     async fetchInfo({ dispatch, commit }) {
       try {
         const uid = await dispatch('getUid');
@@ -26,7 +35,7 @@ export default {
       }
     },
 
-    async register({ dispatch, commit }, { login, password, fio, phone }) {
+    async register({ dispatch, commit }, { login, password, surname, name, secondName, phone }) {
       try {
         const email = login + '@median24.ru';
         await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -36,14 +45,24 @@ export default {
           .ref(`/users/${uid}`)
           .set({
             login,
-            fio,
+            surname,
+            name,
+            secondName,
+            password,
             phone,
             createdAt: new Date().toString(),
             isAdmin: false,
+            verify: false
           });
       } catch (e) {
         throw e;
       }
+    },
+
+    async verifyAgent({dispatch}, id) {
+      await firebase.database().ref(`/users/${id}`).update({
+        verify: true
+      })
     },
 
     getUid() {

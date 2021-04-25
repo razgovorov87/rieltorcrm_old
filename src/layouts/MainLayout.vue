@@ -20,7 +20,7 @@ export default {
 
   computed: {
     disableHeader() {
-      return this.$route.path === '/object' || this.$route.path === '/admin' ? false : true
+      return this.$route.path === '/object' || this.$route.path === '/admin/clients' || this.$route.path === '/admin/team' ? false : true
     }
   },
 
@@ -40,22 +40,22 @@ body {
   height: 100vh !important;
 }
 ::-webkit-scrollbar {
-    width: 3px;
+  width: 3px;
 }
- 
+
 /* Track */
 ::-webkit-scrollbar-track {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: rgba(173, 173, 173, 0.8);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: rgba(173, 173, 173, 0.8);
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-    background: rgba(173, 173, 173, 0.8);
+  background: rgba(173, 173, 173, 0.8);
 }
 </style>

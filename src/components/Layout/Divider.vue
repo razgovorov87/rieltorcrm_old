@@ -47,30 +47,45 @@
 				<span class="text-xs font-semibold mt-1">Объекты</span>
 			</router-link>
 
+			<div v-if="checkAdmin" class="text-gray-500 my-2">
+				<span>•</span>
+				<span class="mx-1">•</span>
+				<span>•</span>
+			</div>
+
 			<router-link
 				v-if="checkAdmin"
-				to="/admin"
+				to="/admin/clients"
 				class="py-2 flex flex-col items-center text-gray-400 outline-none hover:text-white transition w-full"
 				exact
 			>
-				<svg
-					class="w-8"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-					/>
+				<svg xmlns="http://www.w3.org/2000/svg" class="w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
 				</svg>
 				<span class="text-xs font-semibold mt-1 truncate" style="max-width: 60px;"
-					>Администратор</span
+					>Клиенты</span
 				>
 			</router-link>
+
+			<router-link
+				v-if="checkAdmin"
+				to="/admin/team"
+				class="py-2 flex flex-col items-center text-gray-400 outline-none hover:text-white transition w-full"
+				exact
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" class="w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+				</svg>
+				<span class="text-xs font-semibold mt-1 truncate" style="max-width: 60px;"
+					>Сотрудники</span
+				>
+			</router-link>
+
+			<div v-if="checkAdmin" class="text-gray-500 my-2">
+				<span>•</span>
+				<span class="mx-1">•</span>
+				<span>•</span>
+			</div>
 		</nav>
 
 		<div class="flex flex-shrink-0 flex-col bg-darkDivider">
@@ -168,13 +183,13 @@ export default {
 
 <style>
 .router-link-active {
-	@apply bg-darkDivider text-white !important;
+  @apply bg-darkDivider text-white !important;
 }
 #link_with_popover span.popover {
-	opacity: 0;
-	transition: 0.3s ease;
+  opacity: 0;
+  transition: 0.3s ease;
 }
 #link_with_popover:hover span.popover {
-	opacity: 1;
+  opacity: 1;
 }
 </style>

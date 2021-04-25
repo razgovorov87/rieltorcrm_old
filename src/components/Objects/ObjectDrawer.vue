@@ -80,78 +80,19 @@
 									/>
 								</div>
 								<div class="flex items-center">
-									<label class="flex-shrink-0 w-1/3 text-gray-500 font-medium">Этаж</label>
+									<label class="flex-shrink-0 w-1/3 text-gray-500 font-medium">Кол-во комнат</label>
 									<input
-										v-model="floor"
+										v-model="room"
 										type="numbeer"
 										class="flex-grow border-2 focus:outline-none py-1 px-3 rounded"
 										placeholder="0"
 									/>
 								</div>
+								
 								<div class="flex items-center">
-									<label class="flex-shrink-0 w-1/3 text-gray-500 font-medium"
-										>Кол-во этажей в доме</label
-									>
+									<label class="flex-shrink-0 w-1/3 text-gray-500 font-medium">Ссылка</label>
 									<input
-										v-model="numStoreys"
-										type="numbeer"
-										class="flex-grow border-2 focus:outline-none py-1 px-3 rounded"
-										placeholder="0"
-									/>
-								</div>
-								<div class="flex items-center">
-									<label class="flex-shrink-0 w-1/3 text-gray-500 font-medium">Тип</label>
-									<div
-										class="flex text-gray-800 items-center py-1 px-3 border-2 rounded relative cursor-pointer flex-grow select-none justify-between"
-										@click="typeList = !typeList"
-									>
-										<span>{{ type }}</span>
-										<svg
-											class="w-3 text-gray-500 ml-2 transition"
-											:class="[
-												{
-													'transform rotate-180': typeList,
-												},
-											]"
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M19 9l-7 7-7-7"
-											/>
-										</svg>
-										<div
-											v-if="typeList"
-											class="absolute top-full inset-x-0 bg-white border shadow z-50"
-										>
-											<div class="flex flex-col w-full">
-												<div
-													class="border-b px-2 py-2 hover:bg-gray-100 flex justify-between items-center"
-													@click="type = $event.target.innerText"
-												>
-													Квартира
-												</div>
-												<div
-													class="border-b px-2 py-2 hover:bg-gray-100 flex justify-between items-center"
-													@click="type = $event.target.innerText"
-												>
-													Дом
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="flex items-center">
-									<label class="flex-shrink-0 w-1/3 text-gray-500 font-medium"
-										>Ссылка на Авито</label
-									>
-									<input
-										v-model="avito"
+										v-model="url"
 										type="text"
 										class="flex-grow border-2 focus:outline-none py-1 px-3 rounded"
 										placeholder="http://"
@@ -190,12 +131,10 @@ export default {
 	data: () => ({
 		formVerify: false,
 		adress: '',
-		floor: null,
-		numStoreys: null,
+		room: null,
 		price: 0,
-		typeList: false,
 		type: 'Квартира',
-		avito: '',
+		url: '',
 	}),
 
 	watch: {
@@ -221,10 +160,8 @@ export default {
 				const formData = {
 					adress: this.adress,
 					price: this.price,
-					floor: this.floor,
-					numStoreys: this.numStoreys,
-					type: this.type,
-					avito: this.avito,
+					room: this.room,
+					url: this.url,
 				};
 
 				await this.$store.dispatch('addNewObject', formData);
@@ -248,10 +185,8 @@ export default {
 			if (this.changeItem) {
 				this.adress = this.changeItem.adress;
 				this.price = this.changeItem.price;
-				this.floor = this.changeItem.floor;
-				this.numStoreys = this.changeItem.numStoreys;
-				this.type = this.changeItem.type;
-				this.avito = this.changeItem.avito;
+				this.room = this.changeItem.room;
+				this.url = this.changeItem.url;
 			}
 		},
 
@@ -270,10 +205,8 @@ export default {
 		clearInputs() {
 			this.adress = '';
 			this.price = 0;
-			this.floor = '';
-			this.numStoreys = '';
-			this.avito = '';
-			this.type = 'Квартира';
+			this.room = '';
+			this.url = '';
 		},
 	},
 
@@ -286,38 +219,38 @@ export default {
 
 <style>
 .required:after {
-	content: ' *';
-	color: red;
+  content: " *";
+  color: red;
 }
 
 .v-collapse-content {
-	max-height: 0;
-	transition: max-height 0.3s ease-out;
-	overflow: hidden;
-	padding: 0;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+  padding: 0;
 }
 
 .v-collapse-content-end {
-	transition: max-height 0.3s ease-in;
-	height: 100vh;
-	max-height: 100vh;
+  transition: max-height 0.3s ease-in;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-	transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 .fade-enter,
 .fade-leave-to {
-	transform: translateX(100%);
+  transform: translateX(100%);
 }
 
 .opacity-enter-active,
 .opacity-leave-active {
-	transition: 0.3s ease;
+  transition: 0.3s ease;
 }
 .opacity-enter,
 .opacity-leave-to {
-	opacity: 0;
+  opacity: 0;
 }
 </style>

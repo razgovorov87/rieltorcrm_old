@@ -9,13 +9,13 @@
                 </div>
                 <transition-group tag="div" name="list" class="grid mt-6 mb-6 space-y-4 w-full">
 
-                    <div v-for="(log, id) in formatDay(day)" :key="log.id" :class="log.logType === 'system' || log.logType === 'catch' ? 'systemMsg' : 'noteWrapper'">
+                    <div v-for="(log, idx) in formatDay(day)" :key="log + idx" :class="log.logType === 'system' || log.logType === 'catch' || log.logType === 'offerObject' || log.logType === 'refuseClient' ? 'systemMsg' : 'noteWrapper'">
                         <span v-if="log.logType === 'note'" class="text-xs italic text-gray-300 truncate">{{takeAgentInfo(log.agent)}} • {{log.time}}</span>
                         <div v-if="log.logType === 'note'" class="noteMsg break-words">
                             {{log.text}}
                         </div>
 
-                        <div  v-if="log.logType === 'system'">
+                        <div v-if="log.logType === 'system'">
                             {{log.time + ' ' + takeAgentInfo(log.agent) + '. ' + log.msgType + ':'}}
                             <span class="border rounded-xl px-4 py-0.5 text-white ml-1 shadow" 
                             :class="[
@@ -24,13 +24,27 @@
                             ]">{{log.categories}}</span>
                         </div>
 
-                        <div  v-if="log.logType === 'catch'">
+                        <div v-if="log.logType === 'catch'">
                             <span class="font-medium underline">{{takeAgentInfo(log.agent)}}</span> взял в работу
                         </div>
 
+                        
+                        <div v-if="log.logType === 'offerObject'" class="flex">
+                            {{log.time + ' | ' + takeAgentInfo(log.agent) + '. Предложен объект:' }} 
+                            <a :href="log.link" class="mx-1 text-blue-500 underline truncate block" style="max-width: 150px;">{{log.link}}</a>
+                            (№: {{log.pdfNumber}})
+                        </div>
+
+                        <div v-if="log.logType === 'refuseClient'">
+                            <span class="font-medium underline">{{takeAgentInfo(log.agent)}}</span> отказался от клиента
+                        </div>
+
                     </div>
+
+                    
                     
                 </transition-group>
+                
             </template>
         </div>
         <div class="w-full h-36 px-4 py-6 relative">
@@ -53,7 +67,8 @@
                 @keydown.enter.exact.prevent
                 :disabled="timer !== 0"
                 @keydown.enter.exact="saveNote"
-                @keydown.enter.shift.exact="newline"></textarea>
+                @keydown.enter.shift.exact="newline">
+            </textarea>
         </div>
     </div>
 </template>
@@ -105,6 +120,7 @@ export default {
                 })
             })
         },
+        
         pushLog(log) {
             const id = log.logId
             const today = log.dateId
@@ -115,7 +131,7 @@ export default {
                 Vue.set(this.logs[today], id, log)
             }
             
-            this.$refs.logsList.scrollTop = this.$refs.logsList.scrollHeight
+            setTimeout( () => {this.$refs.logsList.scrollTop = this.$refs.logsList.scrollHeight}) 
         },
 
         async saveNote() {
@@ -181,7 +197,7 @@ export default {
 
         takeAgentInfo(id) {
             const agent = this.agents.filter(agent => agent.id === id)
-            if(agent[0]) return agent[0].fio
+            if(agent[0]) return agent[0].surname + ' ' + agent[0].name
         },
 
         formatDay(day) {
@@ -197,15 +213,15 @@ export default {
 
 <style scoped>
 .systemMsg {
-    @apply text-sm text-gray-500 justify-self-center;
+  @apply text-sm text-gray-500 justify-self-center;
 }
 
 .noteWrapper {
-    @apply flex items-center space-x-2 justify-end;
+  @apply flex items-center space-x-2 justify-end;
 }
 
 .noteMsg {
-    @apply justify-self-end text-sm text-left bg-white border rounded px-3 py-2 max-w-md;
+  @apply justify-self-end text-sm text-left bg-white border rounded px-3 py-2 max-w-md;
 }
 
 textarea {
@@ -214,11 +230,11 @@ textarea {
 
 .opacitySlideUp-enter-active,
 .opacitySlideUp-leave-active {
-  transition: .3s ease;
+  transition: 0.3s ease;
 }
 .opacitySlideUp-enter,
 .opacitySlideUp-leave-to {
-    opacity: 0;
-    transform: translateY(100%);
+  opacity: 0;
+  transform: translateY(100%);
 }
 </style>

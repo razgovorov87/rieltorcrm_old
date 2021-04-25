@@ -125,7 +125,6 @@ export default {
             }
 
             const checkLogin = await this.$store.dispatch('checkLogin', this.login)
-            console.log(checkLogin)
             if(checkLogin) {
                 this.$toasts.push({type:'error', message: 'Пользователь с таким логином уже существует'})
                 this.btnLoading = false
@@ -145,13 +144,13 @@ export default {
 </script>
 
 <style>
-#checkbox, #checkboxBg {
-    transition: .3s ease-in-out;
+#checkbox,
+#checkboxBg {
+  transition: 0.3s ease-in-out;
 }
 
 #checkbox.open {
-    transform: translateX(100%);
-    @apply bg-dividerBg;
+  transform: translateX(100%);
+  @apply bg-dividerBg;
 }
-
 </style>

@@ -18,6 +18,6 @@ export default {
 
 <style>
 .column-header {
-  @apply w-1/5 border-b-2 flex flex-col items-center py-2 flex-shrink-0 text-center;
+  @apply w-1/4 border-b-2 flex flex-col items-center py-2 flex-shrink-0 text-center;
 }
 </style>

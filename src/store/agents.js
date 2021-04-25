@@ -23,6 +23,13 @@ export default {
             const arr = Object.keys(info).map(key => ({...info[key], id: key}))
             commit('setAgents', arr)
             return arr
+        },
+
+        async switchAgent({dispatch}, {clientId, newAgent}) {
+            await firebase.database().ref(`/clients/${clientId}`).update({
+                agent: newAgent,
+                notification: true
+            })
         }
 
     },

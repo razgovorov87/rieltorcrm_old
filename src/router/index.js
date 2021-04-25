@@ -25,6 +25,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/GetInfo.vue')
   },
   {
+    path: '/verify',
+    name: 'Подтверждение аккаунта',
+    meta: {layout: 'auth'},
+    component: () => import(/* webpackChunkName: "about" */ '../views/VerifyAccount.vue')
+  },
+  {
     path: '/',
     name: 'Клиенты',
     meta: {layout: 'main', auth: true},
@@ -37,10 +43,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Object.vue')
   },
   {
-    path: '/admin',
-    name: 'Панель администратора',
+    path: '/admin/clients',
+    name: 'Панель администратора, клиенты',
     meta: {layout: 'main', auth: true},
     component: () => import(/* webpackChunkName: "about" */ '../views/Admin.vue')
+  },
+  {
+    path: '/admin/team',
+    name: 'Панель администратора, команда',
+    meta: {layout: 'main', auth: true},
+    component: () => import(/* webpackChunkName: "about" */ '../views/AdminTeam.vue')
   },
   {
     path: '*',

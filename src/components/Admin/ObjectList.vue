@@ -1,11 +1,28 @@
 <template>
 	<div class="flex flex-col flex-grow">
+		<div class="flex items-center justify-between border-b bg-gray-200 p-4">
+			<span class="text-xl font-medium">Список объектов</span>
+			<span class="cursor-pointer" @click="$emit('closeDialog')">
+				<svg
+					class="w-6 h-6 mt-0.5 text-gray-700"
+					fill="currentColor"
+					viewBox="0 0 20 20"
+					xmlns="http://www.w3.org/2000/svg"
+					>
+					<path
+						fill-rule="evenodd"
+						d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+						clip-rule="evenodd"
+					></path>
+				</svg>
+			</span>
+		</div>
 		<div class="headerTable">
 			<div class="headerTable-item borderNone"></div>
 			<div class="headerTable-item textLeft">Адрес</div>
-			<div class="headerTable-item">Этаж</div>
+			<div class="headerTable-item">Кол-во комнат</div>
 			<div class="headerTable-item">Стоимость</div>
-			<div class="headerTable-item">Тип</div>
+			<div class="headerTable-item">URL</div>
 		</div>
 		<div class="flex-grow overflow-y-auto">
 			<div class="object bg-white border-b hover:bg-gray-100" v-for="obj in objects" :key="obj.id">
@@ -31,14 +48,14 @@
 						{{ obj.adress }}
 					</h2>
 				</div>
-				<div v-if="obj.floor && obj.numStoreys" class="flex items-center justify-center">
-					{{ obj.floor + '/' + obj.numStoreys }}
+				<div v-if="obj.room" class="flex items-center justify-center">
+					{{ obj.room }}
 				</div>
 				<div v-else class="flex items-center justify-center">-</div>
 				<div class="flex justify-center items-center">{{ obj.price | currency }}</div>
-				<div class="flex items-center justify-center">
-					<span class="py-1 px-2 text-sm text-gray-800 bg-yellow-500 rounded">{{ obj.type }}</span>
-				</div>
+				<a class="flex items-center justify-center" :href="obj.url" target="_blank">
+					<span class="py-1 px-2 text-sm text-blue-800 truncate underline" style="max-width: 300px;">{{obj.url}}</span>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -58,39 +75,39 @@ export default {
 
 <style scoped>
 .headerTable {
-	display: grid;
-	/* grid-template-columns: auto 0.5fr 0.6fr 1fr 1fr 1fr 1fr; */
-	grid-template-columns: 150px 500px 1fr 1fr 1fr;
-	background-color: #fff;
-	@apply border-b shadow items-center;
+  display: grid;
+  /* grid-template-columns: auto 0.5fr 0.6fr 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 150px 500px 1fr 1fr 1fr;
+  background-color: #fff;
+  @apply border-b shadow items-center;
 }
 
 .object {
-	display: grid;
-	/* grid-template-columns: auto 0.5fr 0.6fr 1fr 1fr 1fr 1fr; */
-	grid-template-columns: 150px 500px 1fr 1fr 1fr;
+  display: grid;
+  /* grid-template-columns: auto 0.5fr 0.6fr 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 150px 500px 1fr 1fr 1fr;
 }
 
 .headerTable-item {
-	@apply text-center py-3 border-r text-gray-400 uppercase font-semibold text-sm tracking-widest;
+  @apply text-center py-3 border-r text-gray-400 uppercase font-semibold text-sm tracking-widest;
 }
 
 .headerTable-item.borderNone {
-	@apply border-transparent !important;
+  @apply border-transparent !important;
 }
 
 .headerTable-item.textLeft {
-	@apply text-left !important;
+  @apply text-left !important;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
-input[type='number'] {
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	appearance: none;
+input[type="number"] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 </style>
