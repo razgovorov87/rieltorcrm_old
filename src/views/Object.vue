@@ -91,6 +91,7 @@
 				<div class="headerTable-item">URL</div>
 				<div class="headerTable-item flex justify-center">
 					<button
+						v-if="checkAdmin"
 						class="flex items-center bg-blue-600 text-white font-semibold focus:outline-none py-1 px-2 transition hover:bg-blue-500 focus:ring-2"
 						@click="objectDrawer = true"
 					>
@@ -133,7 +134,7 @@
 						<span class="py-1 px-2 text-sm text-blue-800 truncate underline" style="max-width: 300px;">{{obj.url}}</span>
 					</a>
 
-					<div class="flex justify-center items-center">
+					<div v-if="checkAdmin" class="flex justify-center items-center">
 						<div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +151,7 @@
 								/>
 							</svg>
 						</div>
-						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer">
+						<div v-if="checkAdmin" class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click="deleteObject(obj)">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -208,6 +209,7 @@ export default {
 		objectDrawer: false,
 		changeItem: {},
 		refreshDrawer: 0,
+		userInfo: false
 	}),
 
 	watch: {
@@ -218,6 +220,7 @@ export default {
 
 	mounted() {
 		this.getTableHeight;
+		this.fetchInfo()
 		this.fetchObjects();
 	},
 
@@ -250,20 +253,42 @@ export default {
 
 		filterObject() {
 			let resultArr = [];
-			resultArr = this.objects.filter((obj) => obj.adress.includes(this.search));
+			resultArr = this.objects.filter((obj) => obj.adress.toLowerCase().includes(this.search.toLowerCase()));
 			if (this.type !== 'Все типы') {
 				resultArr = this.objects.filter((obj) => obj.type === this.type);
 			}
+
 			if (this.priceFrom && !this.priceTo)
-				resultArr = this.objects.filter((obj) => obj.price >= this.priceFrom);
+				resultArr = this.objects.filter((obj) => +obj.price >= this.priceFrom);
 			else if (!this.priceFrom && this.priceTo)
-				resultArr = this.objects.filter((obj) => obj.price <= this.priceTo);
+				resultArr = this.objects.filter((obj) => +obj.price <= this.priceTo);
 			else if (this.priceFrom && this.priceTo)
 				resultArr = this.objects.filter(
-					(obj) => obj.price >= this.priceFrom && obj.price <= this.priceTo,
+					(obj) => +obj.price >= this.priceFrom && +obj.price <= this.priceTo,
 				);
 
 			return resultArr;
+		},
+		
+		async fetchInfo() {
+			this.userInfo = await this.$store.dispatch('fetchInfo');
+		},
+
+		async deleteObject(obj) {
+			try {
+				await this.$store.dispatch('deleteObj', obj)
+				this.fetchObjects()
+				this.$toasts.push({
+					type: 'success',
+					message: 'Объект успешно удален'
+				})
+			} catch (e) {throw e}
+		}
+	},
+
+	computed: {
+		checkAdmin() {
+			return this.userInfo.isAdmin;
 		},
 	},
 

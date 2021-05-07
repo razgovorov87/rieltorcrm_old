@@ -92,7 +92,7 @@
 							</div>
 						</div>
 
-						<div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer">
+						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click="deleteUser(agent)">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -180,6 +180,17 @@ export default {
 			})
 
 			return count
+		},
+
+		async deleteUser(agent) {
+			try {
+				await this.$store.dispatch('deleteUser', agent)
+				this.$emit('refreshList')
+				this.$toasts.push({
+					type: 'success',
+					message: 'Агент успешно удален'
+				})
+			} catch (e) {throw e}
 		}
 	},
 };

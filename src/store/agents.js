@@ -28,8 +28,13 @@ export default {
         async switchAgent({dispatch}, {clientId, newAgent}) {
             await firebase.database().ref(`/clients/${clientId}`).update({
                 agent: newAgent,
+                status: 'Не обработано',
                 notification: true
             })
+        },
+
+        async deleteUser({dispatch}, agent) {
+            await firebase.database().ref(`/users/${agent.id}`).remove()
         }
 
     },

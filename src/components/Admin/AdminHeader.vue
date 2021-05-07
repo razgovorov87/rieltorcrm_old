@@ -3,7 +3,7 @@
 		<div class="flex items-center py-4 px-8 h-full border-r flex-shrink-0">
 			<span class="uppercase font-bold">Клиенты</span>
 			<div class="text-gray-400 flex items-center ml-4 space-x-2">
-				<div class="cursor-pointer group" @click="changeTypeDisplay('column')">
+				<!-- <div class="cursor-pointer group" @click="changeTypeDisplay('column')">
 					<svg
 						class="w-6 transform rotate-90 group-hover:text-blue-500 transition"
 						:class="typeDisplay === 'column' ? 'text-blue-500' : ''"
@@ -19,7 +19,7 @@
 							d="M4 6h7M4 12h12M4 18h16"
 						/>
 					</svg>
-				</div>
+				</div> -->
 
 				<div class="cursor-pointer group" @click="changeTypeDisplay('table')">
 					<svg
@@ -43,13 +43,27 @@
 
 		<div class="flex flex-grow items-center px-4">
 			<div class="my-2 flex bg-white rounded">
-				<div class="flex flex-auto flex-wrap">
+				<div class="flex flex-auto">
 					<autocomplete
 						:search="search"
 						aria-placeholder="Поиск телефона"
 						placeholder="Поиск телефона"
+						class="w-96"
 						@submit="openClient"
-					></autocomplete>
+					>
+						<template #result="{ result, props }">
+							<li v-bind="props">
+								<div class="flex justify-between">
+									<span>{{result.phone}}</span>
+									<span v-if="result.status === 'Не обработано' " class="text-white py-1 px-3 rounded-full text-xs bg-gray-500">{{ result.status }}</span>
+									<span v-if="result.status === 'В работе' " class="text-white py-1 px-3 rounded-full text-xs bg-blue-500">{{ result.status }}</span>
+									<span v-if="result.status === 'Просмотр квартир' " class="text-white py-1 px-3 rounded-full text-xs bg-yellow-600">{{ result.status }}</span>
+									<span v-if="result.status === 'Прошла сделка' " class="text-white py-1 px-3 rounded-full text-xs bg-green-500">{{ result.status }}</span>
+									<span v-if="result.status === 'Отказались' " class="text-white py-1 px-3 rounded-full text-xs bg-red-500">{{ result.status }}</span>
+								</div>
+							</li>
+						</template>
+					</autocomplete>
 				</div>
 			</div>
 		</div>
@@ -109,11 +123,12 @@ export default {
 			const list = this.phones.filter((phone) => {
 				return phone.checkPhone.includes(input);
 			});
+
 			const res = [];
 			if (list.length !== 0) {
 				list.forEach((phone) => res.push(phone.phone));
 			}
-			return res;
+			return list;
 		},
 
 		openClient(result) {

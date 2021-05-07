@@ -46,7 +46,10 @@
 				</td>
 
 				<td class="w-2/12 py-3 px-6 text-left">
-					<div class="flex items-center">
+					<div v-if="refusedGroup" class="flex items-center">
+						<span class="mr-1">Причина отказа:</span> <span class="border-b border-gray-500">{{ lastCauses(client.causes) }}</span>
+					</div>
+					<div v-else class="flex items-center">
 						<span class="border-b border-gray-500">{{ takeAgentInfo(client.agent) }}</span>
 					</div>
 				</td>
@@ -122,7 +125,7 @@
 							</svg>
 						</div>
 
-						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer">
+						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click="removeClient(client)">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -146,14 +149,13 @@
 
 <script>
 export default {
-	props: ['category', 'items', 'agents'],
+	props: ['category', 'items', 'agents', 'refusedGroup'],
 	data: () => ({
 		isOpen: false,
 	}),
 
 	mounted() {
-		if (this.items.filter((item) => item.status === this.category.title).length < 10)
-			this.isOpen = true;
+		if (this.items.filter((item) => item.status === this.category.title).length < 10) this.isOpen = true;
 	},
 
 	methods: {
@@ -178,6 +180,23 @@ export default {
 		refuseCount(causes) {
 			if(!causes) return 0
 			return Object.keys(causes).length
+		},
+
+		async removeClient(client) {
+			try {
+				await this.$store.dispatch('deleteClient', client)
+				this.$parent.$parent.fetchClients()
+				this.$toasts.push({
+					type: 'success',
+					message: 'Клиент успешно удален'
+				})
+			} catch (e) {throw e}
+		},
+
+		lastCauses(causes) {
+			const idx = Object.keys(causes).length
+			const arr = Object.keys(causes).map(key => ({...causes[key], id: key}))
+			return arr[idx - 1].cause
 		}
 	},
 };

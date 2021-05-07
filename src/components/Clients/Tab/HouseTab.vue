@@ -3,11 +3,14 @@
     <div class="flex flex-col">
       <h3 class="font-medium text-gray-500">Интересующий объект</h3>
       <div v-if="interestingObj" class="flex flex-col my-2 px-4">
-        <div class="flex mt-2">
+        <div class="flex mt-2 items-center">
           <span class="font-medium text-gray-500 w-24">Адрес:</span>
-          <span class="border-b text-gray-500 border-b border-gray-500 ml-2">{{
-            interestingObj.adress
-          }}</span>
+          <span class="border-b text-gray-500 border-b border-gray-500 ml-2 cursor-pointer" @click="$emit('openObjectList')">{{ interestingObj.adress }}</span>
+          <span @click="$emit('openObjectList')">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 ml-2 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </span>
         </div>
 
         <div
@@ -30,6 +33,10 @@
           <span class="border-b text-gray-500 ml-2 border-b border-gray-500">{{
             interestingObj.price | currency
           }}</span>
+        </div>
+        <div class="flex mt-2">
+          <span class="font-medium text-gray-500 w-24">URL:</span>
+          <a :href="interestingObj.url" target="__blank" class="border-b text-gray-500 ml-2 border-b border-gray-500 truncate">{{ interestingObj.url}}</a>
         </div>
       </div>
       <div
@@ -75,8 +82,22 @@
         >Предложить объект</button>
         <button
           v-else
-          class="mr-4 border-2 rounded px-3 py-1 focus:outline-none text-gray-400 text-sm transition bg-gray-200 cursor-default"
+          class="mr-4 border-2 rounded px-3 py-1 focus:outline-none text-sm transition bg-gray-200 text-gray-400 cursor-default" 
+          @click="offerObject(obj)"
         >Предложено</button>
+        <!-- <button
+          v-else
+          class="mr-4 border-2 border-green-200 rounded px-3 py-1 focus:outline-none text-green-600 text-sm transition bg-green-200 hover:bg-green-300 hover:border-green-300"
+        >Записать на просмотр</button> -->
+        <a
+          href="https://map.dutyfreeflats.ru" target="__blank"
+          class="mr-4 rounded px-3 py-1 focus:outline-none text-sm transition hover:bg-gray-200 cursor-pointer rounded-full" 
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </a>
         <button class="focus:outline-none" @click="openLink(obj)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -245,6 +266,7 @@ export default {
       try {
         const log = await this.$store.dispatch('addOfferObjectLog', data)
         this.saveLinks()
+        window.open('https://office.dutyfreeflats.ru/Home/Index', '_blank')
         this.$parent.$refs.logsBlock.pushLog(log)
         this.$emit('openSave', false)
       } catch (e) {throw e}

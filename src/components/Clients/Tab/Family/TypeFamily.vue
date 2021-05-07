@@ -215,20 +215,33 @@
           :key="animal + idx"
           class="flex items-center"
         >
-          <input
-            v-model="animals[idx].type"
-            type="text"
-            class="w-full items-center px-4 py-2 flex-grow focus:outline-none border border-gray-100 rounded focus:ring-2 ring-dividerBg mb-2 mr-2"
-            placeholder="Кошка, собака, хомяк и т.д."
-            @input="$emit('openSave', true)"
-          />
-          <input
-            v-model="animals[idx].age"
-            type="number"
-            class="w-full items-center px-4 py-2 flex-grow focus:outline-none border border-gray-100 rounded focus:ring-2 ring-dividerBg mb-2"
-            placeholder="Возраст питомца"
-            @input="$emit('openSave', true)"
-          />
+          <div class="flex flex-col flex-grow">
+            <div class="flex">
+              <input
+                v-model="animals[idx].type"
+                type="text"
+                class="w-full items-center px-4 py-2 flex-grow focus:outline-none border border-gray-100 rounded focus:ring-2 ring-dividerBg mb-2 mr-2"
+                placeholder="Кошка, собака, хомяк и т.д."
+                @input="$emit('openSave', true)"
+              />
+              <input
+                v-model="animals[idx].age"
+                type="number"
+                class="w-full items-center px-4 py-2 flex-grow focus:outline-none border border-gray-100 rounded focus:ring-2 ring-dividerBg mb-2"
+                placeholder="Возраст питомца"
+                @input="$emit('openSave', true)"
+              />
+            </div>
+            <div>
+              <input
+                v-model="animals[idx].comment"
+                type="text"
+                class="w-full items-center px-4 py-2 flex-grow focus:outline-none border border-gray-100 rounded focus:ring-2 ring-dividerBg mb-2"
+                placeholder="Комментарий"
+                @input="$emit('openSave', true)"
+              />
+            </div> 
+          </div>
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -259,6 +272,7 @@
               animals.push({
                 type: '',
                 age: null,
+                comment: null
               });
             }
           "

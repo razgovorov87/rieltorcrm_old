@@ -32,5 +32,9 @@ export default {
 				.ref(`/clients/${client.id}/interestingObj/`)
 				.set(obj);
 		},
+
+		async deleteObj({dispatch}, obj) {
+			await firebase.database().ref(`/objects/${obj.id}`).remove()
+		}
 	},
 };

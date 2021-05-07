@@ -149,6 +149,10 @@
         <div v-show="selectableTab === 2">
           <Criterion ref="criterionTab" :client="client" @openSave="openSave" />
         </div>
+
+        <div v-show="selectableTab === 3">
+          <Refused ref="refusedTab" :client="client" />
+        </div>
       </div>
 
       <transition name="slideUp">
@@ -195,6 +199,7 @@
 import HouseTab from "@/components/Clients/Tab/HouseTab";
 import Family from "@/components/Clients/Tab/Family";
 import Criterion from "@/components/Clients/Tab/Criterion";
+import Refused from "@/components/Clients/Tab/Refused";
 import Info from "@/components/Clients/Info";
 import Logs from "@/components/Clients/Logs";
 import RefuseDialog from "@/components/Clients/RefuseDialog";
@@ -216,7 +221,8 @@ export default {
     tabs: [
       { id: 0, name: "Объекты" },
       { id: 1, name: "Состав проживающих" },
-      { id: 2, name: "Критерии поиска" }
+      { id: 2, name: "Критерии поиска" },
+      { id: 3, name: "Отказы" },
     ],
     saveBlock: false,
     objectListDialog: false,
@@ -247,14 +253,14 @@ export default {
       ).title;
       info.clientId = this.client.id;
       this.$refs.houseTab.saveLinks();
-      await this.$store.dispatch("saveClientInfo", info);
       if (this.categoriesId !== this.startId) {
         this.logCategory();
         this.startId = this.categoriesId;
       }
-      this.$refs.infoBlock.updateInfo(info);
       this.$refs.familyTab.saveInfo();
       this.$refs.criterionTab.saveCriterion();
+      const clientInfo = await this.$store.dispatch("saveClientInfo", info);
+      this.$refs.infoBlock.updateInfo(clientInfo);
       this.openSave(false);
       this.$toasts.push({
         type: "success",
@@ -349,6 +355,7 @@ export default {
     ObjectList,
     Family,
     Criterion,
+    Refused,
     RefuseDialog
   },
 };

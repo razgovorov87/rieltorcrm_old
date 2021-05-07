@@ -5,6 +5,7 @@
       :typeDisplay="typeDisplay"
       @addNewClient="addNewClientDrawer = true"
       @openClient="openClient"
+      :key="refreshHeader"
     />
     <Loading v-if="loading" />
     <NoData v-else-if="!clients || clients.length === 0" :screen="true" />
@@ -44,6 +45,10 @@
       <ItemDrawer
         v-if="itemsDrawer"
         :client="client"
+        @reloadList="() => {
+          fetchClients()
+          refreshHeader++
+        }"
         @closeDrawer="itemsDrawer = false"
       />
     </transition>
@@ -73,6 +78,7 @@ export default {
     refreshList2: 1,
     client: {},
     itemsDrawer: false,
+    refreshHeader: 3
   }),
 
   mounted() {

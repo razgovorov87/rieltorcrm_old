@@ -1,5 +1,5 @@
 <template>
-  <div v-if="info" class="py-4 px-6 flex flex-col">
+  <div v-if="info" class="py-4 px-6 flex flex-col h-full overflow-y-auto">
     <div class="flex justify-between">
       <h3 class="text-xl font-semibold items-center flex-grow">
         Информация о клиенте
@@ -28,8 +28,14 @@
               />
             </svg>
           </div>
-          <div class="w-2/3 flex-grow flex items-center pl-2">
+          <div class="w-2/3 flex-grow flex items-center justify-between pl-2 pr-4">
             {{ info.phone }}
+            <span v-if="info.missedCall" class="relative group">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v1c0 8.284 6.716 15 15 15h1a2 2 0 002-2v-3.28a1 1 0 00-.684-.948l-4.493-1.498a1 1 0 00-1.21.502l-1.13 2.257a11.042 11.042 0 01-5.516-5.517l2.257-1.128a1 1 0 00.502-1.21L9.228 3.683A1 1 0 008.279 3H5z" />
+              </svg>
+              <span class="absolute -top-12 -left-24 transform translate-x-1.5 text-white bg-darkDivider z-50 rounded py-1 px-2 opacity-0 transition duration-300 group-hover:opacity-100">Пропущенный</span>
+            </span>
           </div>
         </div>
       </div>
@@ -64,7 +70,7 @@
         </div>
       </div>
 
-      <div class="flex items-center">
+      <!-- <div class="flex items-center">
         <label class="font-medium text-gray-600 w-24">Компания</label>
         <div
           class="flex flex-grow bg-white rounded border-2 border-gray-300 group focus:ring-2 ring-blue-500"
@@ -92,7 +98,7 @@
             class="w-2/3 flex-grow flex items-center pl-2 focus:outline-none"
           />
         </div>
-      </div>
+      </div> -->
 
       <div class="flex items-center">
         <label class="font-medium w-24 text-gray-600">Бюджет</label>
@@ -126,7 +132,7 @@
           />
         </div>
       </div>
-
+<!-- 
       <div class="flex items-center">
         <label class="font-medium w-24 text-gray-600">Адрес</label>
         <div
@@ -155,6 +161,131 @@
             class="w-2/3 flex-grow flex items-center pl-2 focus:outline-none"
           />
         </div>
+      </div> -->
+
+      <div v-if="compositionType && composition" class="flex flex-col">
+        <div class="flex items-center">
+          <span class="font-medium text-gray-600">Состав проживающих:</span>
+          <span class="text-sm rounded-full font-medium py-1 px-3 bg-white shadow text-center ml-2">{{compositionType}}</span>
+        </div>
+        <div class="flex flex-col flex-grow">
+
+
+          <template v-if="compositionType === 'Семья'">
+            <div v-if="composition.man" class="flex flex-col border-b border-gray-300 py-2">
+
+              <span class="font-medium w-24 text-gray-600">Муж:</span>
+              <div class="flex flex-col pl-2">
+                <p v-if="composition.man.age" class="italic"><span class="border-b border-gray-400 border-dashed">Возраст:</span> {{composition.man.age}}</p>
+                <p v-if="composition.man.work" class="italic"><span class="border-b border-gray-400 border-dashed">Сфера деятельности:</span> {{composition.man.work}}</p>
+                <p v-if="composition.man.national" class="italic"><span class="border-b border-gray-400 border-dashed">Гражданство:</span> {{composition.man.national}}</p>
+                <p v-if="composition.man.register" class="italic"><span class="border-b border-gray-400 border-dashed">Прописка:</span> {{composition.man.register}}</p>
+              </div>
+
+            </div>
+
+            <div v-if="composition.woman" class="flex flex-col border-b border-gray-300 py-2">
+
+              <span class="font-medium w-24 text-gray-600">Жена:</span>
+              <div class="flex flex-col pl-2">
+                <p v-if="composition.woman.age" class="italic"><span class="border-b border-gray-400 border-dashed">Возраст:</span> {{composition.woman.age}}</p>
+                <p v-if="composition.woman.work" class="italic"><span class="border-b border-gray-400 border-dashed">Сфера деятельности:</span> {{composition.woman.work}}</p>
+                <p v-if="composition.woman.national" class="italic"><span class="border-b border-gray-400 border-dashed">Гражданство:</span> {{composition.woman.national}}</p>
+                <p v-if="composition.woman.register" class="italic"><span class="border-b border-gray-400 border-dashed">Прописка:</span> {{composition.woman.register}}</p>
+              </div>
+
+            </div>
+
+            <div class="flex flex-col border-b border-gray-300 py-2">
+
+              <span class="font-medium w-24 text-gray-600">Дети:</span>
+              <ul v-if="composition.kids" class="flex flex-col m-0 pl-6 list-decimal">
+                <li v-for="(kid, idx) in composition.kids" :key="kid + idx"  class="italic"><span class="border-b border-gray-400 border-dashed">Возраст:</span> {{kid.age}}</li>
+              </ul>
+
+            </div>
+
+            <div class="flex flex-col border-b border-gray-300 py-2">
+
+              <span class="font-medium w-24 text-gray-600">Питомцы:</span>
+              <ul v-if="composition.animals" class="flex flex-col m-0 pl-6 list-decimal">
+                <li v-for="(pet, idx) in composition.animals" :key="pet + idx"  class="italic">
+                  <span v-if="pet.type" class="italic">{{pet.type}}</span>
+                  <span v-if="pet.age" class="italic"> • {{pet.age + ' лет'}}</span>
+                  <span v-if="pet.comment" class="italic"> • {{pet.comment}}</span>
+                </li>
+              </ul>
+
+            </div>
+          </template>
+
+          <template v-if="compositionType === 'Парень с девушкой'">
+            <div v-if="composition.man" class="flex flex-col border-b border-gray-300 py-2">
+
+              <span class="font-medium w-24 text-gray-600">Муж:</span>
+              <div class="flex flex-col pl-2">
+                <p v-if="composition.man.age" class="italic"><span class="border-b border-gray-400 border-dashed">Возраст:</span> {{composition.man.age}}</p>
+                <p v-if="composition.man.work" class="italic"><span class="border-b border-gray-400 border-dashed">Сфера деятельности:</span> {{composition.man.work}}</p>
+                <p v-if="composition.man.national" class="italic"><span class="border-b border-gray-400 border-dashed">Гражданство:</span> {{composition.man.national}}</p>
+                <p v-if="composition.man.register" class="italic"><span class="border-b border-gray-400 border-dashed">Прописка:</span> {{composition.man.register}}</p>
+              </div>
+
+            </div>
+
+            <div v-if="composition.woman" class="flex flex-col border-b border-gray-300 py-2">
+
+              <span class="font-medium w-24 text-gray-600">Жена:</span>
+              <div class="flex flex-col pl-2">
+                <p v-if="composition.woman.age" class="italic"><span class="border-b border-gray-400 border-dashed">Возраст:</span> {{composition.woman.age}}</p>
+                <p v-if="composition.woman.work" class="italic"><span class="border-b border-gray-400 border-dashed">Сфера деятельности:</span> {{composition.woman.work}}</p>
+                <p v-if="composition.woman.national" class="italic"><span class="border-b border-gray-400 border-dashed">Гражданство:</span> {{composition.woman.national}}</p>
+                <p v-if="composition.woman.register" class="italic"><span class="border-b border-gray-400 border-dashed">Прописка:</span> {{composition.woman.register}}</p>
+              </div>
+
+            </div>
+
+            <div class="flex flex-col border-b border-gray-300 py-2">
+
+              <span class="font-medium w-24 text-gray-600">Питомцы:</span>
+              <ul v-if="composition.animals" class="flex flex-col m-0 pl-6 list-decimal">
+                <li v-for="(pet, idx) in composition.animals" :key="pet + idx"  class="italic">
+                  <span v-if="pet.type" class="italic">{{pet.type}}</span>
+                  <span v-if="pet.age" class="italic"> • {{pet.age + ' лет'}}</span>
+                  <span v-if="pet.comment" class="italic"> • {{pet.comment}}</span>
+                </li>
+              </ul>
+
+            </div>
+          </template>
+
+          <template v-if="compositionType === 'Один человек' || compositionType === 'Друзья' || compositionType === 'Другой состав' ">
+            <div v-for="(people, idx) in peoplesArr(compositionType)" :key="people + idx" class="flex flex-col border-b border-gray-300 py-2">
+
+              <span v-if="compositionType !== 'Один человек'" class="font-medium w-24 text-gray-600">{{idx + 1}}:</span>
+              <span v-else class="font-medium w-24 text-gray-600">Человек:</span>
+              <div class="flex flex-col pl-2">
+                <p v-if="people.gender" class="italic"><span class="border-b border-gray-400 border-dashed">Пол:</span> {{people.gender}}</p>
+                <p v-if="people.age" class="italic"><span class="border-b border-gray-400 border-dashed">Возраст:</span> {{people.age}}</p>
+                <p v-if="people.work" class="italic"><span class="border-b border-gray-400 border-dashed">Сфера деятельности:</span> {{people.work}}</p>
+                <p v-if="people.national" class="italic"><span class="border-b border-gray-400 border-dashed">Гражданство:</span> {{people.national}}</p>
+                <p v-if="people.register" class="italic"><span class="border-b border-gray-400 border-dashed">Прописка:</span> {{people.register}}</p>
+              </div>
+
+            </div>
+          </template>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flex flex-grow"></div>
+    <div v-if="info.comment">
+      <div class="flex flex-col">
+        <label class="font-medium text-gray-600">Комментарий менеджера</label>
+        <div class="flex bg-white rounded-lg border p-3 shadow">
+          {{info.comment}}
+        </div>
       </div>
     </div>
   </div>
@@ -166,9 +297,9 @@ export default {
   props: ["info"],
   data: () => ({
     fio: "",
-    company: "",
     budget: 0,
-    adress: "",
+    composition: null,
+    compositionType: null
   }),
 
   watch: {
@@ -178,11 +309,11 @@ export default {
       else this.$emit("openSave", false);
     },
 
-    company() {
-      if (this.company !== this.info.company && this.company !== "")
-        this.$emit("openSave", true);
-      else this.$emit("openSave", false);
-    },
+    // company() {
+    //   if (this.company !== this.info.company && this.company !== "")
+    //     this.$emit("openSave", true);
+    //   else this.$emit("openSave", false);
+    // },
 
     budget() {
       if (this.budget !== this.info.budget && this.budget !== "")
@@ -190,28 +321,32 @@ export default {
       else this.$emit("openSave", false);
     },
 
-    adress() {
-      if (this.adress !== this.info.adress && this.adress !== "")
-        this.$emit("openSave", true);
-      else this.$emit("openSave", false);
-    },
+    // adress() {
+    //   if (this.adress !== this.info.adress && this.adress !== "")
+    //     this.$emit("openSave", true);
+    //   else this.$emit("openSave", false);
+    // },
   },
 
   created() {
     if (Object.keys(this.info).length !== 0) {
       this.fio = this.info.fio ? this.info.fio : "";
-      this.company = this.info.company ? this.info.company : "";
+      // this.company = this.info.company ? this.info.company : "";
       this.budget = this.info.budget ? this.info.budget : 0;
-      this.adress = this.info.adress ? this.info.adress : "";
+      // this.adress = this.info.adress ? this.info.adress : "";
+      this.compositionType = this.info.compositionType ? this.info.compositionType : 0;
+      this.composition = this.info.composition ? this.info.composition : 0;
     }
   },
 
   methods: {
-    updateInfo({ fio, budget, company, city, adress }) {
-      this.fio = fio;
-      this.company = company;
-      this.budget = budget;
-      this.adress = adress;
+    updateInfo(info) {
+      this.fio = info.fio;
+      // this.company = company;
+      this.budget = info.budget;
+      // this.adress = adress;
+      this.composition = info.composition
+      this.compositionType = info.compositionType
     },
     fioVerify() {
       if (this.fio.length < 3) return false;
@@ -220,36 +355,26 @@ export default {
 
     cancel() {
       this.fio = this.info.fio;
-      this.company = this.info.company;
+      // this.company = this.info.company;
       this.budget = this.info.budget;
-      this.adress = this.info.adress;
+      // this.adress = this.info.adress;
       this.$emit("openSave", false);
     },
 
     getClientInfo() {
       return {
         fio: this.fio,
-        company: this.company,
+        // company: this.company,
         budget: this.budget,
-        adress: this.adress,
+        // adress: this.adress,
       };
     },
-  },
 
-  computed: {
-    openSave() {
-      const fio = this.info.fio;
-      if (
-        fio !== this.fio ||
-        this.info.company !== this.company ||
-        this.info.budget !== this.budget ||
-        this.info.adress !== this.adress
-      ) {
-        this.$emit("openSave", true);
-      } else {
-        this.$emit("openSave", false);
-      }
-    },
+    peoplesArr(type) {
+      if( type === 'Друзья' ) return this.composition.friends
+      if( type === 'Другой состав' ) return this.composition.peoples
+      else return this.composition
+    }
   },
 
   components: {

@@ -15,15 +15,17 @@
         </div>
 
         <div class="flex mt-6 items-center">
-            <span class="font-medium text-gray-500 w-36">Район города:</span>
+            <span class="font-medium text-gray-500 w-44">Причина переезда:</span>
             <input
-                v-model="area"
+                v-model="cause"
                 type="text"
                 class="items-center px-4 py-2 flex-grow focus:outline-none border border-gray-300 rounded focus:ring-2 ring-dividerBg"
                 placeholder=""
                 @input="$emit('openSave', true)"
             />
         </div>
+
+        
 
         <div class="flex mt-6 items-center">
             <span class="font-medium text-gray-500 w-72">До какого числа нужно переехать:</span>
@@ -37,32 +39,14 @@
         </div>
 
         <div class="flex mt-6 items-center">
-            <span class="font-medium text-gray-500 w-44">Причина переезда:</span>
+            <span class="font-medium text-gray-500 w-36">Район города:</span>
             <input
-                v-model="cause"
+                v-model="area"
                 type="text"
                 class="items-center px-4 py-2 flex-grow focus:outline-none border border-gray-300 rounded focus:ring-2 ring-dividerBg"
                 placeholder=""
                 @input="$emit('openSave', true)"
             />
-        </div>
-
-        <h3 class="font-medium text-gray-500 mt-10 mb-3">Критерии поиска</h3>
-        <div class="flex flex-wrap">
-            <label v-for="(item, idx) in criterions" :key="item.name" :for="'item' + idx" class="mr-4 inline-flex items-center cursor-pointer">
-                <span class="relative">
-                <span class="block w-10 h-6 bg-gray-300 rounded-full shadow-inner"></span>
-                <span 
-                class="absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out transform"
-                :class="[{
-                    'translate-x-full bg-dividerBg': item.checked,
-                    'bg-white': !item.checked,
-                }]">
-                    <input @change="item.checked = !item.checked" :id="'item' + idx" type="checkbox" class="absolute opacity-0 w-0 h-0" />
-                </span>
-                </span>
-                <span class="ml-3 text-sm select-none">{{item.title}}</span>
-            </label>
         </div>
 
         

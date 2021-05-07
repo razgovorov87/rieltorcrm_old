@@ -24,7 +24,7 @@
                 <h3 class="font-medium text-gray-500 mb-2">Текущий агент</h3>
                 <div class="flex-grow border rounded bg-gray-300 relative border-gray-400 mb-4">
                     <div class="flex justify-between items-center px-4 py-2">
-                        <span v-if="client.agent">{{ client.agent }}</span>
+                        <span v-if="client.agent">{{ takeAgentInfo(client.agent) }}</span>
                         <span v-else class="italic text-gray-500">Неизвестно</span>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     >
                         <div class="bg-white flex flex-col border rounded shadow border-gray-100 overflow-hidden">
                             <span
-                            v-for="(item, idx) in agents"
+                            v-for="(item, idx) in agents.filter(agent => agent.id !== client.agent)"
                             :key="item + idx"
                             class="border-b px-4 py-2 hover:bg-dividerBg hover:text-white select-none"
                             @click="
@@ -122,7 +122,14 @@ export default {
                 this.$parent.$parent.fetchClients()
                 this.$emit('close')
             } catch (e) {throw e}
-        }
+        },
+
+        takeAgentInfo(id) {
+			if (this.agents) {
+				const agent = this.agents.filter((agent) => agent.id === id);
+				if (agent[0]) return agent[0].surname + ' ' + agent[0].name;
+			}
+		},
     }
 }
 </script>

@@ -6,9 +6,9 @@
 
 
         <div class="flex mr-6">
-          <label class="flex justify-start items-start">
-            <div class="select-none">Пропущенный</div>
-            <div class="bg-white border-2 rounded border-gray-400 w-6 h-6 flex flex-shrink-0 justify-center items-center ml-2 focus-within:border-blue-500">
+          <label class="flex justify-start items-center bg-dividerBg text-white py-1.5 px-3 rounded">
+            <div class="select-none font-medium uppercase text-sm">Принятый</div>
+            <div class="bg-white border-2 rounded border-darkDivider w-6 h-6 flex flex-shrink-0 justify-center items-center ml-2">
               <input v-model="missedCall" type="checkbox" class="opacity-0 absolute">
               <svg class="fill-current hidden w-4 h-4 text-green-500 pointer-events-none" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
             </div>
@@ -85,27 +85,26 @@
                 </div>
 
                 <div class="flex items-center">
-                  <label class="flex-shrink-0 w-1/3 text-gray-500 font-medium"
-                    >Имя</label
+                  <label class="flex-shrink-0 w-1/3 text-gray-500 font-medium">ФИО</label
                   >
                   <input
-                    v-model="name"
+                    v-model="fio"
                     type="text"
                     class="flex-grow border-2 focus:outline-none py-1 px-3 rounded"
-                    placeholder="Иван"
+                    placeholder="Иван Иванов"
                   />
                 </div>
 
-                <div class="flex items-center">
-                  <label class="flex-shrink-0 w-1/3 text-gray-500 font-medium"
-                    >Фамилия</label
+                <div class="flex">
+                  <label class="flex-shrink-0 w-1/3 text-gray-500 font-medium">Комментарий</label
                   >
-                  <input
-                    v-model="surname"
-                    type="text"
-                    class="flex-grow border-2 focus:outline-none py-1 px-3 rounded"
-                    placeholder="Иванов"
-                  />
+                  <textarea 
+                    v-model="comment"
+                    rows="3" 
+                    class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:border-blue-300 flex" 
+                    @keydown.enter.exact.prevent
+                    @keydown.enter.shift.exact="newline">
+                </textarea>
                 </div>
 
                 <div class="flex items-center">
@@ -191,8 +190,8 @@ export default {
     formVerify: false,
     missedCall: false,
     phone: "",
-    name: "",
-    surname: "",
+    fio: "",
+    comment: "",
     interestingObj: null,
     objectListDialog: false,
   }),
@@ -208,14 +207,17 @@ export default {
   mounted() {},
 
   methods: {
+    newline() {
+        this.value = `${this.value}\n`;
+    },
     async addNewUser() {
       if (!this.formVerify) return;
       try {
         const formData = {
           phone: this.phone,
-          name: this.name,
-          surname: this.surname,
-          missedCall: this.missedCall,
+          fio: this.fio,
+          comment: this.comment,
+          missedCall: !this.missedCall,
           interestingObj: this.interestingObj,
         };
 
@@ -238,12 +240,8 @@ export default {
 
     clearInputs() {
       this.phone = "";
-      this.name = "";
-      this.surname = "";
-      this.city = "";
-      this.company = "";
-      this.adress = "";
-      this.budget = 0;
+      this.fio = "";
+      this.comment = "";
       this.interestingObj = null;
     },
   },

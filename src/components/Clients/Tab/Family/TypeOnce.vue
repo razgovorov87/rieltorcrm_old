@@ -87,7 +87,7 @@
         />
         <input
           v-model="humanNational"
-          type="number"
+          type="text"
           class="w-full items-center px-4 py-2 flex-grow focus:outline-none border border-gray-100 rounded focus:ring-2 ring-dividerBg mb-2"
           placeholder="Гражданство"
           @input="$emit('openSave', true)"

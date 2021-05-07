@@ -1,7 +1,10 @@
 <template>
-	<div class="flex flex-col flex-grow">
+	<div class="flex flex-col max-h-full">
 		<div class="flex items-center justify-between border-b bg-gray-200 p-4">
 			<span class="text-xl font-medium">Список объектов</span>
+			<div class="flex-grow ml-4">
+				<input v-model="search" type="text" class="px-3 py-1 rounded border-2 border-gray-300 w-1/3 focus:outline-none" placeholder="Поиск по адресу..." @input="filterObj"/>
+			</div>
 			<span class="cursor-pointer" @click="$emit('closeDialog')">
 				<svg
 					class="w-6 h-6 mt-0.5 text-gray-700"
@@ -25,7 +28,7 @@
 			<div class="headerTable-item">URL</div>
 		</div>
 		<div class="flex-grow overflow-y-auto">
-			<div class="object bg-white border-b hover:bg-gray-100" v-for="obj in objects" :key="obj.id">
+			<div class="object bg-white border-b hover:bg-gray-100" v-for="obj in filterObj()" :key="obj.id">
 				<div class="flex justify-center py-4">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -65,11 +68,24 @@
 export default {
 	data: () => ({
 		objects: [],
+		search: null
 	}),
 
 	async mounted() {
+		this.search = null
 		this.objects = await this.$store.dispatch('fetchObjects');
+		this.filterObj()
 	},
+
+	methods: {
+		filterObj() {
+			if( !this.search || this.search === '' || this.search.length < 3 ) return this.objects
+
+			const arr = this.objects.filter(obj => obj.adress.toLowerCase().includes(this.search.toLowerCase()))
+			return arr
+
+		}
+	}
 };
 </script>
 

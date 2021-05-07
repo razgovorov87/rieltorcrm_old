@@ -31,11 +31,12 @@
                         
                         <div v-if="log.logType === 'offerObject'" class="flex">
                             {{log.time + ' | ' + takeAgentInfo(log.agent) + '. Предложен объект:' }} 
-                            <a :href="log.link" class="mx-1 text-blue-500 underline truncate block" style="max-width: 150px;">{{log.link}}</a>
+                            <a :href="log.link" target="__blank" class="mx-1 text-blue-500 underline truncate block" style="max-width: 150px;">{{log.link}}</a>
                             (№: {{log.pdfNumber}})
                         </div>
 
                         <div v-if="log.logType === 'refuseClient'">
+                            <span>{{log.time + ' | '}}</span>
                             <span class="font-medium underline">{{takeAgentInfo(log.agent)}}</span> отказался от клиента
                         </div>
 

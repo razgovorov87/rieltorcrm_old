@@ -21,15 +21,15 @@ export default {
 	actions: {
 		async addNewClient(
 			{ dispatch, commit },
-			{ phone, name, surname, missedCall, interestingObj },
+			{ phone, fio, comment, missedCall, interestingObj },
 		) {
-			const fio = name && surname ? name + ' ' + surname : '';
 			await firebase
 				.database()
 				.ref(`/clients/`)
 				.push({
 					phone,
 					fio,
+					comment,
 					status: 'Не обработано',
 					interestingObj,
 					missedCall,
@@ -75,16 +75,16 @@ export default {
 			return result.filter((client) => client.agent === uid);
 		},
 
-		async saveClientInfo({ dispatch, commit }, { fio, company, budget, status, clientId }) {
+		async saveClientInfo({ dispatch, commit }, { fio, budget, status, clientId }) {
 			await firebase
 				.database()
 				.ref(`/clients/${clientId}`)
 				.update({
 					fio,
-					company,
 					status,
 					budget,
 				});
+			return (await firebase.database().ref(`/clients/${clientId}`).once('value')).val()
 		},
 
 		async saveClientLinks({ dispatch }, { clientId, arr }) {
@@ -112,26 +112,31 @@ export default {
 				.update({
 					agent: uid
 				});
-			await dispatch('fetchClients');
 			const itemId = item.id;
 			await dispatch('addCatchLog', { itemId, uid });
 			item = (
 				await firebase
 					.database()
-					.ref(`/clients/${item.id}`)
+					.ref(`/clients/${itemId}`)
 					.once('value')
 			).val();
+			await firebase.database().ref(`/clients/${itemId}`).update({
+				status: 'Не обработано'
+			})
 			return { ...item, id: itemId };
 		},
 
 		async refuseClient({dispatch}, {cause, otherCause, comment, clientId}) {
+			const uid = await dispatch('getUid');
 			await firebase.database().ref(`/clients/${clientId}`).update({
 				agent: '',
-				status: 'Не обработано',
+				status: 'Отказались',
 				lastCause: new Date().toISOString().slice(0, -14)
 			})
 			await firebase.database().ref(`/clients/${clientId}/causes`).push({
 				cause,
+				agent: uid,
+				date: new Date().toISOString(),
 				otherCause,
 				comment
 			})
@@ -145,6 +150,11 @@ export default {
 					notification: null
 				})
 			});
+		},
+
+		async deleteClient({dispatch}, client) {
+			console.log(client)
+			await firebase.database().ref(`/clients/${client.id}`).remove()
 		}
 	},
 

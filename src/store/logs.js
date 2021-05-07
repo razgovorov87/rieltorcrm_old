@@ -93,7 +93,8 @@ export default {
 
             const log = {
                 logType: 'refuseClient',
-                agent: uid
+                agent: uid,
+                time
             }
 
             await firebase.database().ref(`/clients/${clientId}/logs/${dateId}/${logId}`).update(log)

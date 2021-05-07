@@ -79,7 +79,7 @@ export default {
 
     async checkNewClients() {
       const uid = await this.$store.dispatch('getUid')
-      const matched = this.clients.filter(client => client.agent === uid && client.notification)
+      const matched = this.clients.filter(client => client.agent === uid && client.notification === true)
       if(matched.length !== 0) {
         this.newClients = matched
         this.newClientDialog = true

@@ -129,6 +129,10 @@ export default {
                 this.$toasts.push({type:'error', message: 'Пользователь с таким логином уже существует'})
                 this.btnLoading = false
                 return
+            } else if (this.login.includes('@')) {
+                this.$toasts.push({type:'error', message: 'Неверный формат логина'})
+                this.btnLoading = false
+                return
             }
 
             this.$router.push({

@@ -22,6 +22,18 @@
 					:category="category"
 					:items="clients"
 					:agents="agents"
+					:refusedGroup="false"
+					@openClient="(client) => {
+						$emit('openClient', client);
+					}"
+					@switchAgent="openSwitchAgent"
+				/>
+
+				<TableGroup
+					:category="refusedCategory"
+					:items="refused"
+					:agents="agents"
+					:refusedGroup="true"
 					@openClient="(client) => {
 						$emit('openClient', client);
 					}"
@@ -42,11 +54,14 @@ export default {
 	data: () => ({
 		agents: [],
 		switchDialog: false,
-		switchClient: {}
+		switchClient: {},
+		refused: [],
+		refusedCategory: { id: 4, title: 'Отказались', color: 'red-500'}
 	}),
 
 	mounted() {
 		this.agentsInfo();
+		this.refused = this.clients.filter(client => client.status === 'Отказались')
 	},
 
 	methods: {
