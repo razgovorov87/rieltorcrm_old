@@ -140,6 +140,7 @@
           v-show="selectableTab === 0"
           :client="client"
           @openSave="openSave"
+          @openReserveDialog="openReserveDialog"
           @openObjectList="objectListDialog = true"
         />
         <div v-show="selectableTab === 1">
@@ -192,6 +193,7 @@
     </div>
 
     <RefuseDialog v-if="refuseDialog" :client="client"  @close="refuseDialog = false"/>
+    <ReserveDialog v-if="reserveDialog" :obj="reserveObj" @reserveObj="reserveObjDB" @close="reserveDialog = false" />
   </div>
 </template>
 
@@ -203,6 +205,7 @@ import Refused from "@/components/Clients/Tab/Refused";
 import Info from "@/components/Clients/Info";
 import Logs from "@/components/Clients/Logs";
 import RefuseDialog from "@/components/Clients/RefuseDialog";
+import ReserveDialog from "@/components/Clients/ReserveDialog";
 import ObjectList from "@/components/Admin/ObjectList";
 export default {
   props: ["client"],
@@ -227,7 +230,9 @@ export default {
     saveBlock: false,
     objectListDialog: false,
     interestingObj: null,
-    refuseDialog: false
+    refuseDialog: false,
+    reserveDialog: false,
+    reserveObj: null
   }),
 
   mounted() {
@@ -238,6 +243,24 @@ export default {
   },
 
   methods: {
+    openReserveDialog(obj) {
+      this.reserveObj = obj
+      this.reserveDialog = true
+    },
+
+    async reserveObjDB(data) {
+        try {
+          const clientId = this.client.id
+          await this.$store.dispatch('reserveObj', {data, clientId})
+          this.reserveDialog = false
+          this.$toasts.push({
+            type: 'success',
+            message: 'Просмотр успешно сохранен'
+          })
+          this.$refs.infoBlock.updateReserve()
+        } catch (e) {throw e}
+    },
+
     async saveEdit() {
       const fioVerify = this.$refs.infoBlock.fioVerify();
       if (!fioVerify) {
@@ -356,6 +379,7 @@ export default {
     Family,
     Criterion,
     Refused,
+    ReserveDialog,
     RefuseDialog
   },
 };

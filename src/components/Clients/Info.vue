@@ -277,6 +277,41 @@
         </div>
       </div>
 
+      <div v-if="reserveArr" class="flex flex-col mt-4">
+        <div class="flex items-center">
+          <span class="font-medium text-gray-600 mb-2">Просмотры квартир:</span>
+        </div>
+        <div class="flex flex-col flex-grow rounded overflow-hidden border-2 border-gray-300">
+          <div v-for="(item, idx) in sortedReserve" :key="item + idx" class="w-full bg-white px-3 py-2 border-b flex items-center justify-between">
+
+            <div class="flex items-center flex-grow">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+
+              <span class="ml-1 border-b border-dashed border-gray-400 text-sm">{{item.date | date('fullmonthDay') }} в {{ item.time }}</span>
+            </div>
+
+            <div class="flex items-center mr-2 pr-2 border-r border-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+
+              <span class="ml-1 text-sm">{{ takeAgentInfo(item.agent) }}</span>
+            </div>
+
+            <div class="flex items-center">
+              <a :href="item.obj.link" target="__blank">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="flex flex-grow"></div>
@@ -299,7 +334,9 @@ export default {
     fio: "",
     budget: 0,
     composition: null,
-    compositionType: null
+    compositionType: null,
+    reserveArr: null,
+    agents: null
   }),
 
   watch: {
@@ -337,9 +374,19 @@ export default {
       this.compositionType = this.info.compositionType ? this.info.compositionType : 0;
       this.composition = this.info.composition ? this.info.composition : 0;
     }
+
+  },
+
+  async mounted() {
+    this.updateReserve()
+    this.agents = await this.$store.dispatch('fetchAgents')
   },
 
   methods: {
+    async updateReserve() {
+        this.reserveArr = await this.$store.dispatch('fetchClientReserves', this.info.id)
+    },
+
     updateInfo(info) {
       this.fio = info.fio;
       // this.company = company;
@@ -348,6 +395,7 @@ export default {
       this.composition = info.composition
       this.compositionType = info.compositionType
     },
+
     fioVerify() {
       if (this.fio.length < 3) return false;
       else return true;
@@ -374,6 +422,28 @@ export default {
       if( type === 'Друзья' ) return this.composition.friends
       if( type === 'Другой состав' ) return this.composition.peoples
       else return this.composition
+    },
+
+    takeAgentInfo(id) {
+			if (this.agents) {
+				const agent = this.agents.filter((agent) => agent.id === id);
+				if (agent[0]) return agent[0].surname + ' ' + agent[0].name;
+			}
+		},
+
+  },
+
+  computed: {
+    sortedReserve() {
+      if(!this.reserveArr) return []
+      const result = this.reserveArr.sort( function(a, b) {
+        const dateA = new Date(a.date)
+        const dateB = new Date(b.date)
+
+        return dateA - dateB
+      })
+
+      return result
     }
   },
 

@@ -82,13 +82,9 @@
         >Предложить объект</button>
         <button
           v-else
-          class="mr-4 border-2 rounded px-3 py-1 focus:outline-none text-sm transition bg-gray-200 text-gray-400 cursor-default" 
-          @click="offerObject(obj)"
-        >Предложено</button>
-        <!-- <button
-          v-else
           class="mr-4 border-2 border-green-200 rounded px-3 py-1 focus:outline-none text-green-600 text-sm transition bg-green-200 hover:bg-green-300 hover:border-green-300"
-        >Записать на просмотр</button> -->
+          @click="$emit('openReserveDialog', obj)"
+        >Записать на просмотр</button>
         <a
           href="https://map.dutyfreeflats.ru" target="__blank"
           class="mr-4 rounded px-3 py-1 focus:outline-none text-sm transition hover:bg-gray-200 cursor-pointer rounded-full" 
@@ -272,6 +268,8 @@ export default {
       } catch (e) {throw e}
 
     },
+
+
   },
 
 
