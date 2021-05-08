@@ -50,6 +50,7 @@
 						placeholder="Поиск телефона"
 						class="w-96"
 						@submit="openClient"
+						:get-result-value="getResultValue"
 					>
 						<template #result="{ result, props }">
 							<li v-bind="props">
@@ -117,6 +118,11 @@ export default {
 				client.checkPhone = result;
 			});
 		},
+
+		getResultValue(result) {
+			return result.phone
+		},
+
 		search(input) {
 			if (input.length < 1) return [];
 
@@ -132,7 +138,7 @@ export default {
 		},
 
 		openClient(result) {
-			const item = this.phones.find((phone) => phone.phone === result);
+			const item = this.phones.find((phone) => phone.phone === result.phone);
 			this.$emit('openClient', item);
 		},
 

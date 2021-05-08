@@ -34,7 +34,7 @@
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
                     </svg>
-                    <input v-model="$v.password.$model" :type="showPassword ? 'text' : 'password' " placeholder="Пароль" class="w-full focus:outline-none text-sm" @focus.exact="coloredBorderPassword = true" @blur="coloredBorderPassword = false">
+                    <input v-model="$v.password.$model" :type="showPassword ? 'text' : 'password' " placeholder="Пароль" class="w-full focus:outline-none text-sm" @focus.exact="coloredBorderPassword = true" @blur="coloredBorderPassword = false" @keydown.enter="auth">
                 </div>
                 <span v-if="!$v.password.required && $v.password.$dirty" class="text-xs text-red-600 italic">Введите пароль</span>
                 <span v-else-if="!$v.password.minLength && $v.password.$dirty" class="text-xs text-red-600 italic">Минимальное кол-во символов: {{$v.password.$params.minLength.min}}</span>
@@ -59,7 +59,7 @@
 
             <div class="text-center flex my-3">
                 <transition name="opacity" mode="out-in">
-                        <div v-if="!btnLoading" class="bg-dividerBg w-full py-2 rounded-lg font-semibold text-white cursor-pointer select-none text-center flex justify-center" @click="auth" @keydown.enter="auth">Авторизация</div>
+                        <div v-if="!btnLoading" class="bg-dividerBg w-full py-2 rounded-lg font-semibold text-white cursor-pointer select-none text-center flex justify-center" @click="auth">Авторизация</div>
 
                         <div v-else class="bg-dividerBg w-full py-2 rounded-lg font-semibold text-white cursor-pointer select-none text-center flex justify-center">
                             <svg class="w-6 animate-spin mr-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
