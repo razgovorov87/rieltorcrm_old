@@ -55,6 +55,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AdminTeam.vue')
   },
   {
+    path: '/reverses',
+    name: 'Просмотры',
+    meta: {layout: 'main', auth: true},
+    component: () => import(/* webpackChunkName: "about" */ '../views/Reverses.vue')
+  },
+  {
     path: '*',
     redirect: '/login'
   }

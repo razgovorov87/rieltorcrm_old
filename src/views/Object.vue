@@ -1,5 +1,5 @@
 <template>
-	<div v-else class="flex flex-col h-full">
+	<div class="flex flex-col h-full">
 		<div id="objectWrapper" ref="objectWrapper" class="pt-10 py-4 relative">
 			<div class="absolute inset-0 bg-white z-10 opacity-70"></div>
 			<div class="mx-auto container z-50 relative">

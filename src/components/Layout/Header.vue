@@ -16,11 +16,9 @@
 <script>
 export default {
 	data: () => ({
-		uid: null,
 	}),
 
-	async mounted() {
-		this.uid = this.$store.dispatch('getUid');
+	mounted() {
 	},
 
 	computed: {

@@ -16,7 +16,7 @@ export default {
 
 		async reserveObj({dispatch}, {data, clientId}) {
 			const uid = await dispatch('getUid')
-			await firebase.database().ref(`/reserves/${data.date}`).push({
+			await firebase.database().ref(`/reserves/`).push({
 				...data,
 				clientId,
 				createdAt: new Date().toString(),
@@ -30,6 +30,13 @@ export default {
 			if (!response) return false;
 			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
 			return result;
+		},
+
+		async fetchReserves({dispatch}){
+			const response = (await firebase.database().ref(`/reserves`).once('value')).val()
+			if (!response) return false;
+			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
+			return response;
 		},
 
 		async addNewObject({ dispatch, commit }, object) {

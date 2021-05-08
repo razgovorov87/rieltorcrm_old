@@ -37,7 +37,10 @@
       <ClientDrawer
         v-show="addNewClientDrawer"
         @closeDrawer="addNewClientDrawer = false"
-        @addNewClient="fetchClients"
+        @addNewClient="() => {
+          fetchClients()
+          refreshHeader++
+        }"
       />
     </transition>
 
