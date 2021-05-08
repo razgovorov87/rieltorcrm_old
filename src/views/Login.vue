@@ -59,7 +59,7 @@
 
             <div class="text-center flex my-3">
                 <transition name="opacity" mode="out-in">
-                        <div v-if="!btnLoading" class="bg-dividerBg w-full py-2 rounded-lg font-semibold text-white cursor-pointer select-none text-center flex justify-center" @click="auth">Авторизация</div>
+                        <div v-if="!btnLoading" class="bg-dividerBg w-full py-2 rounded-lg font-semibold text-white cursor-pointer select-none text-center flex justify-center" @click="auth" @keydown.enter="auth">Авторизация</div>
 
                         <div v-else class="bg-dividerBg w-full py-2 rounded-lg font-semibold text-white cursor-pointer select-none text-center flex justify-center">
                             <svg class="w-6 animate-spin mr-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
