@@ -6,7 +6,7 @@
 				:key="agent.id"
 				class="border-b border-gray-200 hover:bg-gray-100 flex items-center"
 			>
-				<td class="w-3/12 py-3 px-6 text-left whitespace-nowrap">
+				<td class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
 					<div class="flex items-center">
 						<span class="font-medium">{{ agent.surname + ' ' + agent.name + ' ' + agent.secondName }}</span>
 					</div>
@@ -52,7 +52,19 @@
 					</div>
 				</td>
 
-				<td class="w-2/12 py-3 px-6 text-center">
+				<td class="w-2/12 py-3 px-6 text-center whitespace-nowrap">
+					<div class="flex flex-col items-center justify-center">
+						<div>
+							<span class="border-b border-gray-400 select-none">Логин:</span> {{agent.login}}
+						</div>
+						<div>
+							<span class="border-b border-gray-400 select-none">Пароль:</span> {{agent.password}}
+
+						</div>
+					</div>
+				</td>
+
+				<td class="w-1/12 py-3 px-6 text-center">
 					<div class="flex items-center justify-center">
 
 						<!-- <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer" @click="$emit('openClient', client)">
@@ -84,15 +96,12 @@
 							>
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
 							</svg>
-							<div v-if="!agent.verify" class="absolute bottom-1/2 transform translate-y-1/2 right-14 w-36 text-white bg-darkDivider z-50 rounded py-1 px-2 opacity-0 transition duration-300 group-hover:opacity-100">
+							<div v-if="!agent.verify" class="absolute bottom-1/2 transform translate-y-1/2 right-0 w-36 text-white bg-darkDivider z-50 rounded py-1 px-2 opacity-0 transition duration-300 group-hover:opacity-100">
 								Подтвердить аккаунт
-							</div>
-							<div v-else class="absolute bottom-1/2 transform translate-y-1/2 right-14 w-36 text-white bg-darkDivider z-50 rounded py-1 px-2 opacity-0 transition duration-300 group-hover:opacity-100">
-								Подтвержден
 							</div>
 						</div>
 
-						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click="deleteUser(agent)">
+						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click="$emit('deleteUser', agent)">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -181,17 +190,6 @@ export default {
 
 			return count
 		},
-
-		async deleteUser(agent) {
-			try {
-				await this.$store.dispatch('deleteUser', agent)
-				this.$emit('refreshList')
-				this.$toasts.push({
-					type: 'success',
-					message: 'Агент успешно удален'
-				})
-			} catch (e) {throw e}
-		}
 	},
 };
 </script>

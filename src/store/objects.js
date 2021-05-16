@@ -39,6 +39,14 @@ export default {
 			return response;
 		},
 
+		async pushResult({dispatch}, {reverse, result}) {
+			await firebase.database().ref(`reserves/${reverse.id}`).update({
+				resultAt: new Date().toISOString(),
+				result,
+			}) 
+
+		},
+
 		async addNewObject({ dispatch, commit }, object) {
 			const uid = await dispatch('getUid');
 			await firebase

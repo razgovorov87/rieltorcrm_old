@@ -120,7 +120,7 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-nowrap space-x-3">
+        <horizontal-scroll class="flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-3 select-none">
           <span
             v-for="(tab, idx) in tabs"
             :key="tab.id"
@@ -131,7 +131,7 @@
             @click="selectableTab = idx"
             >{{ tab.name }}</span
           >
-        </div>
+        </horizontal-scroll>
       </div>
 
       <div class="flex-grow overflow-y-auto">
@@ -143,15 +143,20 @@
           @openReserveDialog="openReserveDialog"
           @openObjectList="objectListDialog = true"
         />
+
         <div v-show="selectableTab === 1">
+          <ProposedObj ref="proposedTab" :client="client" @openSave="openSave" />
+        </div>
+
+        <div v-show="selectableTab === 2">
           <Family ref="familyTab" :client="client" @openSave="openSave" />
         </div>
         
-        <div v-show="selectableTab === 2">
+        <div v-show="selectableTab === 3">
           <Criterion ref="criterionTab" :client="client" @openSave="openSave" />
         </div>
 
-        <div v-show="selectableTab === 3">
+        <div v-show="selectableTab === 4">
           <Refused ref="refusedTab" :client="client" />
         </div>
       </div>
@@ -199,6 +204,7 @@
 
 <script>
 import HouseTab from "@/components/Clients/Tab/HouseTab";
+import ProposedObj from "@/components/Clients/Tab/ProposedObj";
 import Family from "@/components/Clients/Tab/Family";
 import Criterion from "@/components/Clients/Tab/Criterion";
 import Refused from "@/components/Clients/Tab/Refused";
@@ -207,6 +213,7 @@ import Logs from "@/components/Clients/Logs";
 import RefuseDialog from "@/components/Clients/RefuseDialog";
 import ReserveDialog from "@/components/Clients/ReserveDialog";
 import ObjectList from "@/components/Admin/ObjectList";
+import HorizontalScroll from 'vue-horizontal-scroll'
 export default {
   props: ["client"],
   data: () => ({
@@ -222,10 +229,11 @@ export default {
     ],
     selectableTab: 0,
     tabs: [
-      { id: 0, name: "Объекты" },
-      { id: 1, name: "Состав проживающих" },
-      { id: 2, name: "Критерии поиска" },
-      { id: 3, name: "Отказы" },
+      { id: 0, name: "Интересующий объект" },
+      { id: 1, name: "Предложенные объекты" },
+      { id: 2, name: "Состав проживающих" },
+      { id: 3, name: "Критерии поиска" },
+      { id: 4, name: "Отказы" },
     ],
     saveBlock: false,
     objectListDialog: false,
@@ -275,7 +283,8 @@ export default {
         (category) => category.id === this.categoriesId
       ).title;
       info.clientId = this.client.id;
-      this.$refs.houseTab.saveLinks();
+      this.$refs.proposedTab.saveLinks();
+      this.$refs.houseTab.saveExceptions();
       if (this.categoriesId !== this.startId) {
         this.logCategory();
         this.startId = this.categoriesId;
@@ -373,6 +382,7 @@ export default {
 
   components: {
     HouseTab,
+    ProposedObj,
     Info,
     Logs,
     ObjectList,
@@ -380,7 +390,8 @@ export default {
     Criterion,
     Refused,
     ReserveDialog,
-    RefuseDialog
+    RefuseDialog,
+    HorizontalScroll
   },
 };
 </script>

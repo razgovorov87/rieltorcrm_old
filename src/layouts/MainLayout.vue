@@ -40,13 +40,14 @@ body {
   height: 100vh !important;
 }
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 1px;
+  height: 0;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 1px;
+  border-radius: 1px;
 }
 
 /* Handle */

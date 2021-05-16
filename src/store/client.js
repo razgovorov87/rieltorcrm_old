@@ -1,5 +1,4 @@
 import firebase from 'firebase/app';
-import Vue from 'vue';
 
 export default {
 	state: {
@@ -23,6 +22,13 @@ export default {
 			{ dispatch, commit },
 			{ phone, fio, comment, missedCall, interestingObj },
 		) {
+			const clients = (await firebase.database().ref('/clients').once('value')).val();
+
+			if(clients) {
+				const checkPhone = Object.keys(clients).find(key => clients[key].phone === phone)
+				if(checkPhone) return 'dublicatePhone'
+			}
+
 			await firebase
 				.database()
 				.ref(`/clients/`)
@@ -94,6 +100,12 @@ export default {
 				.set(arr);
 		},
 
+		async saveExceptions({dispatch}, {clientId, exceptions}) {
+			await firebase.database().ref(`/clients/${clientId}`).update({
+				exceptions
+			})
+		},
+
 		async catchNewClient({ dispatch, commit }) {
 			const uid = await dispatch('getUid');
 			let arr = (
@@ -152,8 +164,15 @@ export default {
 			});
 		},
 
+		async returnClientToStart({dispatch}, client) {
+			await firebase.database().ref(`/clients/${client.id}/`).update({
+				status: 'Не обработано'
+			})
+		},
+
 		async deleteClient({dispatch}, client) {
-			console.log(client)
+			const response = (await firebase.database().ref(`/clients/${client.id}`).once('value')).val()
+			await firebase.database().ref(`/archive/clients/`).update(response)
 			await firebase.database().ref(`/clients/${client.id}`).remove()
 		}
 	},

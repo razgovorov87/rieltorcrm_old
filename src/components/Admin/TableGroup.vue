@@ -37,7 +37,8 @@
 			<tr
 				v-for="client in items.filter((item) => item.status === category.title)"
 				:key="client.id"
-				class="border-b border-gray-200 hover:bg-gray-100 flex items-center"
+				class="border-b border-gray-200 hover:bg-gray-100 flex items-center cursor-pointer"
+				@click="$emit('openClient', client)"
 			>
 				<td class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
 					<div class="flex items-center">
@@ -47,7 +48,7 @@
 
 				<td class="w-2/12 py-3 px-6 text-left">
 					<div v-if="refusedGroup" class="flex items-center">
-						<span class="mr-1">Причина отказа:</span> <span class="border-b border-gray-500">{{ lastCauses(client.causes) }}</span>
+						<span class="mr-1 whitespace-nowrap">Причина отказа:</span> <span class="border-b border-gray-500 truncate">{{ lastCauses(client.causes) }}</span>
 					</div>
 					<div v-else class="flex items-center">
 						<span class="border-b border-gray-500">{{ takeAgentInfo(client.agent) }}</span>
@@ -98,6 +99,16 @@
 					<div class="flex items-center justify-center">
 
 						<div
+							v-if="refusedGroup"
+							class="w-5 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer"
+							@click="returnClientToStart(client)"
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z" />
+							</svg>
+						</div>
+
+						<div
 							class="w-5 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer"
 							@click="$emit('switchAgent', client)"
 						>
@@ -106,7 +117,7 @@
 							</svg>
 						</div>
 
-						<div
+						<!-- <div
 							class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer"
 							@click="$emit('openClient', client)"
 						>
@@ -123,7 +134,7 @@
 									d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
 								/>
 							</svg>
-						</div>
+						</div> -->
 
 						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click="removeClient(client)">
 							<svg
@@ -164,6 +175,17 @@ export default {
 				const agent = this.agents.filter((agent) => agent.id === id);
 				if (agent[0]) return agent[0].surname + ' ' + agent[0].name;
 			}
+		},
+
+		async returnClientToStart(client) {
+			try {
+				await this.$store.dispatch('returnClientToStart', client)
+				this.$parent.$parent.fetchClients()
+				this.$toasts.push({
+					type: 'success',
+					message: 'Клиент успешно перенесен в группу "Не обработано"'
+				})
+			} catch (e) {throw e}
 		},
 
 		offerCount(objects) {

@@ -1,19 +1,6 @@
 <template>
     <div class="px-8 py-4 flex flex-col">
 
-        <div>
-            <h3 class="font-medium text-gray-500">Как вы отвели клиента от интересующей квартиры?</h3>
-            <textarea 
-                v-model="exceptions"
-                rows="4" 
-                class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:ring-2 ring-dividerBg flex mt-2" 
-                placeholder="Какие Вы привели аргументы, чтобы клиент отказался от интересующей квартиры"
-                @keydown.enter.exact.prevent
-                @input="$emit('openSave', true)"
-                @keydown.enter.shift.exact="newline">
-            </textarea>
-        </div>
-
         <div class="flex mt-6 items-center">
             <span class="font-medium text-gray-500 w-44">Причина переезда:</span>
             <input
@@ -90,7 +77,6 @@
 export default {
     props: ['client'],
     data: () => ({
-        exceptions: null,
         criterions: [
             {title: 'Проживание с детьми', checked: false},
             {title: 'Метро', checked: false},
@@ -115,7 +101,6 @@ export default {
 
             const criterionRef = this.client.criterion
 
-            this.exceptions = criterionRef.exceptions
             this.criterions = criterionRef.criterion
             this.adressWork = criterionRef.adressWork
             this.timeToWork = criterionRef.timeToWork
@@ -129,7 +114,6 @@ export default {
         async saveCriterion() {
             try {
                 const data = {
-                    exceptions: this.exceptions ? this.exceptions : null,
                     criterion: this.criterions ? this.criterions : null,
                     adressWork: this.adressWork ? this.adressWork : null,
                     timeToWork: this.timeToWork ? this.timeToWork : null,

@@ -44,6 +44,7 @@
 		<div class="flex flex-grow items-center px-4">
 			<div class="my-2 flex bg-white rounded">
 				<div class="flex flex-auto">
+
 					<autocomplete
 						:search="search"
 						aria-placeholder="Поиск телефона"

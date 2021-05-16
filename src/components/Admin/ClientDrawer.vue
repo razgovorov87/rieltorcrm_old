@@ -221,7 +221,15 @@ export default {
           interestingObj: this.interestingObj,
         };
 
-        await this.$store.dispatch("addNewClient", formData);
+        const response = await this.$store.dispatch("addNewClient", formData);
+
+        if(response === 'dublicatePhone') {
+            this.$toasts.push({
+              type: "error",
+              message: "Клиент с таким номером телефона уже существует",
+            });
+            return
+        }
 
         this.$toasts.push({
           type: "success",
