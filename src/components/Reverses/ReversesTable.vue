@@ -243,7 +243,7 @@ export default {
 				+ (date.getUTCDate() < 10 ? '0' + date.getUTCDate() : date.getUTCDate())
 
 
-			const result = arr.filter(item => item.date > today)
+			const result = arr.filter(item => item.date >= today)
 
 
 			return result

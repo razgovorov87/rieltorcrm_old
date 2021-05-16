@@ -152,8 +152,8 @@ export default {
         async offerObject(obj) {
             if ( (!obj.link.includes("http://") || !obj.link.includes("https://") ) && (!obj.link.includes("http://") && !obj.link.includes("https://"))) {
                 this.$toasts.push({
-                type: "error",
-                message: "Недействительная ссылка",
+                  type: "error",
+                  message: "Недействительная ссылка",
                 });
                 return;
             }

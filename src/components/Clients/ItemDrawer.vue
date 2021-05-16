@@ -140,12 +140,15 @@
           v-show="selectableTab === 0"
           :client="client"
           @openSave="openSave"
-          @openReserveDialog="openReserveDialog"
           @openObjectList="objectListDialog = true"
         />
 
         <div v-show="selectableTab === 1">
-          <ProposedObj ref="proposedTab" :client="client" @openSave="openSave" />
+          <ProposedObj 
+            ref="proposedTab" :client="client" 
+            @openSave="openSave" 
+            @openReserveDialog="openReserveDialog"
+          />
         </div>
 
         <div v-show="selectableTab === 2">
