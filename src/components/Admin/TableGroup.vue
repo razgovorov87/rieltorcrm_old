@@ -110,7 +110,7 @@
 
 						<div
 							class="w-5 mr-2 transform hover:text-blue-500 hover:scale-110 cursor-pointer"
-							@click="$emit('switchAgent', client)"
+							@click.stop="$emit('switchAgent', client)"
 						>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
@@ -136,7 +136,7 @@
 							</svg>
 						</div> -->
 
-						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click="removeClient(client)">
+						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click.stop="removeClient(client)">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
