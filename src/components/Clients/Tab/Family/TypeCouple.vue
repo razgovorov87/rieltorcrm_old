@@ -234,19 +234,15 @@ export default {
 
   mounted() {
     if (!this.clientinfo) return;
-    this.manAge = this.clientinfo.man.age ? this.clientinfo.man.age : null;
-    this.manWork = this.clientinfo.man.work ? this.clientinfo.man.work : null;
-    this.womanAge = this.clientinfo.woman.age
-      ? this.clientinfo.woman.age
-      : null;
-    this.womanWork = this.clientinfo.woman.work
-      ? this.clientinfo.woman.work
-      : null;
+    this.manAge = this.clientinfo.man && this.clientinfo.man.age ? this.clientinfo.man.age : null;
+    this.manWork = this.clientinfo.man && this.clientinfo.man.work  ? this.clientinfo.man.work : null;
+    this.womanAge = this.clientinfo.woman && this.clientinfo.woman.age  ? this.clientinfo.woman.age : null;
+    this.womanWork = this.clientinfo.woman && this.clientinfo.woman.work ? this.clientinfo.woman.work : null;
 
-    this.manNational = this.clientinfo.man.national ? this.clientinfo.man.national : null;
-    this.womanNational = this.clientinfo.woman.national ? this.clientinfo.woman.national : null;
-    this.manRegister = this.clientinfo.man.register ? this.clientinfo.man.register : null;
-    this.womanRegister = this.clientinfo.woman.register ? this.clientinfo.woman.register : null;
+    this.manNational = this.clientinfo.man && this.clientinfo.man && this.clientinfo.man.national ? this.clientinfo.man.national : null;
+    this.womanNational = this.clientinfo.woman && this.clientinfo.woman.national ? this.clientinfo.woman.national : null;
+    this.manRegister = this.clientinfo.man && this.clientinfo.man.register ? this.clientinfo.man.register : null;
+    this.womanRegister = this.clientinfo.woman && this.clientinfo.woman.register ? this.clientinfo.woman.register : null;
 
     if (this.clientinfo.animals && this.clientinfo.animals.length !== 0) {
       this.clientinfo.animals.forEach((pet) => {

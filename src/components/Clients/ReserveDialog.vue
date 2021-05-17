@@ -104,10 +104,17 @@ export default {
 
     methods: {
         reserve() {
-            if( this.date <= '2021-01-01' || this.date >= '2024-12-31') {
+            if( this.date <= '2021-01-01' || this.date >= '2024-12-31' || !this.date) {
                 this.$toasts.push({
                     type: 'error',
                     message: 'Неверная дата'
+                })
+                return
+            }
+            else if(this.selectAgent === '' || !this.selectAgent) {
+                this.$toasts.push({
+                    type: 'error',
+                    message: 'Необходимо выбрать агента'
                 })
                 return
             }

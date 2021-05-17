@@ -132,12 +132,12 @@ export default {
 		},
 
 		filterClients() {
-			let arr = Object.keys(this.clients).map(key => ({...this.clients[key], id: key}))
+			let arr = Object.keys(this.clients).map(key => ({...this.clients[key]}))
 			arr = arr.filter(client => client.status !== 'Отказались')
 			if( this.user && this.user.toLowerCase() !== 'все агенты' ) {
 				arr = arr.filter(item => item.agent === this.userId)
 			}
-
+			
 			return arr
 		},
 
