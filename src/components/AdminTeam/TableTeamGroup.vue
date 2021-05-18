@@ -6,21 +6,23 @@
 				:key="agent.id"
 				class="border-b border-gray-200 hover:bg-gray-100 flex items-center"
 			>
-				<td class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
+				<td class="w-2/12 py-3 px-6 text-left flex items-center whitespace-nowrap">
 					<div class="flex items-center">
 						<span class="font-medium">{{ agent.surname + ' ' + agent.name + ' ' + agent.secondName }}</span>
 					</div>
-				</td>
-
-				<td class="w-1/12 py-3 px-6 text-center whitespace-nowrap">
-					<div class="flex items-center justify-center">
-						<span class="font-medium">{{ clientsCount(agent.id) }}</span>
+					<div v-if="agent.isAdmin" class="bg-red-400 px-2 py-0.5 text-xs text-white font-medium rounded shadow ml-2">
+						Администратор
 					</div>
 				</td>
 
-				<td class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
-					<div class="flex items-center justify-center">
-						<span class="font-medium">{{ offerCount(agent.id) }}</span>
+				<td class="w-2/12 py-3 px-6 text-center whitespace-nowrap">
+					<div class="flex flex-col items-center justify-center">
+						<div>
+							<span class="border-b border-gray-400 select-none">Логин:</span> {{agent.login}}
+						</div>
+						<div>
+							<span class="border-b border-gray-400 select-none">Пароль:</span> {{agent.password}}
+						</div>
 					</div>
 				</td>
 
@@ -52,15 +54,22 @@
 					</div>
 				</td>
 
-				<td class="w-2/12 py-3 px-6 text-center whitespace-nowrap">
-					<div class="flex flex-col items-center justify-center">
-						<div>
-							<span class="border-b border-gray-400 select-none">Логин:</span> {{agent.login}}
-						</div>
-						<div>
-							<span class="border-b border-gray-400 select-none">Пароль:</span> {{agent.password}}
+				<td v-if="!agent.isAdmin" class="w-1/12 py-3 px-6 text-center whitespace-nowrap">
+					<div class="flex items-center justify-center">
+						<span class="font-medium">{{ clientsCount(agent.id) }}</span>
+					</div>
+				</td>
 
-						</div>
+				<td v-if="!agent.isAdmin" class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
+					<div class="flex items-center justify-center">
+						<span class="font-medium">{{ offerCount(agent.id) }}</span>
+					</div>
+				</td>
+
+				<td v-if="agent.isAdmin" class="w-3/12 py-3 px-6 text-center whitespace-nowrap">
+					<div class="flex items-center justify-center">
+						Кол-во принятых звонков: 
+						<span class="font-medium ml-1">{{ callCount(agent.id) }}</span>
 					</div>
 				</td>
 
@@ -170,6 +179,14 @@ export default {
 			if(!this.clients) return 0
 
 			const matched = this.clients.filter(client => client.agent === id)
+			return matched.length
+		},
+
+		callCount(id) {
+			if(!this.clients) return 0
+
+			
+			const matched = this.clients.filter(client => (client.author === id && !client.missedCall) )
 			return matched.length
 		},
 

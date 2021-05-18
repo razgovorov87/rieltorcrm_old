@@ -145,7 +145,8 @@
 
         <div v-show="selectableTab === 1">
           <ProposedObj 
-            ref="proposedTab" :client="client" 
+            ref="proposedTab" 
+            :client="client" 
             @openSave="openSave" 
             @openReserveDialog="openReserveDialog"
           />
@@ -243,7 +244,8 @@ export default {
     interestingObj: null,
     refuseDialog: false,
     reserveDialog: false,
-    reserveObj: null
+    reserveObj: null,
+    refreshProposedObj: 0
   }),
 
   mounted() {
@@ -268,6 +270,7 @@ export default {
             type: 'success',
             message: 'Просмотр успешно сохранен'
           })
+          this.$refs.proposedTab.updateReserve()
           this.$refs.infoBlock.updateReserve()
         } catch (e) {throw e}
     },

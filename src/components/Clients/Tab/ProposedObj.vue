@@ -33,10 +33,13 @@
           @click="offerObject(obj)"
         >Предложить объект</button>
         <button
-          v-else
+          v-else-if="obj.status && !checkLink(obj.link)"
           class="mr-4 border-2 border-green-200 rounded px-3 py-1 focus:outline-none text-green-600 text-sm transition bg-green-200 hover:bg-green-300 hover:border-green-300"
           @click="$emit('openReserveDialog', obj)"
         >Записать на просмотр</button>
+        <div v-else class="mr-4 border-2 border-gray-200 rounded px-3 py-1 focus:outline-none text-gray-600 text-sm transition bg-gray-200 select-none">
+          Назначен просмотр
+        </div>
         <button class="focus:outline-none" @click="openLink(obj)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -120,6 +123,13 @@ export default {
     },
 
     methods: {
+
+        async updateReserve() {
+          const clientId = this.client.id
+          this.client.reserves = await this.$store.dispatch('fetchClientReserves', clientId)
+          this.objects = await this.$store.dispatch('fetchClientObjects', clientId)
+        },
+
         addProposedObject() {
             this.objects.push({
                 link: "",
@@ -208,6 +218,12 @@ export default {
             } catch (e) {throw e}
 
         },
-    }
+
+        checkLink(link) {
+          const path = this.client.reserves
+          const result = Object.keys(path).find(key => path[key].obj.link === link)
+          if(result) return true
+        },
+    },
 }
 </script>

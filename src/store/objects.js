@@ -32,6 +32,13 @@ export default {
 			return result;
 		},
 
+		async fetchClientObjects({dispatch}, clientId){
+			const response = (await firebase.database().ref(`/clients/${clientId}/proposedObjects`).once('value')).val()
+			if (!response) return false;
+			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
+			return result;
+		},
+
 		async fetchReserves({dispatch}){
 			const response = (await firebase.database().ref(`/reserves`).once('value')).val()
 			if (!response) return false;

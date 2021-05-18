@@ -22,6 +22,7 @@ export default {
 			{ dispatch, commit },
 			{ phone, fio, comment, missedCall, interestingObj },
 		) {
+			const uid = await dispatch('getUid');
 			const clients = (await firebase.database().ref('/clients').once('value')).val();
 
 			if(clients) {
@@ -40,6 +41,7 @@ export default {
 					interestingObj,
 					missedCall,
 					budget: 0,
+					author: uid,
 					createdAt: new Date().toString(),
 				});
 		},

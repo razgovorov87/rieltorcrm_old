@@ -13,7 +13,7 @@
 			</thead>
 			<tbody
 				class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full"
-				style="max-height: 44.5vh"
+				style="max-height: 42.2vh"
 			>
 
 				<div class="bg-white">
@@ -31,13 +31,14 @@
 
 						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
-								<span class="font-medium border-b border-dashed border-gray-400">{{ item.date | date('fullmonthDayAndYear')  }}</span>
+								<span class="font-medium border-b border-dashed border-gray-400">{{ item.date | date('fullmonthDayAndYear')  }} в {{item.time}}</span>
 							</div>
 						</td>
 
 						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
-								<span class="font-medium border-b bg-gray-100 rounded px-3 py-1 shadow cursor-pointer">{{ takeClientInfo(item.clientId) }}</span>
+								<span v-if="item.agent === uid" class="font-medium border-b bg-gray-100 rounded px-3 py-1 shadow cursor-pointer">{{ takeClientInfo(item.clientId) }}</span>
+								<div v-else class="font-medium"><span class="text-gray-400 border-b-0">Телефон агента:</span> {{ takeAgentPhone(item.agent) }}</div>
 							</div>
 						</td>
 
@@ -99,7 +100,7 @@
 			</thead>
 			<tbody
 				class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full"
-				style="max-height: 44.5vh"
+				style="max-height: 31.8vh"
 			>
 
 				<div class="bg-white">
@@ -117,13 +118,14 @@
 
 						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
-								<span class="font-medium border-b border-dashed border-gray-400">{{ item.date | date('fullmonthDayAndYear')  }}</span>
+								<span class="font-medium border-b border-dashed border-gray-400">{{ item.date | date('fullmonthDayAndYear')  }} в {{item.time}}</span>
 							</div>
 						</td>
 
 						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
-								<span class="font-medium border-b bg-gray-100 rounded px-3 py-1 shadow cursor-pointer">{{ takeClientInfo(item.clientId) }}</span>
+								<span v-if="item.agent === uid" class="font-medium border-b bg-gray-100 rounded px-3 py-1 shadow cursor-pointer">{{ takeClientInfo(item.clientId) }}</span>
+								<div v-else class="font-medium"><span class="text-gray-400 border-b-0">Телефон агента:</span> {{ takeAgentPhone(item.agent) }}</div>
 							</div>
 						</td>
 
@@ -213,6 +215,13 @@ export default {
 			if (this.agents) {
 				const agent = this.agents.filter((agent) => agent.id === id);
 				if (agent[0]) return agent[0].name + ' ' + agent[0].surname;
+			}
+		},
+
+		takeAgentPhone(id) {
+			if (this.agents) {
+				const agent = this.agents.filter((agent) => agent.id === id);
+				if (agent[0]) return agent[0].phone;
 			}
 		},
 

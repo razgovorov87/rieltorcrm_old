@@ -104,10 +104,10 @@ export default {
 
     methods: {
         reserve() {
-            if( this.date <= '2021-01-01' || this.date >= '2024-12-31' || !this.date) {
+            if( this.date <= '2021-01-01' || this.date >= '2024-12-31' || !this.date || !this.time) {
                 this.$toasts.push({
                     type: 'error',
-                    message: 'Неверная дата'
+                    message: 'Неверная дата или время'
                 })
                 return
             }

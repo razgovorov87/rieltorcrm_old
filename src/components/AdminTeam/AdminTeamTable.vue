@@ -4,11 +4,11 @@
 			<thead>
 				<tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal flex w-full">
 					<th class="py-3 px-6 text-left w-2/12">ФИО</th>
-					<th class="py-3 px-6 text-center w-1/12">Клиентов</th>
-					<th class="py-3 px-6 text-center w-2/12">Предлож. объектов</th>
+					<th class="py-3 px-6 text-center w-2/12">Логин и пароль</th>
 					<th class="py-3 px-6 text-center w-2/12">Телефон</th>
 					<th class="py-3 px-6 text-center w-2/12">Дата регистрации</th>
-					<th class="py-3 px-6 text-center w-2/12">Логин и пароль</th>
+					<th class="py-3 px-6 text-center w-1/12">Клиентов</th>
+					<th class="py-3 px-6 text-center w-2/12">Предлож. объектов</th>
 					<th class="py-3 px-6 text-center w-1/12">Действия</th>
 				</tr>
 			</thead>
