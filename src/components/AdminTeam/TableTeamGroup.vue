@@ -2,7 +2,7 @@
 	<div class="w-full flex flex-col bg-gray-200">
 		<div class="bg-white">
 			<tr
-				v-for="agent in agents"
+				v-for="agent in agents.filter(agent => agent.status !== 'deleted')"
 				:key="agent.id"
 				class="border-b border-gray-200 hover:bg-gray-100 flex items-center"
 			>
@@ -66,7 +66,7 @@
 					</div>
 				</td>
 
-				<td v-if="agent.isAdmin" class="w-3/12 py-3 px-6 text-center whitespace-nowrap">
+				<td v-if="agent.isAdmin" class="w-3/12 py-3 px-6 flex whitespace-nowrap">
 					<div class="flex items-center justify-center">
 						Кол-во принятых звонков: 
 						<span class="font-medium ml-1">{{ callCount(agent.id) }}</span>

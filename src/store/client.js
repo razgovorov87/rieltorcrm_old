@@ -174,7 +174,7 @@ export default {
 
 		async deleteClient({dispatch}, client) {
 			const response = (await firebase.database().ref(`/clients/${client.id}`).once('value')).val()
-			await firebase.database().ref(`/archive/clients/`).update(response)
+			await firebase.database().ref(`/archive/clients/${client.id}`).update(response)
 			await firebase.database().ref(`/clients/${client.id}`).remove()
 		}
 	},

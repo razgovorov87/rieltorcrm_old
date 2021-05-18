@@ -78,7 +78,6 @@ export default {
 		},
 
 		async deleteUser() {
-			console.log(this.deleteAgent)
 			await this.$store.dispatch('deleteUser', this.deleteAgent)
 			this.verifyDelete = false
 			this.deleteAgent = null

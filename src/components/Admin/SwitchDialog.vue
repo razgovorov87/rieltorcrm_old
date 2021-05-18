@@ -56,7 +56,7 @@
                     >
                         <div class="bg-white flex flex-col border rounded shadow border-gray-100 overflow-hidden">
                             <span
-                            v-for="(item, idx) in agents.filter(agent => agent.id !== client.agent)"
+                            v-for="(item, idx) in agents.filter(agent => agent.id !== client.agent && agent.verify && agent.status !== 'deleted')"
                             :key="item + idx"
                             class="border-b px-4 py-2 hover:bg-dividerBg hover:text-white select-none"
                             @click="

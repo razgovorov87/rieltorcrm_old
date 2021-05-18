@@ -220,9 +220,11 @@ export default {
         },
 
         checkLink(link) {
-          const path = this.client.reserves
-          const result = Object.keys(path).find(key => path[key].obj.link === link)
-          if(result) return true
+          if(this.client.reserves) {
+            const path = this.client.reserves
+            const result = Object.keys(path).find(key => path[key].obj.link === link)
+            if(result) return true
+          } else return false
         },
     },
 }

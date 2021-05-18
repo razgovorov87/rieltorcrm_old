@@ -78,7 +78,7 @@ export default {
           .once('value')
       ).val();
       if (users) {
-        const idx = Object.keys(users).find((key) => users[key].login === login);
+        const idx = Object.keys(users).find((key) => users[key].login === login && users[key].status !== 'deleted');
         return idx ? true : false;
       } else return false;
     },
