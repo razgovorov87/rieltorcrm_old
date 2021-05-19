@@ -19,9 +19,11 @@ export default {
   }),
 
   computed: {
+
     disableHeader() {
       return this.$route.path === '/object' || this.$route.path === '/admin/clients' || this.$route.path === '/admin/team' || this.$route.path === '/reverses'? false : true
-    }
+    },
+
   },
 
   components: {Divider, Header}

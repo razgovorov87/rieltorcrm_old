@@ -196,10 +196,14 @@
 
 		<div v-if="attention" class="absolute top-24 left-1/2 transform -translate-x-1/2 text-center shadow rounded bg-white shadow-lg px-3 py-2 z-40">
 			<span class="text-red-600 font-medium">Внимание!</span> Данная страница с объектами не всегда содержит 100% всех наших объектов, поэтому если клиент спрашивает про квартиру, которой нет в списке и на карте, попросите его выслать ссылку на объявление, или сказать точный адрес и на каком сайте выставлена - и найти ее вручную
-			<div class="absolute top-0 -right-1 transform translate-x-full cursor-pointer" @click="attention = false">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 p-1.5 bg-white rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-				</svg>
+			<br>
+			<a href="https://map.dutyfreeflats.ru" target="_blank" class="text-blue-500 underline">map.dutyfreeflats.ru</a>
+			<div class="absolute top-0 -right-1 transform translate-x-full">
+				<div class="flex justify-center items-center p-1.5 bg-white rounded-full cursor-pointer" @click="attention = false">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</div>
 			</div>
 		</div>
 	</div>

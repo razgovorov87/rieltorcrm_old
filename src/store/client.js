@@ -118,7 +118,19 @@ export default {
 			).val();
 			arr = Object.keys(arr).map((key) => ({ ...arr[key], id: key }));
 			const today = new Date().toISOString().slice(0, -14)
-			let item = arr.find((item) => !item.agent && (!item.lastCause || item.lastCause !== today));
+			let item = arr.find((item) => {
+				let checkOldAgents = false;
+				if(item.oldAgents) {
+					const oldAgents = Object.keys(item.oldAgents).map(key => ({...item.oldAgents[key], id: key}))
+					checkOldAgents = oldAgents.find(agent => agent.agent === uid)
+				}
+				
+
+				if(!item.agent && (!item.lastCause || item.lastCause !== today) && !checkOldAgents) {
+					return item
+				}
+
+			});
 			if (!item) return 'empty_list';
 			await firebase
 				.database()
@@ -146,6 +158,9 @@ export default {
 				agent: '',
 				status: 'Отказались',
 				lastCause: new Date().toISOString().slice(0, -14)
+			})
+			await firebase.database().ref(`/clients/${clientId}/oldAgents/`).push({
+				agent: uid
 			})
 			await firebase.database().ref(`/clients/${clientId}/causes`).push({
 				cause,

@@ -99,7 +99,7 @@ export default {
     this.interestingObj = this.client.interestingObj
       ? this.client.interestingObj
       : null;  
-    this.exceptions = this.client.exceptions
+    this.exceptions = this.client.exceptions ? this.client.exceptions : null
   },
 
   methods: {

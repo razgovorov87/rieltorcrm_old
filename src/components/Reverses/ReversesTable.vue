@@ -58,7 +58,22 @@
 
 							<div class="flex items-center justify-center">
 								
-								<div v-if="item.agent === uid" class="mr-2 transition transform hover:text-blue-500 hover:scale-110 cursor-pointer">
+								<div v-if="item.result && item.agent === uid" class="px-3 py-1 bg-green-500 shadow font-medium rounded text-white flex items-center cursor-pointer" @click="$emit('openResultDialog', item)">
+									<span>{{item.result}}</span>
+
+									<span class="ml-2">
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+										</svg>
+									</span>
+
+								</div>
+
+								<div v-else-if="item.result && item.agent !== uid" class="px-3 py-1 bg-green-500 shadow font-medium rounded text-white flex items-center">
+									<span>{{item.result}}</span>
+								</div>
+								
+								<div v-else-if="!item.result && item.agent === uid" class="mr-2 transition transform hover:text-blue-500 hover:scale-110 cursor-pointer" @click="$emit('openResultDialog', item)">
 									<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
 									</svg>
@@ -160,7 +175,7 @@
 									<span>{{item.result}}</span>
 								</div>
 								
-								<div v-else-if="item.agent === uid" class="mr-2 transition transform hover:text-blue-500 hover:scale-110 cursor-pointer" @click="$emit('openResultDialog', item)">
+								<div v-else-if="!item.result && item.agent === uid" class="mr-2 transition transform hover:text-blue-500 hover:scale-110 cursor-pointer" @click="$emit('openResultDialog', item)">
 									<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
 									</svg>
@@ -203,6 +218,10 @@ export default {
 	},
 
 	methods: {
+		test(item) {
+			console.log(item)
+			// $emit('openResultDialog', item)
+		},
 		async agentsInfo() {
 			this.agents = await this.$store.dispatch('fetchAgents')
 		},
@@ -236,7 +255,7 @@ export default {
 	computed: {
 		sortedReserve() {
 			if(!this.reverses) return []
-			const arr =  Object.keys(this.reverses).map(key => ({...this.reverses[key], id: key}))
+			const arr =  Object.keys(this.reverses).map(key => ({...this.reverses[key]}))
 			arr.sort( function(a, b) {
 				const dateA = new Date(a.date)
 				const dateB = new Date(b.date)
@@ -260,7 +279,7 @@ export default {
 
 		sortedArchive() {
 			if(!this.reverses) return []
-			const arr =  Object.keys(this.reverses).map(key => ({...this.reverses[key], id: key}))
+			const arr =  Object.keys(this.reverses).map(key => ({...this.reverses[key]}))
 			arr.sort( function(a, b) {
 				const dateA = new Date(a.date)
 				const dateB = new Date(b.date)
