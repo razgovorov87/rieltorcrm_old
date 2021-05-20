@@ -49,19 +49,25 @@
 						:search="search"
 						aria-placeholder="Поиск телефона"
 						placeholder="Поиск телефона"
-						class="w-96"
+						style="width: 26rem;"
 						@submit="openClient"
 						:get-result-value="getResultValue"
 					>
 						<template #result="{ result, props }">
 							<li v-bind="props">
 								<div class="flex justify-between">
-									<span>{{result.phone}}</span>
-									<span v-if="result.status === 'Не обработано' " class="text-white py-1 px-3 rounded-full text-xs bg-gray-500">{{ result.status }}</span>
-									<span v-if="result.status === 'В работе' " class="text-white py-1 px-3 rounded-full text-xs bg-blue-500">{{ result.status }}</span>
-									<span v-if="result.status === 'Просмотр квартир' " class="text-white py-1 px-3 rounded-full text-xs bg-yellow-600">{{ result.status }}</span>
-									<span v-if="result.status === 'Прошла сделка' " class="text-white py-1 px-3 rounded-full text-xs bg-green-500">{{ result.status }}</span>
-									<span v-if="result.status === 'Отказались' " class="text-white py-1 px-3 rounded-full text-xs bg-red-500">{{ result.status }}</span>
+									<span v-if="!result.archived">{{result.phone}}</span>
+									<span v-else-if="result.archived" class="text-red-600">{{result.phone}}</span>
+									<div v-if="result.archived">
+										<span class="text-xs text-white bg-red-400 py-1 px-3 rounded-full text-xs">Удален</span>
+									</div>
+									<div>
+										<span v-if="result.status === 'Не обработано' " class="text-white py-1 px-3 rounded-full text-xs bg-gray-500">{{ result.status }}</span>
+										<span v-if="result.status === 'В работе' " class="text-white py-1 px-3 rounded-full text-xs bg-blue-500">{{ result.status }}</span>
+										<span v-if="result.status === 'Просмотр квартир' " class="text-white py-1 px-3 rounded-full text-xs bg-yellow-600">{{ result.status }}</span>
+										<span v-if="result.status === 'Прошла сделка' " class="text-white py-1 px-3 rounded-full text-xs bg-green-500">{{ result.status }}</span>
+										<span v-if="result.status === 'Отказались' " class="text-white py-1 px-3 rounded-full text-xs bg-red-500">{{ result.status }}</span>
+									</div>
 								</div>
 							</li>
 						</template>
@@ -101,18 +107,23 @@ export default {
 	data: () => ({
 		checkPhone: null,
 		phones: [],
+		archivePhones: []
 	}),
 
 	async mounted() {
 		this.phones = await this.$store.dispatch('fetchClients');
+		this.archivePhones = await this.$store.dispatch('fetchArchiveClients');
 		this.replacePhone();
 	},
 
 	methods: {
 		replacePhone() {
-			if (this.phones.length === 0) return;
+			if (this.phones && this.phones.length === 0) return;
 
-			this.phones.forEach((client) => {
+
+			const resultArr = this.phones.concat(this.archivePhones)
+
+			resultArr.forEach((client) => {
 				let phone = client.phone;
 				const result =
 					'8' + phone.slice(4, 7) + phone.slice(9, 12) + phone.slice(13, 15) + phone.slice(16, 18);
@@ -127,7 +138,9 @@ export default {
 		search(input) {
 			if (input.length < 1) return [];
 
-			const list = this.phones.filter((phone) => {
+			const resultArr = this.phones.concat(this.archivePhones)
+
+			const list = resultArr.filter((phone) => {
 				return phone.checkPhone.includes(input);
 			});
 
@@ -139,7 +152,8 @@ export default {
 		},
 
 		openClient(result) {
-			const item = this.phones.find((phone) => phone.phone === result.phone);
+			const resultArr = this.phones.concat(this.archivePhones)
+			const item = resultArr.find((phone) => phone.phone === result.phone);
 			this.$emit('openClient', item);
 		},
 

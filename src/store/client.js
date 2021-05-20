@@ -187,11 +187,29 @@ export default {
 			})
 		},
 
+		async returnArchiveClientToStart({dispatch}, client) {
+			const response = (await firebase.database().ref(`/archive/clients/${client.id}`).once('value')).val();
+			await firebase.database().ref(`/archive/clients/${client.id}`).remove()
+			await firebase.database().ref(`/clients/${client.id}`).update(response)
+			await firebase.database().ref(`/clients/${client.id}/`).update({
+				status: 'Не обработано',
+				archived: null
+			})
+		},
+
 		async deleteClient({dispatch}, client) {
 			const response = (await firebase.database().ref(`/clients/${client.id}`).once('value')).val()
-			await firebase.database().ref(`/archive/clients/${client.id}`).update(response)
+			await firebase.database().ref(`/archive/clients/${client.id}`).update({...response, archived: true})
 			await firebase.database().ref(`/clients/${client.id}`).remove()
-		}
+		},
+
+		async fetchArchiveClients({dispatch}) {
+			const uid = await dispatch('getUid');
+			const response = (await firebase.database().ref('/archive/clients/').once('value')).val();
+			if (!response) return false;
+			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
+			return result;
+		},
 	},
 
 	getters: {

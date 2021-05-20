@@ -186,7 +186,7 @@
 				@closeDrawer="
 					() => {
 						objectDrawer = false;
-						changeItem = undefined;
+						changeItem = null;
 					}
 				"
 				@addNewObject="fetchObjects"

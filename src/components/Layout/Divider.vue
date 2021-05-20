@@ -92,6 +92,20 @@
 				>
 			</router-link>
 
+			<router-link
+				v-if="checkAdmin"
+				to="/admin/archive"
+				class="py-2 flex flex-col items-center text-gray-400 outline-none hover:text-white transition w-full"
+				exact
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" class="w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+				</svg>
+				<span class="text-xs font-semibold mt-1 text-center" style="max-width: 60px;"
+					>Архив клиентов</span
+				>
+			</router-link>
+
 			<div v-if="checkAdmin" class="text-gray-500 my-2">
 				<span>•</span>
 				<span class="mx-1">•</span>

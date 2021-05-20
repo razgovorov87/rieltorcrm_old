@@ -49,6 +49,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Admin.vue')
   },
   {
+    path: '/admin/archive',
+    name: 'Архив клиентов',
+    meta: {layout: 'main', auth: true},
+    component: () => import(/* webpackChunkName: "about" */ '../views/ClientsArchive.vue')
+  },
+  {
     path: '/admin/team',
     name: 'Панель администратора, команда',
     meta: {layout: 'main', auth: true},
