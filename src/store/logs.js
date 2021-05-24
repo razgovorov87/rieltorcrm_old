@@ -81,7 +81,7 @@ export default {
             return log
         },
 
-        async refuseLog({dispatch}, clientId) {
+        async refuseLog({dispatch}, {clientId, cause, otherCause}) {
             const date = new Date()
             const dateId = date.toISOString().slice(0, -14)
             const hours = date.getUTCHours() < 10 ? '0' + date.getUTCHours() : date.getUTCHours()
@@ -94,7 +94,9 @@ export default {
             const log = {
                 logType: 'refuseClient',
                 agent: uid,
-                time
+                time,
+                cause,
+                otherCause
             }
 
             await firebase.database().ref(`/clients/${clientId}/logs/${dateId}/${logId}`).update(log)

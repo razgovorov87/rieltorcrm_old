@@ -37,7 +37,10 @@
 
                         <div v-if="log.logType === 'refuseClient'">
                             <span>{{log.time + ' | '}}</span>
-                            <span class="font-medium underline">{{takeAgentInfo(log.agent)}}</span> отказался от клиента
+                            <span class="font-medium underline">{{takeAgentInfo(log.agent)}}</span> отказался от клиента 
+                            <template v-if="log.cause">| Причина: </template>
+                            <template v-if="log.cause !== 'Другое'">{{log.cause}}</template>
+                            <template v-else>{{log.otherCause}}</template>
                         </div>
 
                     </div>

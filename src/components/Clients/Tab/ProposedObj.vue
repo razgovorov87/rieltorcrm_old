@@ -212,11 +212,23 @@ export default {
             try {
                 const log = await this.$store.dispatch('addOfferObjectLog', data)
                 this.saveLinks()
-                window.open('https://office.dutyfreeflats.ru/Home/Index', '_blank')
+                const rdnSymbols = this.rdnLink()
+                window.open(`https://${rdnSymbols}.p.dutyfreeflats.ru`, '_blank')
                 this.$parent.$refs.logsBlock.pushLog(log)
                 this.$emit('openSave', false)
             } catch (e) {throw e}
 
+        },
+
+        rdnLink() {
+          let text = ''
+          const possible = "abcdefghijklmnopqrstuvwxyz";
+
+          for(let i = 0; i < 5; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+          }
+
+          return text
         },
 
         checkLink(link) {

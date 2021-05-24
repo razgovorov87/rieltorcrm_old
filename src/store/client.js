@@ -169,7 +169,7 @@ export default {
 				otherCause,
 				comment
 			})
-			dispatch('refuseLog', clientId)
+			dispatch('refuseLog', {clientId, cause, otherCause})
 		},
 
 
