@@ -69,7 +69,7 @@
 				<td v-if="agent.isAdmin" class="w-3/12 py-3 px-6 flex justify-center text-center whitespace-nowrap">
 					<div class="flex items-center justify-center">
 						Принятых звонков: 
-						<span v-if="callCount(agent.id) !== 0" class="font-medium ml-1">{{ callNotMissedCount(agent.id) / callCount(agent.id) * 100 + "%" }}</span>
+						<span v-if="callCount(agent.id) !== 0" class="font-medium ml-1">{{ (callNotMissedCount(agent.id) / callCount(agent.id) * 100).toFixed(2) + "%" }}</span>
 						<span v-else class="font-medium ml-1">0%</span>
 					</div>
 				</td>
@@ -213,13 +213,16 @@ export default {
 			const matched = this.clients.filter(client => client.agent === id)
 			let count = 0
 			matched.forEach( item => {
-				Object.keys(item.logs).forEach( key => {
-					Object.keys(item.logs[key]).forEach(logId => {
-						const path = item.logs[key][logId]
+				if(item.logs) {
+					Object.keys(item.logs).forEach( key => {
+						Object.keys(item.logs[key]).forEach(logId => {
+							const path = item.logs[key][logId]
 
-						if( path.logType === 'offerObject' && path.agent === id) count++
+							if( path.logType === 'offerObject' && path.agent === id) count++
+						})
 					})
-				})
+				}
+				
 			})
 
 			return count
