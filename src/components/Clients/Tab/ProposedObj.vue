@@ -168,16 +168,26 @@ export default {
                 return;
             }
 
-            const reg = /\/[0-9]{1,99}\//gi;
-            const match = obj.link.match(reg);
-            const id = match[0].substring(1, match[0].length - 1)
-            const pdfNumber = id * 2;
+            let pdfNumber = null
+            if( obj.link.includes('domofond') ) {
+              const reg = /[0-9]{1,99}/gi;
+              const match = obj.link.match(reg);
+              pdfNumber = +match[0] * 2;
+            } else {
+              const reg = /\/[0-9]{1,99}\//gi;
+              const match = obj.link.match(reg);
+              const id = match[0].substring(1, match[0].length - 1)
+              pdfNumber = id * 2;
+            }
+            
 
             const data = {
                 itemId: this.client.id,
                 link: obj.link,
                 pdfNumber
             }
+
+            console.log(data)
 
 
             
