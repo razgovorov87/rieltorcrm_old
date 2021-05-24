@@ -265,6 +265,8 @@ export default {
         try {
           const clientId = this.client.id
           await this.$store.dispatch('reserveObj', {data, clientId})
+          const log = await this.$store.dispatch('reserveObjLog', {data, clientId})
+          this.$refs.logsBlock.pushLog(log)
           this.reserveDialog = false
           this.$toasts.push({
             type: 'success',
