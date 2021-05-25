@@ -187,29 +187,30 @@ export default {
                 pdfNumber
             }
 
-            console.log(data)
 
 
             
 
             let verify = true;
-            Object.keys(this.client.logs).forEach(key => {
+            if(this.client.logs) {
+              Object.keys(this.client.logs).forEach(key => {
 
-                Object.keys(this.client.logs[key]).forEach(id => {
+                  Object.keys(this.client.logs[key]).forEach(id => {
 
-                const log = this.client.logs[key][id]
-                if(log.logType === 'offerObject') {
-                    if(log.link === obj.link) {
-                    this.$toasts.push({
-                        type: "error",
-                        message: "Данный объект уже предложен",
-                    })
-                    verify = false; 
-                    }
-                }
-                })
+                  const log = this.client.logs[key][id]
+                  if(log.logType === 'offerObject') {
+                      if(log.link === obj.link) {
+                      this.$toasts.push({
+                          type: "error",
+                          message: "Данный объект уже предложен",
+                      })
+                      verify = false; 
+                      }
+                  }
+                  })
 
-            })
+              })
+            }
 
             if(!verify) {
                 return
@@ -227,6 +228,7 @@ export default {
                 this.$parent.$refs.logsBlock.pushLog(log)
                 this.$emit('openSave', false)
             } catch (e) {throw e}
+            
 
         },
 
