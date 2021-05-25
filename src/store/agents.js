@@ -31,6 +31,8 @@ export default {
                 status: 'Не обработано',
                 notification: true
             })
+
+            dispatch('switchAgentLog', {clientId, newAgent})
         },
 
         async deleteUser({dispatch}, agent) {

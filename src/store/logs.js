@@ -102,6 +102,26 @@ export default {
             await firebase.database().ref(`/clients/${clientId}/logs/${dateId}/${logId}`).update(log)
         },
 
+        async switchAgentLog({dispatch}, {clientId, newAgent}) {
+            const date = new Date()
+            const dateId = date.toISOString().slice(0, -14)
+            const hours = date.getUTCHours() < 10 ? '0' + date.getUTCHours() : date.getUTCHours()
+            const minutes = date.getUTCMinutes() < 10 ? '0' + date.getUTCMinutes() : date.getUTCMinutes()
+            const seconds = date.getUTCSeconds() < 10 ? '0' + date.getUTCSeconds() : date.getUTCSeconds()
+            const time = hours + ':' + minutes
+            const logId = hours.toString() + minutes.toString() + seconds.toString()
+            const uid = await dispatch('getUid')
+
+            const log = {
+                logType: 'switchAgent',
+                manager: uid,
+                newAgent,
+                time
+            }
+
+            await firebase.database().ref(`/clients/${clientId}/logs/${dateId}/${logId}`).update(log)
+        },
+
         async reserveObjLog({dispatch}, {data, clientId}) {
             const date = new Date()
             const dateId = date.toISOString().slice(0, -14)

@@ -9,7 +9,7 @@
                 </div>
                 <transition-group tag="div" name="list" class="grid mt-6 mb-6 space-y-4 w-full">
 
-                    <div v-for="(log, idx) in formatDay(day)" :key="log + idx" :class="log.logType === 'reserveObj' || log.logType === 'system' || log.logType === 'catch' || log.logType === 'offerObject' || log.logType === 'refuseClient' ? 'systemMsg' : 'noteWrapper'">
+                    <div v-for="(log, idx) in formatDay(day)" :key="log + idx" :class="log.logType === 'switchAgent' || log.logType === 'reserveObj' || log.logType === 'system' || log.logType === 'catch' || log.logType === 'offerObject' || log.logType === 'refuseClient' ? 'systemMsg' : 'noteWrapper'">
                         <span v-if="log.logType === 'note'" class="text-xs italic text-gray-300 truncate">{{takeAgentInfo(log.agent)}} • {{log.time}}</span>
                         <div v-if="log.logType === 'note'" class="noteMsg break-words">
                             {{log.text}}
@@ -29,16 +29,22 @@
                         </div>
 
                         
-                        <div v-if="log.logType === 'offerObject'" class="flex">
+                        <div v-if="log.logType === 'offerObject'" class="flex flex-wrap justify-center">
                             {{log.time + ' | ' + takeAgentInfo(log.agent) + '. Предложен объект:' }} 
                             <a :href="log.link" target="__blank" class="mx-1 text-blue-500 underline truncate block" style="max-width: 150px;">{{log.link}}</a>
                             (№: {{log.pdfNumber}})
                         </div>
 
-                        <div v-if="log.logType === 'reserveObj'" class="flex">
+                        <div v-if="log.logType === 'reserveObj'" class="flex flex-wrap justify-center">
                             {{log.time + ' | ' + takeAgentInfo(log.agent) + '. Назначил встречу:' }} 
                             <a :href="log.obj.obj.link" target="__blank" class="mx-1 text-blue-500 underline truncate block" style="max-width: 150px;">{{log.obj.obj.link}}</a>
                             <span class="font-medium">( {{log.obj.date | date('fullmonthDay')}} в {{log.obj.time}})</span>
+                        </div>
+
+                        <div v-if="log.logType === 'switchAgent'" class="flex flex-wrap justify-center">
+                            {{log.time + ' | '}}
+                            <span class="font-medium underline ml-2">{{takeAgentInfo(log.manager)}}</span>
+                            {{'. Передал этого клиента сотруднику: ' + takeAgentInfo(log.newAgent)}}
                         </div>
 
                         <div v-if="log.logType === 'refuseClient'">
@@ -223,7 +229,7 @@ export default {
 
 <style scoped>
 .systemMsg {
-  @apply text-sm text-gray-500 justify-self-center;
+  @apply text-sm text-gray-500 justify-self-center flex-wrap;
 }
 
 .noteWrapper {
