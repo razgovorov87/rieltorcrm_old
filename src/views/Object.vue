@@ -2,7 +2,7 @@
 	<div class="flex flex-col h-full">
 		<div id="objectWrapper" ref="objectWrapper" class="pt-10 py-4 relative">
 			<div class="absolute inset-0 bg-white z-10 opacity-70"></div>
-			<div class="mx-auto container z-50 relative">
+			<div class="mx-auto container z-40 relative">
 				<div class="flex justify-center rounded bg-white items-center w-full">
 					<input
 						v-model="search"
@@ -199,7 +199,7 @@
 			<br>
 			<a href="https://map.dutyfreeflats.ru" target="_blank" class="text-blue-500 underline">map.dutyfreeflats.ru</a>
 			<div class="absolute top-0 -right-1 transform translate-x-full">
-				<div class="flex justify-center items-center p-1.5 bg-white rounded-full cursor-pointer" @click="attention = false">
+				<div class="flex justify-center items-center p-1.5 bg-white rounded-full cursor-pointer z-50" @click="attention = false">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
 					</svg>
