@@ -193,6 +193,7 @@ export default {
 
             let verify = true;
             if(this.client.logs) {
+              let counter = 0
               Object.keys(this.client.logs).forEach(key => {
 
                   Object.keys(this.client.logs[key]).forEach(id => {
@@ -200,16 +201,20 @@ export default {
                   const log = this.client.logs[key][id]
                   if(log.logType === 'offerObject') {
                       if(log.link === obj.link) {
-                      this.$toasts.push({
-                          type: "error",
-                          message: "Данный объект уже предложен",
-                      })
-                      verify = false; 
+                        counter++
                       }
                   }
+
                   })
 
               })
+              if(counter === 2) {
+                this.$toasts.push({
+                    type: "error",
+                    message: "Данный объект уже предложен",
+                })
+                verify = false;
+              }
             }
 
             if(!verify) {
