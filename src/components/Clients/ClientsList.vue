@@ -19,22 +19,31 @@
           :class="item.fio ? 'py-1' : 'py-2'"
           @click="openItemDrawer(item)"
         >
-          <div class="flex flex-col flex-grow">
-            <span v-if="item.fio" class="text-sm text-gray-500">{{
-              item.fio
-            }}</span>
-            <h2
-              class="text-blue-500 font-semibold truncate"
-              style="max-width: 234px"
-            >
-              {{ item.phone }}
-            </h2>
-          </div>
-          <div class="flex flex-shrink-0 items-center">
-            <span class="text-xs text-gray-500">{{
-              item.createdAt | date
-            }}</span>
-          </div>
+          <template v-if="item.phone">
+            <div class="flex flex-col flex-grow">
+              <span v-if="item.fio" class="text-sm text-gray-500">{{
+                item.fio
+              }}</span>
+              <h2
+                class="text-blue-500 font-semibold truncate"
+                style="max-width: 234px"
+              >
+                {{ item.phone }}
+              </h2>
+            </div>
+            <div class="flex flex-shrink-0 items-center">
+              <span class="text-xs text-gray-500">{{
+                item.createdAt | date
+              }}</span>
+            </div>
+          </template>
+          <template v-else>
+            <div class="flex flex-col" @click.stop="">
+              <span class="text-red-600 font-medium">Возникла ошибка!</span>
+              <p class="text-sm">Сообщите этот идентификатор администратору.</p>
+              <span class="flex px-2 py-1 bg-gray-200 rounded mt-2 uppercase font-medium">{{item.id}}</span>
+            </div>
+          </template>
         </div>
       </transition-group>
     </div>

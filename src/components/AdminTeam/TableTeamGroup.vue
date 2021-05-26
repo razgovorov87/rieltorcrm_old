@@ -66,11 +66,15 @@
 					</div>
 				</td>
 
-				<td v-if="agent.isAdmin" class="w-3/12 py-3 px-6 flex justify-center text-center whitespace-nowrap">
+				<td v-if="agent.isAdmin" class="w-3/12 py-3 px-6 flex flex-col justify-center items-center text-center whitespace-nowrap">
 					<div class="flex items-center justify-center">
 						Принятых звонков: 
 						<span v-if="callCount(agent.id) !== 0" class="font-medium ml-1">{{ (callNotMissedCount(agent.id) / callCount(agent.id) * 100).toFixed(2) + "%" }}</span>
 						<span v-else class="font-medium ml-1">0%</span>
+					</div>
+					<div>
+						Сегодня:
+						<span class="font-medium ml-1">{{callToday(agent.id)}}</span>
 					</div>
 				</td>
 
@@ -204,6 +208,23 @@ export default {
 
 			
 			const matched = this.clients.filter(client => client.author === id && !client.missedCall)
+			return matched.length
+		},
+
+		callToday(id) {
+			if(!this.clients) return 0
+
+			const isoDate = new Date().toISOString()
+			const today = isoDate.slice(0, -14)
+
+
+			
+			const matched = this.clients.filter(client => {
+				const clientDate = new Date(client.createdAt).toISOString().slice(0, -14)
+				if( clientDate === today &&  client.author === id && !client.missedCall) {
+					return client
+				}
+			})
 			return matched.length
 		},
 

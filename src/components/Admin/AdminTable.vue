@@ -36,7 +36,7 @@
 										openList = false;
 									}"
 								>
-									<div class="bg-white flex flex-col border rounded shadow border-gray-100 overflow-hidden">
+									<div class="bg-white flex flex-col border rounded shadow border-gray-100 overflow-hidden w-52">
 										<span 
 											@click="($event) => {
 												user = $event.target.innerText;

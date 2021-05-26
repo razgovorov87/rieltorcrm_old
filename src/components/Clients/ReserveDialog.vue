@@ -1,6 +1,6 @@
 <template>
-    <div class="absolute inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-        <div class="w-1/3 bg-white flex flex-col rounded">
+    <div class="absolute inset-0 bg-black bg-opacity-60 flex justify-center items-center z-40">
+        <div class="w-6/12 bg-white flex flex-col rounded">
 
             <div class="flex justify-center items-center px-6 py-4 border-b">
                 <span class="font-medium text-gray-600 text-xl flex-grow">Записать на просмотр квартиры</span>
@@ -47,12 +47,12 @@
                             />
                         </svg>
                     </div>
-                    <div v-if="openList" class="absolute top-full h-20 w-full right-0 pt-2 z-30"
+                    <div v-if="openList" class="absolute top-full h-20 w-full right-0 pt-2 z-50"
                         v-click-outside="() => {
                             openList = false;
                         }"
                     >
-                        <div class="bg-white flex flex-col border rounded shadow border-gray-100 overflow-hidden">
+                        <div class="bg-white flex flex-col border rounded shadow border-gray-100 overflow-y-auto" style="max-height: 23vh;">
                             <span
                             v-for="(item, idx) in agents.filter(agent => agent.verify && agent.status !== 'deleted')"
                             :key="item + idx"
