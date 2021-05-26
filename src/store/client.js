@@ -118,7 +118,7 @@ export default {
 			).val();
 			arr = Object.keys(arr).map((key) => ({ ...arr[key], id: key }));
 			const today = new Date().toISOString().slice(0, -14)
-			let item = arr.find((item) => {
+			let item = arr.reverse().find((item) => {
 				let checkOldAgents = false;
 				if(item.oldAgents) {
 					const oldAgents = Object.keys(item.oldAgents).map(key => ({...item.oldAgents[key], id: key}))
