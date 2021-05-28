@@ -35,7 +35,7 @@
 		</div>
 		<div v-show="isOpen" class="bg-white">
 			<tr
-				v-for="client in items.filter((item) => item.status === category.title)"
+				v-for="client in sortToDate(items.filter((item) => item.status === category.title))"
 				:key="client.id"
 				class="border-b border-gray-200 hover:bg-gray-100 flex items-center cursor-pointer"
 				@click="$emit('openClient', client)"
@@ -95,7 +95,13 @@
 					</div>
 				</td>
 
-				<td class="w-2/12 py-3 px-6 text-center">
+				<td class="w-1/12 py-3 px-6 text-center">
+					<div class="flex items-center justify-center">
+						<span class="font-medium">{{client.createdAt | date('fullmonthDayPlusTime')}}</span>
+					</div>
+				</td>
+
+				<td class="w-1/12 py-3 px-6 text-center">
 					<div class="flex items-center justify-center">
 
 						<div
@@ -176,6 +182,14 @@ export default {
 				const agent = this.agents.filter((agent) => agent.id === id);
 				if (agent[0]) return agent[0].surname + ' ' + agent[0].name;
 			}
+		},
+
+		sortToDate(arr) {
+			arr.sort(function(a, b) {
+				return new Date(b.createdAt) - new Date(a.createdAt);
+			})
+
+			return arr
 		},
 
 		async returnClientToStart(client) {
