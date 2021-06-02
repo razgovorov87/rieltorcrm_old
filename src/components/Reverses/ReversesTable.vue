@@ -1,6 +1,10 @@
 <template>
 	<div class="">
-		<table class="w-full bg-white shadow-md rounded my-6">
+		<div class="w-full text-center text-xl font-medium mt-4">
+			Предстоящие встречи
+		</div>
+
+		<table class="w-full bg-white shadow-md rounded mt-3 mb-6">
 			<thead>
 				<tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal flex w-full">
 					<th class="py-3 px-6 text-left w-1/12">Агент</th>
@@ -13,7 +17,7 @@
 			</thead>
 			<tbody
 				class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full"
-				style="max-height: 42.2vh"
+				style="max-height: 32.2vh"
 			>
 
 				<div class="bg-white">
@@ -115,7 +119,7 @@
 			</thead>
 			<tbody
 				class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full"
-				style="max-height: 31.8vh"
+				style="max-height: 51.8vh"
 			>
 
 				<div class="bg-white">

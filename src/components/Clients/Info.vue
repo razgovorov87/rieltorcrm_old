@@ -170,7 +170,7 @@
         </div>
         <div class="flex flex-col flex-grow mt-5">
 
-          <div v-for="(man, idx) in composition.men" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm">
+          <div v-for="(man, idx) in composition.men" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6">
 
             <div class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full">
               <svg
@@ -198,9 +198,9 @@
             <p v-if="man.info" class="font-medium">Доп.информация: <span class="font-normal">{{man.info}}</span></p>
           </div>
 
-          <div v-if="composition.men" class="mt-3 mb-5 h-px bg-gray-400"></div>
+          <div v-if="composition.men" class="mb-5 h-px bg-gray-400"></div>
 
-          <div v-for="(man, idx) in composition.kids" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm">
+          <div v-for="(man, idx) in composition.kids" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6">
 
             <div class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full">
               <svg
@@ -223,9 +223,9 @@
             <p v-if="man.info" class="font-medium">Доп.информация: <span class="font-normal">{{man.info}}</span></p>
           </div>
 
-          <div v-if="composition.kids" class="mt-3 mb-5 h-px bg-gray-400"></div>
+          <div v-if="composition.kids" class="mb-5 h-px bg-gray-400"></div>
 
-          <div v-for="(man, idx) in composition.pets" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm">
+          <div v-for="(man, idx) in composition.pets" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6">
 
             <div class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full">
               <svg
@@ -249,7 +249,7 @@
             <p v-if="man.info" class="font-medium">Доп.информация: <span class="font-normal">{{man.info}}</span></p>
           </div>
 
-          <div v-if="composition.pets" class="mt-3 mb-5 h-px bg-gray-400"></div>
+          <div v-if="composition.pets" class="mb-5 h-px bg-gray-400"></div>
 
         </div>
       </div>
