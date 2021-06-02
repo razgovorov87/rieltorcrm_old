@@ -267,10 +267,12 @@ export default {
   }),
 
   mounted() {
-    this.categoriesId = this.categories.find(
-      (category) => category.title === this.client.status
-    ).id;
-    this.startId = this.categoriesId;
+    if(this.client.status !== 'Отказались') {
+      this.categoriesId = this.categories.find(
+        (category) => category.title === this.client.status
+      ).id;
+      this.startId = this.categoriesId;
+    }
   },
 
   methods: {

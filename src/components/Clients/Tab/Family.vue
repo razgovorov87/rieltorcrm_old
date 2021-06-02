@@ -446,10 +446,12 @@ export default {
   }),
 
   mounted() {
-    this.family = this.client.compositionType ? this.client.compositionType : "";
-    this.men = this.client.composition.men ? this.client.composition.men : [];
-    this.kids = this.client.composition.kids ? this.client.composition.kids : [];
-    this.pets = this.client.composition.pets ? this.client.composition.pets : [];
+    if(this.client.composition) {
+      this.family = this.client.compositionType ? this.client.compositionType : "";
+      this.men = this.client.composition.men ? this.client.composition.men : [];
+      this.kids = this.client.composition.kids ? this.client.composition.kids : [];
+      this.pets = this.client.composition.pets ? this.client.composition.pets : [];
+    }
   },
 
   methods: {

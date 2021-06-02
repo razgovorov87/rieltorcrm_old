@@ -48,7 +48,7 @@
 
 						<td class="w-3/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
-								<a :href="item.obj.link" target="_blank" class="font-medium border-b border-dashed border-gray-400">{{ item.obj.link  }}</a>
+								<a :href="item.obj.link" target="_blank" class="font-medium border-b border-dashed border-gray-400 truncate max-w-xs">{{ item.obj.link  }}</a>
 							</div>
 						</td>
 
@@ -62,8 +62,12 @@
 
 							<div class="flex items-center justify-center">
 								
-								<div v-if="item.result && item.agent === uid" class="px-3 py-1 bg-green-500 shadow font-medium rounded text-white flex items-center cursor-pointer" @click="$emit('openResultDialog', item)">
-									<span>{{item.result}}</span>
+								<div v-if="item.result && item.agent === uid" class="font-medium text-white flex items-center cursor-pointer" @click="$emit('openResultDialog', item)">
+									<span v-if="item.result === 'Оставили залог'" class="px-3 py-1 bg-green-500 shadow rounded text-white">{{item.result}}</span>
+									<span v-else-if="item.result === 'Клиент думает'" class="px-3 py-1 bg-yellow-300 shadow rounded text-gray-700">{{item.result}}</span>
+									<span v-else-if="item.result === 'Клиент отказался'" class="px-3 py-1 bg-red-500 shadow rounded text-white">{{item.result}}</span>
+									<span v-else-if="item.result === 'Подписали договор'" class="px-3 py-1 bg-green-300 shadow rounded text-gray-700">{{item.result}}</span>
+									<span v-else-if="item.result === 'Просмотр отменился'" class="px-3 py-1 bg-red-500 shadow rounded text-white">{{item.result}}</span>
 
 									<span class="ml-2">
 										<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,8 +77,12 @@
 
 								</div>
 
-								<div v-else-if="item.result && item.agent !== uid" class="px-3 py-1 bg-green-500 shadow font-medium rounded text-white flex items-center">
-									<span>{{item.result}}</span>
+								<div v-else-if="item.result && item.agent !== uid" class="font-medium text-white flex items-center">
+									<span v-if="item.result === 'Оставили залог'" class="px-3 py-1 bg-green-500 shadow rounded text-white">{{item.result}}</span>
+									<span v-else-if="item.result === 'Клиент думает'" class="px-3 py-1 bg-yellow-300 shadow rounded text-gray-700">{{item.result}}</span>
+									<span v-else-if="item.result === 'Клиент отказался'" class="px-3 py-1 bg-red-500 shadow rounded text-white">{{item.result}}</span>
+									<span v-else-if="item.result === 'Подписали договор'" class="px-3 py-1 bg-green-300 shadow rounded text-gray-700">{{item.result}}</span>
+									<span v-else-if="item.result === 'Просмотр отменился'" class="px-3 py-1 bg-red-500 shadow rounded text-white">{{item.result}}</span>
 								</div>
 								
 								<div v-else-if="!item.result && item.agent === uid" class="mr-2 transition transform hover:text-blue-500 hover:scale-110 cursor-pointer" @click="$emit('openResultDialog', item)">
@@ -164,8 +172,12 @@
 
 							<div class="flex items-center justify-center">
 
-								<div v-if="item.result && item.agent === uid" class="px-3 py-1 bg-green-500 shadow font-medium rounded text-white flex items-center cursor-pointer" @click="$emit('openResultDialog', item)">
-									<span>{{item.result}}</span>
+								<div v-if="item.result && item.agent === uid" class="font-medium text-white flex items-center cursor-pointer" @click="$emit('openResultDialog', item)">
+									<span v-if="item.result === 'Оставили залог'" class="px-3 py-1 bg-green-500 shadow rounded text-white">{{item.result}}</span>
+									<span v-else-if="item.result === 'Клиент думает'" class="px-3 py-1 bg-yellow-300 shadow rounded text-gray-700">{{item.result}}</span>
+									<span v-else-if="item.result === 'Клиент отказался'" class="px-3 py-1 bg-red-500 shadow rounded text-white">{{item.result}}</span>
+									<span v-else-if="item.result === 'Подписали договор'" class="px-3 py-1 bg-green-300 shadow rounded text-gray-700">{{item.result}}</span>
+									<span v-else-if="item.result === 'Просмотр отменился'" class="px-3 py-1 bg-red-500 shadow rounded text-white">{{item.result}}</span>
 
 									<span class="ml-2">
 										<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -175,8 +187,12 @@
 
 								</div>
 
-								<div v-else-if="item.result && item.agent !== uid" class="px-3 py-1 bg-green-500 shadow font-medium rounded text-white flex items-center">
-									<span>{{item.result}}</span>
+								<div v-else-if="item.result && item.agent !== uid" class="font-medium flex items-center">
+									<span v-if="item.result === 'Оставили залог'" class="px-3 py-1 bg-green-500 shadow rounded text-white">{{item.result}}</span>
+									<span v-else-if="item.result === 'Клиент думает'" class="px-3 py-1 bg-yellow-300 shadow rounded text-gray-700">{{item.result}}</span>
+									<span v-else-if="item.result === 'Клиент отказался'" class="px-3 py-1 bg-red-500 shadow rounded text-white">{{item.result}}</span>
+									<span v-else-if="item.result === 'Подписали договор'" class="px-3 py-1 bg-green-300 shadow rounded text-gray-700">{{item.result}}</span>
+									<span v-else-if="item.result === 'Просмотр отменился'" class="px-3 py-1 bg-red-500 shadow rounded text-white">{{item.result}}</span>
 								</div>
 								
 								<div v-else-if="!item.result && item.agent === uid" class="mr-2 transition transform hover:text-blue-500 hover:scale-110 cursor-pointer" @click="$emit('openResultDialog', item)">

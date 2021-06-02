@@ -170,33 +170,35 @@
         </div>
         <div class="flex flex-col flex-grow mt-5">
 
-          <div v-for="(man, idx) in composition.men" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6">
+          <template v-if="composition.men">
+            <div v-for="(man, idx) in composition.men" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6">
 
-            <div class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-700 mr-1"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              <span class="font-medium text-sm">Человек</span>
+              <div class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-gray-700 mr-1"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                <span class="font-medium text-sm">Человек</span>
+              </div>
+
+              <p v-if="man.fio" class="font-medium">ФИО: <span class="font-normal">{{man.fio}}</span></p>
+              <p v-if="man.gender" class="font-medium">Пол: <span class="font-normal">{{man.gender}}</span></p>
+              <p v-if="man.age" class="font-medium">Возраст: <span class="font-normal">{{man.age}}</span></p>
+              <p v-if="man.work" class="font-medium">Сфера деятельности: <span class="font-normal">{{man.work}}</span></p>
+              <p v-if="man.national" class="font-medium">Гражданство: <span class="font-normal">{{man.national}}</span></p>
+              <p v-if="man.register" class="font-medium">Прописка: <span class="font-normal">{{man.register}}</span></p>
+              <p v-if="man.salary" class="font-medium">Зарплата: <span class="font-normal">{{man.salary}}</span></p>
+              <p v-if="man.info" class="font-medium">Доп.информация: <span class="font-normal">{{man.info}}</span></p>
             </div>
-
-            <p v-if="man.fio" class="font-medium">ФИО: <span class="font-normal">{{man.fio}}</span></p>
-            <p v-if="man.gender" class="font-medium">Пол: <span class="font-normal">{{man.gender}}</span></p>
-            <p v-if="man.age" class="font-medium">Возраст: <span class="font-normal">{{man.age}}</span></p>
-            <p v-if="man.work" class="font-medium">Сфера деятельности: <span class="font-normal">{{man.work}}</span></p>
-            <p v-if="man.national" class="font-medium">Гражданство: <span class="font-normal">{{man.national}}</span></p>
-            <p v-if="man.register" class="font-medium">Прописка: <span class="font-normal">{{man.register}}</span></p>
-            <p v-if="man.salary" class="font-medium">Зарплата: <span class="font-normal">{{man.salary}}</span></p>
-            <p v-if="man.info" class="font-medium">Доп.информация: <span class="font-normal">{{man.info}}</span></p>
-          </div>
+          </template>
 
           <div v-if="composition.men" class="mb-5 h-px bg-gray-400"></div>
 
