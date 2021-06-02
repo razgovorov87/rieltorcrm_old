@@ -67,7 +67,12 @@
         </div>
         <div class="w-full flex flex-col mb-5">
           <span class="text-gray-600 text-sm">Клиенты</span>
+          <div class="flex items-center" v-if="client.status === 'Отказались'">
+            <span class="uppercase font-medium text-white">Статус:</span>
+            <div class="mx-2 px-2 py-1 bg-red-600 font-medium text-white rounded">Отказались</div>
+          </div>
           <div
+            v-else
             class="w-full rounded text-white text-lg font-bold relative pb-2 flex justify-between items-center pr-2 cursor-pointer"
             @click="categoriesMenu = true"
           >
@@ -90,6 +95,9 @@
               <div
                 v-if="categoriesMenu"
                 class="absolute top-0 left-0 w-full bg-white z-20 rounded"
+                v-click-outside="() => {
+                  categoriesMenu = false
+                }"
               >
                 <div
                   v-for="category in categories"
@@ -148,7 +156,9 @@
             ref="proposedTab" 
             :client="client" 
             @openSave="openSave" 
+            @openProposedObjectDialog="openProposedObjectDialog"
             @openReserveDialog="openReserveDialog"
+            @successSave="loading = false"
           />
         </div>
 
@@ -203,6 +213,10 @@
 
     <RefuseDialog v-if="refuseDialog" :client="client"  @close="refuseDialog = false"/>
     <ReserveDialog v-if="reserveDialog" :obj="reserveObj" @reserveObj="reserveObjDB" @close="reserveDialog = false" />
+    <ProposedObjectsDialog v-if="proposedObjectDialog" :info="proposedObjInfo" @saveObj="saveProposedObj" @close="proposedObjectDialog = false"/>
+    <div v-if="loading" class="absolute inset-0 z-50">
+      <Loading />
+    </div>
   </div>
 </template>
 
@@ -216,6 +230,7 @@ import Info from "@/components/Clients/Info";
 import Logs from "@/components/Clients/Logs";
 import RefuseDialog from "@/components/Clients/RefuseDialog";
 import ReserveDialog from "@/components/Clients/ReserveDialog";
+import ProposedObjectsDialog from "@/components/Clients/ProposedObjectsDialog";
 import ObjectList from "@/components/Admin/ObjectList";
 import HorizontalScroll from 'vue-horizontal-scroll'
 export default {
@@ -245,7 +260,10 @@ export default {
     refuseDialog: false,
     reserveDialog: false,
     reserveObj: null,
-    refreshProposedObj: 0
+    refreshProposedObj: 0,
+    proposedObjectDialog: false,
+    proposedObjInfo: null,
+    loading: false
   }),
 
   mounted() {
@@ -259,6 +277,18 @@ export default {
     openReserveDialog(obj) {
       this.reserveObj = obj
       this.reserveDialog = true
+    },
+
+    openProposedObjectDialog(data) {
+      this.proposedObjInfo = data
+      this.proposedObjectDialog = true
+    },
+
+    saveProposedObj(json) {
+      this.loading = true
+      this.$refs.proposedTab.saveObj(json)
+      this.proposedObjInfo = null
+      this.proposedObjectDialog = false
     },
 
     async reserveObjDB(data) {
@@ -287,13 +317,17 @@ export default {
         return;
       }
       let info = this.$refs.infoBlock.getClientInfo();
-      info.status = this.categories.find(
-        (category) => category.id === this.categoriesId
-      ).title;
+      if(this.client.status !== 'Отказались') {
+        info.status = this.categories.find(
+          (category) => category.id === this.categoriesId
+        ).title;
+      } else {
+        info.status = 'Отказались'
+      }
       info.clientId = this.client.id;
       this.$refs.proposedTab.saveLinks();
       this.$refs.houseTab.saveExceptions();
-      if (this.categoriesId !== this.startId) {
+      if (this.categoriesId !== this.startId && this.client.status !== 'Отказались') {
         this.logCategory();
         this.startId = this.categoriesId;
       }
@@ -399,7 +433,8 @@ export default {
     Refused,
     ReserveDialog,
     RefuseDialog,
-    HorizontalScroll
+    HorizontalScroll,
+    ProposedObjectsDialog
   },
 };
 </script>

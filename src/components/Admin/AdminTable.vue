@@ -5,9 +5,7 @@
 		<table class="w-full">
 			<thead>
 				<tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal flex w-full items-center">
-					<th class="py-3 px-6 text-left w-2/12">Клиент</th>
 
-					
 					<th class="py-3 px-6 text-left w-2/12 flex items-center">
 					
 						Агент
@@ -62,6 +60,7 @@
 						</div>
 					</th>
 
+					<th class="py-3 px-6 text-center w-2/12">Клиент</th>
 					<th class="py-3 px-6 text-center w-2/12">Телефон</th>
 					<th class="py-3 px-6 text-center w-2/12">Статус</th>
 					<th class="py-3 px-6 text-center w-1/12">Предложений</th>
@@ -71,7 +70,7 @@
 				</tr>
 			</thead>
 			<tbody
-				class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full"
+				class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full overflow-x-auto"
 				style="max-height: 84vh"
 			>
 				<TableGroup

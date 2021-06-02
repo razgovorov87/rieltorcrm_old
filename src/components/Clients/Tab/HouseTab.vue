@@ -62,6 +62,15 @@
       </div>
     </div>
 
+    <div v-if="client.comment">
+      <div class="flex flex-col">
+        <label class="font-medium text-gray-600">Комментарий менеджера</label>
+        <div class="flex bg-white rounded-lg border p-3 shadow">
+          {{client.comment}}
+        </div>
+      </div>
+    </div>
+
     <div>
         <h3 class="font-medium text-gray-500">Как вы отвели клиента от интересующей квартиры?</h3>
         <textarea 
@@ -110,6 +119,10 @@ export default {
         exceptions: this.exceptions,
       };
       await this.$store.dispatch("saveExceptions", data);
+    },
+
+    newline() {
+        this.value = `${this.value}\n`;
     },
 
 

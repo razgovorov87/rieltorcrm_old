@@ -36,7 +36,7 @@
                         </div>
 
                         <div v-if="log.logType === 'reserveObj'" class="flex flex-wrap justify-center">
-                            {{log.time + ' | ' + takeAgentInfo(log.agent) + '. Назначил встречу:' }} 
+                            {{log.time + ' | ' + takeAgentInfo(log.agent) + '. Назначил(а) встречу:' }} 
                             <a :href="log.obj.obj.link" target="__blank" class="mx-1 text-blue-500 underline truncate block" style="max-width: 150px;">{{log.obj.obj.link}}</a>
                             <span class="font-medium">( {{log.obj.date | date('fullmonthDay')}} в {{log.obj.time}})</span>
                         </div>

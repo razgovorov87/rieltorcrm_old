@@ -31,12 +31,20 @@
           v-if="!obj.status"
           class="mr-4 border-2 rounded px-3 py-1 focus:outline-none text-sm transition hover:bg-gray-200 cursor-pointer" 
           @click="offerObject(obj)"
-        >Предложить объект</button>
-        <button
-          v-else-if="obj.status && !checkLink(obj.link)"
-          class="mr-4 border-2 border-green-200 rounded px-3 py-1 focus:outline-none text-green-600 text-sm transition bg-green-200 hover:bg-green-300 hover:border-green-300"
-          @click="$emit('openReserveDialog', obj)"
-        >Записать на просмотр</button>
+        >
+          <span v-if="btnLoading">Загрузка...</span>
+          <span v-else>Предложить объект</span>
+        </button>
+        <div v-else-if="obj.status && !checkLink(obj.link)" class="flex items-center">
+          <button
+            class="mr-2 border-2 border-green-200 rounded px-3 py-1 focus:outline-none text-green-600 text-sm transition bg-green-200 hover:bg-green-300 hover:border-green-300"
+            @click="$emit('openReserveDialog', obj)"
+          >Записать на просмотр</button>
+          <button
+            class="mr-4 border-2 border-gray-600 rounded px-3 py-1 focus:outline-none text-gray-600 font-bold text-sm transition hover:bg-gray-200"
+            @click="openPDF(obj)"
+          >PDF</button>
+        </div>
         <div v-else class="mr-4 border-2 border-gray-200 rounded px-3 py-1 focus:outline-none text-gray-600 text-sm transition bg-gray-200 select-none">
           Назначен просмотр
         </div>
@@ -97,11 +105,13 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     props: ['client'],
     data: () => ({
         objStartLength: null,
-        objects: []
+        objects: [],
+        btnLoading: false
     }),
 
     mounted() {
@@ -130,6 +140,10 @@ export default {
           this.objects = await this.$store.dispatch('fetchClientObjects', clientId)
         },
 
+        openPDF(obj) {
+          window.open(`https://pdf.median24.ru/pdf/${obj.pdfNumber}.pdf`, '_blank')
+        }, 
+
         addProposedObject() {
             this.objects.push({
                 link: "",
@@ -153,46 +167,24 @@ export default {
         openLink(obj) {
             if ( (!obj.link.includes("http://") || !obj.link.includes("https://") ) && (!obj.link.includes("http://") && !obj.link.includes("https://"))) {
                 this.$toasts.push({
-                type: "error",
-                message: "Недействительная ссылка",
+                  type: "error",
+                  message: "Недействительная ссылка",
                 });
             } else window.open(obj.link, "_blank");
         },
 
         async offerObject(obj) {
-            if ( (!obj.link.includes("http://") || !obj.link.includes("https://") ) && (!obj.link.includes("http://") && !obj.link.includes("https://"))) {
+
+          if ( (!obj.link.includes("http://") || !obj.link.includes("https://") ) && (!obj.link.includes("http://") && !obj.link.includes("https://"))) {
                 this.$toasts.push({
                   type: "error",
                   message: "Недействительная ссылка",
                 });
                 return;
-            }
+          }
 
-            let pdfNumber = null
-            if( obj.link.includes('domofond') ) {
-              const reg = /[0-9]{1,99}/gi;
-              const match = obj.link.match(reg);
-              pdfNumber = +match[0] * 2;
-            } else {
-              const reg = /\/[0-9]{1,99}\//gi;
-              const match = obj.link.match(reg);
-              const id = match[0].substring(1, match[0].length - 1)
-              pdfNumber = id * 2;
-            }
-            
-
-            const data = {
-                itemId: this.client.id,
-                link: obj.link,
-                pdfNumber
-            }
-
-
-
-            
-
-            let verify = true;
-            if(this.client.logs) {
+          let verify = true;
+          if(this.client.logs) {
               let counter = 0
               Object.keys(this.client.logs).forEach(key => {
 
@@ -208,45 +200,89 @@ export default {
                   })
 
               })
-              if(counter === 2) {
+
+              if(counter >= 2) {
                 this.$toasts.push({
                     type: "error",
                     message: "Данный объект уже предложен",
                 })
                 verify = false;
               }
-            }
+          }
 
-            if(!verify) {
-                return
-            }
+          if(!verify) {
+            return
+          }
 
-            const findIdx = this.objects.findIndex(item => item === obj)
+          axios.get(`https://parser.dutyfreeflats.ru/Home/GetInfo?link=${obj.link}`)
+            .then(response => {
+              const data = response.data;
+              this.openDialog(data)
+            })
+        },
+
+        openDialog(data) {
+          this.$emit('openProposedObjectDialog', data)
+        },
+
+        async saveObj(obj) {
+
+          console.log(obj)
+
+            const data = {
+                itemId: this.client.id,
+                link: obj.url,
+                pdfNumber: obj.id * 2
+            }
+            
+
+            const findIdx = this.objects.findIndex(item => item.link === obj.url && !item.status)
             this.objects[findIdx].status = 'offered'
             this.objects[findIdx].pdfNumber = data.pdfNumber
 
-            try {
-                const log = await this.$store.dispatch('addOfferObjectLog', data)
-                this.saveLinks()
-                const rdnSymbols = this.rdnLink()
-                window.open(`https://${rdnSymbols}.p.dutyfreeflats.ru`, '_blank')
-                this.$parent.$refs.logsBlock.pushLog(log)
-                this.$emit('openSave', false)
-            } catch (e) {throw e}
+            const requestOptions = {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(obj)
+            };
+
+            let statusCode;
+            await fetch("https://parser.dutyfreeflats.ru/Home/CreatePDF", requestOptions)
+              .then(response => statusCode = response.status)
+              .catch(e => console.log(e))
+
+            if(statusCode === 200) {
+              try {
+                  const log = await this.$store.dispatch('addOfferObjectLog', data)
+                  this.saveLinks()
+                  this.$parent.$refs.logsBlock.pushLog(log)
+                  this.$emit('openSave', false)
+                  this.$toasts.push({
+                    type: 'success',
+                    message: 'Презентация успешно создана'
+                  })
+                  this.$emit('successSave')
+              } catch (e) {throw e}
+            } else {
+              this.$toasts.push({
+                type: 'error',
+                message: 'При создании презентации произошла ошибка!'
+              })
+            }
             
 
         },
 
-        rdnLink() {
-          let text = ''
-          const possible = "abcdefghijklmnopqrstuvwxyz";
+        // rndLink() {
+        //   let text = ''
+        //   const possible = "abcdefghijklmnopqrstuvwxyz";
 
-          for(let i = 0; i < 5; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-          }
+        //   for(let i = 0; i < 5; i++) {
+        //     text += possible.charAt(Math.floor(Math.random() * possible.length));
+        //   }
 
-          return text
-        },
+        //   return text
+        // },
 
         checkLink(link) {
           if(this.client.reserves) {

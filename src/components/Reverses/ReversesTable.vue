@@ -29,13 +29,13 @@
 							</div>
 						</td>
 
-						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
+						<td class="w-3/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
 								<span class="font-medium border-b border-dashed border-gray-400">{{ item.date | date('fullmonthDayAndYear')  }} в {{item.time}}</span>
 							</div>
 						</td>
 
-						<td class="w-3/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
+						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
 								<span v-if="item.agent === uid" class="font-medium border-b bg-gray-100 rounded px-3 py-1 shadow cursor-pointer">{{ takeClientInfo(item.clientId) }}</span>
 								<div v-else class="font-medium"><span class="text-gray-400 border-b-0">Телефон агента:</span> {{ takeAgentPhone(item.agent) }}</div>

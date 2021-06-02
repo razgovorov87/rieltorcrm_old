@@ -40,18 +40,18 @@
 				class="border-b border-gray-200 hover:bg-gray-100 flex items-center cursor-pointer"
 				@click="$emit('openClient', client)"
 			>
-				<td class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
-					<div class="flex items-center">
-						<span class="font-medium">{{ client.fio }}</span>
-					</div>
-				</td>
-
 				<td class="w-2/12 py-3 px-6 text-left">
 					<div v-if="refusedGroup" class="flex items-center">
 						<span class="mr-1 whitespace-nowrap">Причина отказа:</span> <span class="border-b border-gray-500 truncate">{{ lastCauses(client.causes) }}</span>
 					</div>
 					<div v-else class="flex items-center">
 						<span class="border-b border-gray-500">{{ takeAgentInfo(client.agent) }}</span>
+					</div>
+				</td>
+
+				<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
+					<div class="flex items-center">
+						<span class="font-medium">{{ client.fio }}</span>
 					</div>
 				</td>
 
@@ -233,7 +233,13 @@ export default {
 		lastCauses(causes) {
 			const idx = Object.keys(causes).length
 			const arr = Object.keys(causes).map(key => ({...causes[key], id: key}))
-			return arr[idx - 1].cause
+			const cause = arr[idx - 1].cause
+			if(cause !== 'Другое') {
+				return  cause
+			} else {
+				return arr[idx-1].otherCause
+			}
+			return 
 		}
 	},
 };
