@@ -224,7 +224,7 @@ export default {
             return
           }
 
-          axios.get(`https://parser.dutyfreeflats.ru/Home/GetInfo?link=${obj.link}`)
+          axios.get(`https://pars.dutyfreeflats.ru/Home/GetInfo?link=${obj.link}`)
             .then(response => {
               const data = response.data;
               this.openDialog(data)
@@ -260,7 +260,7 @@ export default {
             };
 
             let statusCode;
-            await fetch("https://parser.dutyfreeflats.ru/Home/CreatePDF", requestOptions)
+            await fetch("https://pars.dutyfreeflats.ru/Home/CreatePDF", requestOptions)
               .then(response => statusCode = response.status)
               .catch(e => console.log(e))
 
