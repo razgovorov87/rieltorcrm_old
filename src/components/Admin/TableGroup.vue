@@ -142,7 +142,7 @@
 							</svg>
 						</div> -->
 
-						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click.stop="removeClient(client)">
+						<div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer" @click.stop="removeClient($event, client)">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -219,14 +219,15 @@ export default {
 			return Object.keys(causes).length
 		},
 
-		async removeClient(client) {
+		async removeClient($event, client) {
 			try {
-				await this.$store.dispatch('deleteClient', client)
-				this.$parent.$parent.fetchClients()
-				this.$toasts.push({
-					type: 'success',
-					message: 'Клиент успешно удален'
-				})
+				console.log($event.target.scrollTop);
+				// await this.$store.dispatch('deleteClient', client)
+				// this.$parent.$parent.fetchClients()
+				// this.$toasts.push({
+				// 	type: 'success',
+				// 	message: 'Клиент успешно удален'
+				// })
 			} catch (e) {throw e}
 		},
 

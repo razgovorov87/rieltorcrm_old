@@ -220,7 +220,7 @@ export default {
 		priceTo: null,
 		objects: [],
 		objectDrawer: false,
-		changeItem: {},
+		changeItem: null,
 		refreshDrawer: 0,
 		userInfo: false,
 		attention: true

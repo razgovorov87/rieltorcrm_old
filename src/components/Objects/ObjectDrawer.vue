@@ -1,6 +1,6 @@
 <template>
 	<div class="absolute inset-0 z-50 flex justify-end overflow-hidden">
-		<div class="flex flex-col w-2/4 h-screen bg-white shadow-2xl z-30">
+		<div class="flex flex-col w-2/4 h-screen bg-white shadow-2xl z-50">
 			<div class="border-b p-5 flex justify-between items-center">
 				<span v-if="changeItem" class="text-xl font-medium select-none">Изменение объекта</span>
 				<span v-else class="text-xl font-medium select-none">Добавление объекта</span>
