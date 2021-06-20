@@ -224,7 +224,7 @@ export default {
             return
           }
 
-          axios.get(`https://pars.dutyfreeflats.ru/Home/GetInfo?link=${obj.link}`)
+          axios.get(`https://crmpars.dutyfreeflats.ru/Home/GetInfo?link=${obj.link}`)
             .then(response => {
               const data = response.data;
               this.openDialog(data)
