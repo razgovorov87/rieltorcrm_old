@@ -43,8 +43,8 @@ export default {
         itemsDrawer: false
     }),
 
-    mounted() {
-        this.fetchClients()
+    async mounted() {
+        await this.fetchClients()
         this.loading = false
     },
 
