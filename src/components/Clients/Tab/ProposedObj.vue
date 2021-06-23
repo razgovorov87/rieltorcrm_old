@@ -53,9 +53,16 @@
             @click="openPDF(obj)"
           >PDF</button>
         </div>
-        <div v-else class="mr-4 border-2 border-gray-200 rounded px-3 py-1 focus:outline-none text-gray-600 text-sm transition bg-gray-200 select-none">
+        <template v-else>
+          <div class="mr-4 border-2 border-gray-200 rounded px-3 py-1 focus:outline-none text-gray-600 text-sm transition bg-gray-200 select-none">
           Назначен просмотр
-        </div>
+          </div>
+          <button
+              class="mr-4 border-2 border-gray-600 rounded px-3 py-1 focus:outline-none text-gray-600 font-bold text-sm transition hover:bg-gray-200"
+              @click="openPDF(obj)"
+            >PDF
+          </button>
+        </template>
         <button class="focus:outline-none" @click="openLink(obj)">
           <svg
             xmlns="http://www.w3.org/2000/svg"

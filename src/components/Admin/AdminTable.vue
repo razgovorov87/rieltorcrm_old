@@ -70,6 +70,7 @@
 				</tr>
 			</thead>
 			<tbody
+				ref="tbody"
 				class="text-gray-600 text-sm font-light overflow-y-auto flex flex-col w-full overflow-x-auto"
 				style="max-height: 84vh"
 			>

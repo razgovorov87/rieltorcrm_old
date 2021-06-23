@@ -14,14 +14,12 @@
         v-if="typeDisplay === 'table' && !loading"
         :categories="categories"
         :clients="clients"
-        :key="refreshList"
         @openClient="openClient"
       />
       <AdminColumn
         v-if="typeDisplay === 'column' && !loading"
         :categories="categories"
         :clients="clients"
-        :key="refreshList2"
         @openClient="openClient"
       />
     </div>
@@ -101,8 +99,6 @@ export default {
     async fetchClients() {
       this.clients = await this.$store.dispatch("fetchClients");
       this.loading = false;
-      this.refreshList++;
-      this.refreshList2++;
     },
   },
 

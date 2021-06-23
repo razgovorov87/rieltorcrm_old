@@ -173,7 +173,7 @@ export default {
 	}),
 
 	mounted() {
-		if (this.items.filter((item) => item.status === this.category.title).length < 10) this.isOpen = true;
+		if(this.refusedGroup) this.isOpen = true
 	},
 
 	methods: {
@@ -195,7 +195,9 @@ export default {
 		async returnClientToStart(client) {
 			try {
 				await this.$store.dispatch('returnClientToStart', client)
-				this.$parent.$parent.fetchClients()
+				await this.$parent.$parent.fetchClients()
+				await this.$parent.filterClients()
+				this.$parent.refused = this.$parent.clients.filter(client => client.status === 'Отказались')
 				this.$toasts.push({
 					type: 'success',
 					message: 'Клиент успешно перенесен в группу "Не обработано"'
@@ -219,15 +221,16 @@ export default {
 			return Object.keys(causes).length
 		},
 
-		async removeClient($event, client) {
+		async removeClient(e, client) {
 			try {
-				console.log($event.target.scrollTop);
-				// await this.$store.dispatch('deleteClient', client)
-				// this.$parent.$parent.fetchClients()
-				// this.$toasts.push({
-				// 	type: 'success',
-				// 	message: 'Клиент успешно удален'
-				// })
+				await this.$store.dispatch('deleteClient', client)
+				await this.$parent.$parent.fetchClients()
+				await this.$parent.filterClients()
+				this.$parent.refused = this.$parent.clients.filter(client => client.status === 'Отказались')
+				this.$toasts.push({
+					type: 'success',
+					message: 'Клиент успешно удален'
+				})
 			} catch (e) {throw e}
 		},
 
