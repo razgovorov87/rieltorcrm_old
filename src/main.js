@@ -39,18 +39,12 @@ Vue.filter('currency', currencyFilter);
 Vue.use(Vuelidate);
 
 firebase.initializeApp({
-	// apiKey: "AIzaSyDXpSiUK2x3sjXKNf0rLfC4sGcuBW4nquk",
-	// authDomain: "rieltorcrm.firebaseapp.com",
-	// projectId: "rieltorcrm",
-	// storageBucket: "rieltorcrm.appspot.com",
-	// messagingSenderId: "957850893192",
-	// appId: "1:957850893192:web:5b00e567c1fbd481a0d83d"
-	apiKey: 'AIzaSyAXbatngcm4L-dHazzyB-6EkjlonSGrZVI',
-	authDomain: 'rieltorcrm1.firebaseapp.com',
-	projectId: 'rieltorcrm1',
-	storageBucket: 'rieltorcrm1.appspot.com',
-	messagingSenderId: '329650004191',
-	appId: '1:329650004191:web:ab76b1ac728a03b319896a',
+	apiKey: 'AIzaSyAEnZyON3zJRn5Ac3kwaTI50HjPucoqXoY',
+	authDomain: 'rieltorcrm2.firebaseapp.com',
+	projectId: 'rieltorcrm2',
+	storageBucket: 'rieltorcrm2.appspot.com',
+	messagingSenderId: '1083720871970',
+	appId: '1:1083720871970:web:1dd4e64e655e39334a9a7b',
 });
 
 let app;
