@@ -111,7 +111,7 @@
               </div>
             </transition>
             <div
-              class="absolute bottom-0 left-0 w-full h-1 bg-darkDivider rounded-xl flex z-10"
+              class="absolute bottom-0 left-0 w-full h-1 bg-dividerBg rounded-xl flex z-10"
             >
               <div
                 class="w-1/3 bg-blue-500 rounded-l-xl"
