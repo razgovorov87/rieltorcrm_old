@@ -7,11 +7,11 @@
 		<table class="w-full bg-white shadow-md rounded mt-3 mb-6">
 			<thead>
 				<tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal flex w-full">
-					<th class="py-3 px-6 text-left w-1/12">Агент</th>
-					<th class="py-3 px-6 text-center w-3/12">Дата и время</th>
+					<th class="py-3 px-6 text-left w-2/12">Агент</th>
+					<th class="py-3 px-6 text-center w-2/12">Дата и время</th>
 					<th class="py-3 px-6 text-center w-2/12">Клиент</th>
-					<th class="py-3 px-6 text-center w-3/12">Ссылка на объект</th>
-					<th class="py-3 px-6 text-center w-1/12">Создал</th>
+					<th class="py-3 px-6 text-center w-2/12 truncate">Ссылка на объект</th>
+					<th class="py-3 px-6 text-left w-2/12">Создал</th>
 					<th class="py-3 px-6 text-center w-2/12">Результат встречи</th>
 				</tr>
 			</thead>
@@ -27,13 +27,13 @@
 						class="border-b border-gray-200 hover:bg-gray-100 flex items-center"
 					>
 					
-						<td class="w-1/12 py-3 px-6 text-left whitespace-nowrap">
+						<td class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
 							<div class="flex items-center">
 								<span class="font-medium">{{ takeAgentInfo(item.agent) }}</span>
 							</div>
 						</td>
 
-						<td class="w-3/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
+						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
 								<span class="font-medium border-b border-dashed border-gray-400">{{ item.date | date('fullmonthDayAndYear')  }} в {{item.time}}</span>
 							</div>
@@ -42,17 +42,17 @@
 						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
 								<span v-if="item.agent === uid" class="font-medium border-b bg-gray-100 rounded px-3 py-1 shadow cursor-pointer">{{ takeClientInfo(item.clientId) }}</span>
-								<div v-else class="font-medium"><span class="text-gray-400 border-b-0">Телефон агента:</span> {{ takeAgentPhone(item.agent) }}</div>
+								<div v-else class="font-medium"><span class="text-gray-400 border-b-0">Агент:</span> {{ takeAgentPhone(item.agent) }}</div>
 							</div>
 						</td>
 
-						<td class="w-3/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
+						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
 								<a :href="item.obj.link" target="_blank" class="font-medium border-b border-dashed border-gray-400 truncate max-w-xs">{{ item.obj.link  }}</a>
 							</div>
 						</td>
 
-						<td class="w-1/12 py-3 px-6 text-left flex justify-center whitespace-nowrap">
+						<td class="w-2/12 py-3 px-6 text-left flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
 								<span class="font-medium">{{ takeAgentInfo(item.author) }}</span>
 							</div>
@@ -117,11 +117,11 @@
 		<table class="w-full bg-white shadow-md rounded">
 			<thead>
 				<tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal flex w-full">
-					<th class="py-3 px-6 text-left w-1/12">Агент</th>
-					<th class="py-3 px-6 text-center w-3/12">Дата и время</th>
+					<th class="py-3 px-6 text-left w-2/12">Агент</th>
+					<th class="py-3 px-6 text-center w-2/12">Дата и время</th>
 					<th class="py-3 px-6 text-center w-2/12">Клиент</th>
-					<th class="py-3 px-6 text-center w-3/12">Ссылка на объект</th>
-					<th class="py-3 px-6 text-center w-1/12">Создал</th>
+					<th class="py-3 px-6 text-center w-2/12 truncate">Ссылка на объект</th>
+					<th class="py-3 px-6 text-left w-2/12">Создал</th>
 					<th class="py-3 px-6 text-center w-2/12">Результат встречи</th>
 				</tr>
 			</thead>
@@ -137,13 +137,13 @@
 						class="border-b border-gray-200 hover:bg-gray-100 flex items-center"
 					>
 					
-						<td class="w-1/12 py-3 px-6 text-left whitespace-nowrap">
+						<td class="w-2/12 py-3 px-6 text-left whitespace-nowrap">
 							<div class="flex items-center">
 								<span class="font-medium">{{ takeAgentInfo(item.agent) }}</span>
 							</div>
 						</td>
 
-						<td class="w-3/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
+						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
 								<span class="font-medium border-b border-dashed border-gray-400">{{ item.date | date('fullmonthDayAndYear')  }} в {{item.time}}</span>
 							</div>
@@ -152,17 +152,22 @@
 						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 							<div class="flex items-center">
 								<span v-if="item.agent === uid" class="font-medium border-b bg-gray-100 rounded px-3 py-1 shadow cursor-pointer">{{ takeClientInfo(item.clientId) }}</span>
-								<div v-else class="font-medium"><span class="text-gray-400 border-b-0">Телефон агента:</span> {{ takeAgentPhone(item.agent) }}</div>
+								<div v-else class="font-medium"><span class="text-gray-400 border-b-0">Агент:</span> {{ takeAgentPhone(item.agent) }}</div>
 							</div>
 						</td>
 
-						<td class="w-3/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
-							<div class="flex items-center">
-								<a :href="item.obj.link" target="_blank" class="font-medium border-b border-dashed border-gray-400">{{ item.obj.link  }}</a>
+						<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
+							<div class="flex items-center truncate">
+								<a :href="item.obj.link" target="_blank" class="font-medium border-gray-400">
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+									</svg>
+								</a>
+								
 							</div>
 						</td>
 
-						<td class="w-1/12 py-3 px-6 text-left flex justify-center whitespace-nowrap">
+						<td class="w-2/12 py-3 px-6 text-left flex whitespace-nowrap">
 							<div class="flex items-center">
 								<span class="font-medium">{{ takeAgentInfo(item.author) }}</span>
 							</div>

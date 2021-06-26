@@ -5,13 +5,30 @@
         <span class="text-xl font-medium select-none flex-grow">Добавление клиента</span>
 
 
-        <div class="flex mr-6">
-          <label class="flex justify-start items-center bg-dividerBg text-white py-1.5 px-3 rounded">
-            <div class="select-none font-medium uppercase text-sm">Принятый</div>
-            <div class="bg-white border-2 rounded border-darkDivider w-6 h-6 flex flex-shrink-0 justify-center items-center ml-2">
-              <input v-model="missedCall" type="checkbox" class="opacity-0 absolute">
-              <svg class="fill-current hidden w-4 h-4 text-green-500 pointer-events-none" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+        <div class="flex flex-col mr-6">
+          <label class="flex justify-start items-center py-1 px-3 rounded">
+            <div class="bg-white border-2 rounded-full border-red-600 w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2">
+              <input v-model="missedCall" type="checkbox" class="opacity-0 absolute" 
+              @change=" () => {
+                confirmCall = !missedCall
+              }">
+              <svg class="hidden w-3 h-3 text-red-600 pointer-events-none" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" fill="darkRed" />
+              </svg>
             </div>
+            <div class="select-none font-medium text-sm text-red-600">Пропущенный</div>
+          </label>
+          <label class="flex justify-start items-center py-1 px-3 rounded">
+            <div class="bg-white border-2 rounded-full border-green-600 w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2">
+              <input v-model="confirmCall" type="checkbox" class="opacity-0 absolute" 
+              @change=" () => {
+                missedCall = !confirmCall
+              }">
+              <svg class="hidden w-3 h-3 text-red-600 pointer-events-none" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" fill="green" />
+              </svg>
+            </div>
+            <div class="select-none font-medium text-sm text-green-600">Принятый</div>
           </label>
         </div>
 
@@ -188,7 +205,8 @@ import ObjectList from "@/components/Admin/ObjectList";
 export default {
   data: () => ({
     formVerify: false,
-    missedCall: false,
+    missedCall: true,
+    confirmCall: false,
     phone: "",
     fio: "",
     comment: "",
@@ -217,7 +235,7 @@ export default {
           phone: this.phone,
           fio: this.fio,
           comment: this.comment,
-          missedCall: !this.missedCall,
+          missedCall: this.missedCall,
           interestingObj: this.interestingObj,
         };
 

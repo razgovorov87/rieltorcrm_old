@@ -16,8 +16,8 @@
                         </div>
 
                         <div v-if="log.logType === 'system'">
-                            {{log.time + ' ' + takeAgentInfo(log.agent) + '. ' + log.msgType + ':'}}
-                            <span class="border rounded-xl px-4 py-0.5 text-white ml-1 shadow" 
+                            {{log.time + ' | ' + takeAgentInfo(log.agent) + ' | ' + log.msgType + ':'}}
+                            <span class="flex border rounded-xl px-4 py-0.5 text-white ml-1 shadow flex-nowrap text-center justify-center" 
                             :class="[
                                 `bg-${log.categoriesColor}`,
                                 `border-${log.categoriesColor}`
@@ -30,13 +30,13 @@
 
                         
                         <div v-if="log.logType === 'offerObject'" class="flex flex-wrap justify-center">
-                            {{log.time + ' | ' + takeAgentInfo(log.agent) + '. Предложен объект:' }} 
+                            {{log.time + ' | ' + takeAgentInfo(log.agent) + ' | Предложен объект:' }} 
                             <a :href="log.link" target="__blank" class="mx-1 text-blue-500 underline truncate block" style="max-width: 150px;">{{log.link}}</a>
                             (№: {{log.pdfNumber}})
                         </div>
 
                         <div v-if="log.logType === 'reserveObj'" class="flex flex-wrap justify-center">
-                            {{log.time + ' | ' + takeAgentInfo(log.agent) + '. Назначил(а) встречу:' }} 
+                            {{log.time + ' | ' + takeAgentInfo(log.agent) + ' | Назначил(а) встречу:' }} 
                             <a :href="log.obj.obj.link" target="__blank" class="mx-1 text-blue-500 underline truncate block" style="max-width: 150px;">{{log.obj.obj.link}}</a>
                             <span class="font-medium">( {{log.obj.date | date('fullmonthDay')}} в {{log.obj.time}})</span>
                         </div>

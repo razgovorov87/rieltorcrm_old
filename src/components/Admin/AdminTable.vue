@@ -61,12 +61,12 @@
 					</th>
 
 					<th class="py-3 px-6 text-center w-2/12">Клиент</th>
-					<th class="py-3 px-6 text-center w-2/12">Телефон</th>
+					<th class="py-3 px-6 text-center w-1/12">Телефон</th>
 					<th class="py-3 px-6 text-center w-2/12">Статус</th>
-					<th class="py-3 px-6 text-center w-1/12">Предложений</th>
+					<th class="py-3 px-6 text-center w-1/12 truncate">Предложений</th>
 					<th class="py-3 px-6 text-center w-1/12">Отказов</th>
-					<th class="py-3 px-6 text-center w-1/12">Создан</th>
-					<th class="py-3 px-6 text-center w-1/12">Действия</th>
+					<th class="py-3 px-2 text-center w-2/12">Создан</th>
+					<th class="py-3 px-2 text-center w-1/12">Действия</th>
 				</tr>
 			</thead>
 			<tbody

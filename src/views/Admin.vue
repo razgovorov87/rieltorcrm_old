@@ -37,6 +37,7 @@
         @closeDrawer="addNewClientDrawer = false"
         @addNewClient="() => {
           fetchClients()
+          addNewClientDrawer = false
           refreshHeader++
         }"
       />

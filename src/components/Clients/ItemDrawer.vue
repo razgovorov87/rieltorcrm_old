@@ -102,7 +102,7 @@
                 <div
                   v-for="category in categories"
                   :key="category.id"
-                  class="py-2 px-4 bg-gray-400 text-base font-normal text-gray-800"
+                  class="py-2 px-4 bg-gray-400 text-base font-medium text-white"
                   :class="'bg-' + category.color"
                   @click.stop="selectCategories(category)"
                 >

@@ -41,15 +41,15 @@
 				@click="$emit('openClient', client)"
 			>
 				<td class="w-2/12 py-3 px-6 text-left">
-					<div v-if="refusedGroup" class="flex items-center">
-						<span class="mr-1 whitespace-nowrap">Причина отказа:</span> <span class="border-b border-gray-500 truncate">{{ lastCauses(client.causes) }}</span>
+					<div v-if="refusedGroup" class="flex items-center truncate max-w-lg">
+						<span class="mr-1 whitespace-nowrap">Причина:</span> <span class="border-b border-gray-500">{{ lastCauses(client.causes) }}</span>
 					</div>
 					<div v-else class="flex items-center">
 						<span class="border-b border-gray-500">{{ takeAgentInfo(client.agent) }}</span>
 					</div>
 				</td>
 
-				<td class="w-2/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
+				<td class="w-1/12 py-3 px-6 text-center flex justify-center whitespace-nowrap">
 					<div class="flex items-center">
 						<span class="font-medium">{{ client.fio }}</span>
 					</div>
@@ -95,13 +95,13 @@
 					</div>
 				</td>
 
-				<td class="w-1/12 py-3 px-6 text-center">
+				<td class="w-2/12 py-3 px-2 text-center">
 					<div class="flex items-center justify-center">
-						<span class="font-medium">{{client.createdAt | date('fullmonthDayPlusTime')}}</span>
+						<span class="font-medium">{{client.createdAt | date('tableGroupDate_Time') }} {{client.createdAt | date('tableGroupDate_Date') }}</span>
 					</div>
 				</td>
 
-				<td class="w-1/12 py-3 px-6 text-center">
+				<td class="w-1/12 py-3 px-2 text-center">
 					<div class="flex items-center justify-center">
 
 						<div
