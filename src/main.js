@@ -31,6 +31,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
+import config from './configFirebase';
 
 Vue.config.productionTip = false;
 
@@ -38,20 +39,7 @@ Vue.filter('date', dateFilter);
 Vue.filter('currency', currencyFilter);
 Vue.use(Vuelidate);
 
-firebase.initializeApp({
-	// apiKey: "AIzaSyDXpSiUK2x3sjXKNf0rLfC4sGcuBW4nquk",
-	// authDomain: "rieltorcrm.firebaseapp.com",
-	// projectId: "rieltorcrm",
-	// storageBucket: "rieltorcrm.appspot.com",
-	// messagingSenderId: "957850893192",
-	// appId: "1:957850893192:web:5b00e567c1fbd481a0d83d"
-	apiKey: 'AIzaSyAXbatngcm4L-dHazzyB-6EkjlonSGrZVI',
-	authDomain: 'rieltorcrm1.firebaseapp.com',
-	projectId: 'rieltorcrm1',
-	storageBucket: 'rieltorcrm1.appspot.com',
-	messagingSenderId: '329650004191',
-	appId: '1:329650004191:web:ab76b1ac728a03b319896a',
-});
+firebase.initializeApp(config);
 
 let app;
 
