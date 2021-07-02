@@ -267,7 +267,7 @@ export default {
             };
 
             let statusCode;
-            await fetch("https://pars.dutyfreeflats.ru/Home/CreatePDF", requestOptions)
+            await fetch("https://crmpars.dutyfreeflats.ru/Home/CreatePDF", requestOptions)
               .then(response => statusCode = response.status)
               .catch(e => console.log(e))
 
