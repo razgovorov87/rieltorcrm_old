@@ -85,13 +85,13 @@
 				
 				<td class="w-1/12 py-3 px-6 text-center">
 					<div class="flex items-center justify-center">
-						<span class="font-medium">{{ offerCount(client.proposedObjects) }}</span>
+						<span class="font-medium">{{ client.proposedObjects }}</span>
 					</div>
 				</td>
 				<td class="w-1/12 py-3 px-6 text-center">
 					<div class="flex items-center justify-center">
-						<span v-if="refuseCount(client.causes) >= 3" class="font-medium p-2 bg-red-600 rounded-full h-8 w-8 flex items-center justify-center text-white">{{ refuseCount(client.causes) }}</span>
-						<span v-else class="font-medium">{{ refuseCount(client.causes) }}</span>
+						<span v-if="client.reserves >= 3" class="font-medium p-2 bg-red-600 rounded-full h-8 w-8 flex items-center justify-center text-white">{{ client.reserves }}</span>
+						<span v-else class="font-medium">{{ client.reserves }}</span>
 					</div>
 				</td>
 

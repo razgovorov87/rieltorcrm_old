@@ -3,7 +3,6 @@
 		<div class="logo h-divider flex-shrink-0"></div>
 		<nav class="flex flex-col w-full items-center justify-start mt-2 flex-grow">
 			<router-link
-				v-show="!checkAdmin || userInfo.login === 'admin'"
 				to="/"
 				class="py-2 flex flex-col items-center text-gray-400 outline-none hover:text-white transition w-full"
 				exact
