@@ -23,45 +23,33 @@ export default {
 	actions: {
 		async addNewClient({ dispatch, commit }, { phone, fio, comment, missedCall, interestingObj }) {
 			const uid = await dispatch('getUid');
-			const clients = (
-				await firebase
-					.database()
-					.ref('/clients')
-					.once('value')
-			).val();
+			const data = {
+				phone,
+				fio,
+				comment,
+				interestingObj,
+				missedCall,
+				author: uid,
+			};
 
-			if (clients) {
-				const checkPhone = Object.keys(clients).find((key) => clients[key].phone === phone);
-				if (checkPhone) return 'dublicatePhone';
-			}
-
-			await firebase
-				.database()
-				.ref(`/clients/`)
-				.push({
-					phone,
-					fio,
-					comment,
-					status: 'Не обработано',
-					interestingObj,
-					missedCall,
-					budget: 0,
-					author: uid,
-					createdAt: new Date().toString(),
-				});
+			const response = await axios.post(`${SERVER_URL}/addNewClient`, data, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
 		},
 
-		async saveClientComposition({ dispatch }, [clientId, data, compositionType]) {
-			await firebase
-				.database()
-				.ref(`/clients/${clientId}/composition`)
-				.set(data);
-			await firebase
-				.database()
-				.ref(`/clients/${clientId}/`)
-				.update({
-					compositionType,
-				});
+		async saveClientComposition({ dispatch }, [clientId, frontData, compositionType]) {
+			const data = {
+				clientId,
+				data: frontData,
+				compositionType,
+			};
+			const response = await axios.post(`${SERVER_URL}/saveClientComposition`, data, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
 		},
 
 		async saveCriterion({ dispatch }, { data, clientId }) {
