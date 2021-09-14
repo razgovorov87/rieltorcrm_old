@@ -38,26 +38,11 @@ export default {
 		},
 
 		async deleteUser({ dispatch }, agent) {
-			const uid = await dispatch('getUid');
-			await firebase
-				.database()
-				.ref(`/users/${agent.id}`)
-				.update({ status: 'deleted' });
-			await dispatch('login', { login: agent.login, password: agent.password });
-			const user = firebase.auth().currentUser;
-			try {
-				user.delete();
-				await dispatch('logout');
-				const reAuthUser = (
-					await firebase
-						.database()
-						.ref(`/users/${uid}`)
-						.once('value')
-				).val();
-				await dispatch('login', { login: reAuthUser.login, password: reAuthUser.password });
-			} catch (e) {
-				throw e;
-			}
+			const response = await axios.post(`${SERVER_URL}/deleteUser`, null, {
+				params: {
+					agentId: agent.id,
+				},
+			});
 		},
 	},
 
