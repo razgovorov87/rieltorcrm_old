@@ -1,5 +1,5 @@
-import firebase from 'firebase/app';
 import axios from 'axios';
+import firebase from 'firebase/app';
 
 const SERVER_URL = 'http://109.173.88.42:5000';
 
@@ -81,15 +81,17 @@ export default {
 
 		async fetchUserClients({ dispatch, commit }) {
 			const uid = await dispatch('getUid');
-			const response = (
-				await firebase
-					.database()
-					.ref('/clients')
-					.once('value')
-			).val();
-			if (!response) return false;
-			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
-			return result.filter((client) => client.agent === uid);
+			const data = {
+				agentId: uid,
+			}
+			const response = await axios.get(`${SERVER_URL}/fetchUserClients`, {
+				params: {
+					agentId: uid,
+				}
+			});
+
+			const result = Object.keys(response.data).map((key) => ({ ...response.data[key], id: key }));
+			return result;
 		},
 
 		async saveClientInfo({ dispatch, commit }, { fio, budget, status, clientId }) {
@@ -127,89 +129,39 @@ export default {
 
 		async catchNewClient({ dispatch, commit }) {
 			const uid = await dispatch('getUid');
-			let arr = (
-				await firebase
-					.database()
-					.ref('/clients')
-					.once('value')
-			).val();
-			arr = Object.keys(arr).map((key) => ({ ...arr[key], id: key }));
-			const today = new Date().toISOString().slice(0, -14);
-			let item = arr.reverse().find((item) => {
-				let checkOldAgents = false;
-				if (item.oldAgents) {
-					const oldAgents = Object.keys(item.oldAgents).map((key) => ({
-						...item.oldAgents[key],
-						id: key,
-					}));
-					checkOldAgents = oldAgents.find((agent) => agent.agent === uid);
-				}
-
-				if (!item.agent && (!item.lastCause || item.lastCause !== today) && !checkOldAgents) {
-					return item;
-				}
-			});
-			if (!item) return 'empty_list';
-			await firebase
-				.database()
-				.ref(`/clients/${item.id}`)
-				.update({
-					agent: uid,
-				});
-			const itemId = item.id;
-			await dispatch('addCatchLog', { itemId, uid });
-			item = (
-				await firebase
-					.database()
-					.ref(`/clients/${itemId}`)
-					.once('value')
-			).val();
-			await firebase
-				.database()
-				.ref(`/clients/${itemId}`)
-				.update({
-					status: 'Не обработано',
-				});
-			return { ...item, id: itemId };
+			const data = {
+				agentId: uid,
+			};
+			const item = await axios.post(`${SERVER_URL}/catchNewClient`, data);
+			return item.data;
 		},
 
 		async refuseClient({ dispatch }, { cause, otherCause, comment, clientId }) {
 			const uid = await dispatch('getUid');
-			await firebase
-				.database()
-				.ref(`/clients/${clientId}`)
-				.update({
-					agent: '',
-					status: 'Отказались',
-					lastCause: new Date().toISOString().slice(0, -14),
-				});
-			await firebase
-				.database()
-				.ref(`/clients/${clientId}/oldAgents/`)
-				.push({
-					agent: uid,
-				});
-			await firebase
-				.database()
-				.ref(`/clients/${clientId}/causes`)
-				.push({
-					cause,
-					agent: uid,
-					date: new Date().toISOString(),
-					otherCause,
-					comment,
-				});
-			dispatch('refuseLog', { clientId, cause, otherCause });
+			const data = {
+				agentId: uid,
+				cause,
+				otherCause,
+				comment,
+				clientId,
+			}
+			const response = await axios.post(`${SERVER_URL}/refuseClient`, data, {
+				headers: {
+					'Content-Type': 'application/json',
+				}
+			})
 		},
 
 		async removeNewClients({ dispatch }, clients) {
-			clients.forEach(async (client) => {
-				await firebase
-					.database()
-					.ref(`/clients/${client.id}/`)
-					.update({
-						notification: null,
-					});
+			const ids = [];
+			clients.forEach(client => ids.push(client.id));
+			const data = {
+				clients: ids
+			}
+			const respose = await axios.post(`${SERVER_URL}/removeNewClients`, data, {
+				headers: {
+					'Content-Type': 'application/json',
+				}
 			});
 		},
 

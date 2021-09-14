@@ -6,7 +6,19 @@
     >
       <div
         v-show="!disableBtn"
-        class="w-full py-2 px-2 mb-2 border-2 text-gray-400 cursor-pointer bg-transparent text-center hover:bg-gray-200 transition"
+        class="
+          w-full
+          py-2
+          px-2
+          mb-2
+          border-2
+          text-gray-400
+          cursor-pointer
+          bg-transparent
+          text-center
+          hover:bg-gray-200
+          transition
+        "
         @click="addNewItem"
       >
         Взять нового клиента
@@ -15,7 +27,18 @@
         <div
           v-for="item in list"
           :key="item.id"
-          class="w-full px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition"
+          class="
+            w-full
+            px-2
+            mb-2
+            bg-white
+            shadow
+            border
+            flex
+            cursor-pointer
+            hover:bg-gray-100
+            transition
+          "
           :class="item.fio ? 'py-1' : 'py-2'"
           @click="openItemDrawer(item)"
         >
@@ -41,7 +64,19 @@
             <div class="flex flex-col" @click.stop="">
               <span class="text-red-600 font-medium">Возникла ошибка!</span>
               <p class="text-sm">Сообщите этот идентификатор администратору.</p>
-              <span class="flex px-2 py-1 bg-gray-200 rounded mt-2 uppercase font-medium">{{item.id}}</span>
+              <span
+                class="
+                  flex
+                  px-2
+                  py-1
+                  bg-gray-200
+                  rounded
+                  mt-2
+                  uppercase
+                  font-medium
+                "
+                >{{ item.id }}</span
+              >
             </div>
           </template>
         </div>
@@ -53,7 +88,20 @@
         <div
           v-for="i in processed"
           :key="i.id"
-          class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none"
+          class="
+            w-full
+            py-1
+            px-2
+            mb-2
+            bg-white
+            shadow
+            border
+            flex
+            cursor-pointer
+            hover:bg-gray-100
+            transition
+            select-none
+          "
           @click="openItemDrawer(i)"
         >
           <div class="flex flex-col flex-grow">
@@ -78,7 +126,20 @@
         <div
           v-for="i in view"
           :key="i.id"
-          class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none"
+          class="
+            w-full
+            py-1
+            px-2
+            mb-2
+            bg-white
+            shadow
+            border
+            flex
+            cursor-pointer
+            hover:bg-gray-100
+            transition
+            select-none
+          "
           @click="openItemDrawer(i)"
         >
           <div class="flex flex-col flex-grow">
@@ -103,7 +164,20 @@
         <div
           v-for="i in success"
           :key="i.id"
-          class="w-full py-1 px-2 mb-2 bg-white shadow border flex cursor-pointer hover:bg-gray-100 transition select-none"
+          class="
+            w-full
+            py-1
+            px-2
+            mb-2
+            bg-white
+            shadow
+            border
+            flex
+            cursor-pointer
+            hover:bg-gray-100
+            transition
+            select-none
+          "
           @click="openItemDrawer(i)"
         >
           <div class="flex flex-col flex-grow">
@@ -155,7 +229,6 @@ export default {
         return;
       }
       this.list.push(item);
-      this.$emit("catchNewClient");
     },
 
     openItemDrawer(item) {
