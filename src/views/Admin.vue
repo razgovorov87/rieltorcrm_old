@@ -35,11 +35,13 @@
       <ClientDrawer
         v-show="addNewClientDrawer"
         @closeDrawer="addNewClientDrawer = false"
-        @addNewClient="() => {
-          fetchClients()
-          addNewClientDrawer = false
-          refreshHeader++
-        }"
+        @addNewClient="
+          () => {
+            fetchClients();
+            addNewClientDrawer = false;
+            refreshHeader++;
+          }
+        "
       />
     </transition>
 
@@ -47,10 +49,12 @@
       <ItemDrawer
         v-if="itemsDrawer"
         :client="client"
-        @reloadList="() => {
-          fetchClients()
-          refreshHeader++
-        }"
+        @reloadList="
+          () => {
+            fetchClients();
+            refreshHeader++;
+          }
+        "
         @closeDrawer="itemsDrawer = false"
       />
     </transition>
@@ -80,7 +84,7 @@ export default {
     refreshList2: 1,
     client: {},
     itemsDrawer: false,
-    refreshHeader: 3
+    refreshHeader: 3,
   }),
 
   mounted() {
@@ -98,6 +102,8 @@ export default {
     },
 
     async fetchClients() {
+      this.loading = true;
+      this.clients = [];
       this.clients = await this.$store.dispatch("fetchClients");
       this.loading = false;
     },

@@ -28,13 +28,29 @@
               />
             </svg>
           </div>
-          <div class="w-2/3 flex-grow flex items-center justify-between pl-2 pr-4">
+          <div
+            class="w-2/3 flex-grow flex items-center justify-between pl-2 pr-4"
+          >
             {{ info.phone }}
             <span v-if="info.missedCall" class="relative group">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v1c0 8.284 6.716 15 15 15h1a2 2 0 002-2v-3.28a1 1 0 00-.684-.948l-4.493-1.498a1 1 0 00-1.21.502l-1.13 2.257a11.042 11.042 0 01-5.516-5.517l2.257-1.128a1 1 0 00.502-1.21L9.228 3.683A1 1 0 008.279 3H5z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-red-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v1c0 8.284 6.716 15 15 15h1a2 2 0 002-2v-3.28a1 1 0 00-.684-.948l-4.493-1.498a1 1 0 00-1.21.502l-1.13 2.257a11.042 11.042 0 01-5.516-5.517l2.257-1.128a1 1 0 00.502-1.21L9.228 3.683A1 1 0 008.279 3H5z"
+                />
               </svg>
-              <span class="absolute -top-12 -left-24 transform translate-x-1.5 text-white bg-darkDivider z-50 rounded py-1 px-2 opacity-0 transition duration-300 group-hover:opacity-100">Пропущенный</span>
+              <span
+                class="absolute -top-12 -left-24 transform translate-x-1.5 text-white bg-darkDivider z-50 rounded py-1 px-2 opacity-0 transition duration-300 group-hover:opacity-100"
+                >Пропущенный</span
+              >
             </span>
           </div>
         </div>
@@ -132,7 +148,7 @@
           />
         </div>
       </div>
-<!-- 
+      <!-- 
       <div class="flex items-center">
         <label class="font-medium w-24 text-gray-600">Адрес</label>
         <div
@@ -166,14 +182,21 @@
       <div v-if="compositionType && composition" class="flex flex-col">
         <div class="flex items-center">
           <span class="font-medium text-gray-600">Состав проживающих:</span>
-          <span class="text-sm rounded-full font-medium py-1 px-3 bg-white shadow text-center ml-2">{{compositionType}}</span>
+          <span
+            class="text-sm rounded-full font-medium py-1 px-3 bg-white shadow text-center ml-2"
+            >{{ compositionType }}</span
+          >
         </div>
         <div class="flex flex-col flex-grow mt-5">
-
           <template v-if="composition.men">
-            <div v-for="(man, idx) in composition.men" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6">
-
-              <div class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full">
+            <div
+              v-for="(man, idx) in composition.men"
+              :key="man + idx"
+              class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6"
+            >
+              <div
+                class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5 text-gray-700 mr-1"
@@ -189,22 +212,44 @@
                 <span class="font-medium text-sm">Человек</span>
               </div>
 
-              <p v-if="man.fio" class="font-medium">ФИО: <span class="font-normal">{{man.fio}}</span></p>
-              <p v-if="man.gender" class="font-medium">Пол: <span class="font-normal">{{man.gender}}</span></p>
-              <p v-if="man.age" class="font-medium">Возраст: <span class="font-normal">{{man.age}}</span></p>
-              <p v-if="man.work" class="font-medium">Сфера деятельности: <span class="font-normal">{{man.work}}</span></p>
-              <p v-if="man.national" class="font-medium">Гражданство: <span class="font-normal">{{man.national}}</span></p>
-              <p v-if="man.register" class="font-medium">Прописка: <span class="font-normal">{{man.register}}</span></p>
-              <p v-if="man.salary" class="font-medium">Зарплата: <span class="font-normal">{{man.salary}}</span></p>
-              <p v-if="man.info" class="font-medium">Доп.информация: <span class="font-normal">{{man.info}}</span></p>
+              <p v-if="man.fio" class="font-medium">
+                ФИО: <span class="font-normal">{{ man.fio }}</span>
+              </p>
+              <p v-if="man.gender" class="font-medium">
+                Пол: <span class="font-normal">{{ man.gender }}</span>
+              </p>
+              <p v-if="man.age" class="font-medium">
+                Возраст: <span class="font-normal">{{ man.age }}</span>
+              </p>
+              <p v-if="man.work" class="font-medium">
+                Сфера деятельности:
+                <span class="font-normal">{{ man.work }}</span>
+              </p>
+              <p v-if="man.national" class="font-medium">
+                Гражданство: <span class="font-normal">{{ man.national }}</span>
+              </p>
+              <p v-if="man.register" class="font-medium">
+                Прописка: <span class="font-normal">{{ man.register }}</span>
+              </p>
+              <p v-if="man.salary" class="font-medium">
+                Зарплата: <span class="font-normal">{{ man.salary }}</span>
+              </p>
+              <p v-if="man.info" class="font-medium">
+                Доп.информация: <span class="font-normal">{{ man.info }}</span>
+              </p>
             </div>
           </template>
 
           <div v-if="composition.men" class="mb-5 h-px bg-gray-400"></div>
 
-          <div v-for="(man, idx) in composition.kids" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6">
-
-            <div class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full">
+          <div
+            v-for="(man, idx) in composition.kids"
+            :key="man + idx"
+            class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6"
+          >
+            <div
+              class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full"
+            >
               <svg
                 class="mr-2 w-5 h-5 text-gray-700"
                 xmlns="http://www.w3.org/2000/svg"
@@ -220,16 +265,27 @@
               <span class="font-medium text-sm">Ребенок</span>
             </div>
 
-            <p v-if="man.name" class="font-medium">Имя: <span class="font-normal">{{man.name}}</span></p>
-            <p v-if="man.age" class="font-medium">Возраст: <span class="font-normal">{{man.age}}</span></p>
-            <p v-if="man.info" class="font-medium">Доп.информация: <span class="font-normal">{{man.info}}</span></p>
+            <p v-if="man.name" class="font-medium">
+              Имя: <span class="font-normal">{{ man.name }}</span>
+            </p>
+            <p v-if="man.age" class="font-medium">
+              Возраст: <span class="font-normal">{{ man.age }}</span>
+            </p>
+            <p v-if="man.info" class="font-medium">
+              Доп.информация: <span class="font-normal">{{ man.info }}</span>
+            </p>
           </div>
 
           <div v-if="composition.kids" class="mb-5 h-px bg-gray-400"></div>
 
-          <div v-for="(man, idx) in composition.pets" :key="man + idx" class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6">
-
-            <div class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full">
+          <div
+            v-for="(man, idx) in composition.pets"
+            :key="man + idx"
+            class="flex flex-col bg-white w-full relative pt-4 px-2 pb-2 rounded shadow text-sm mb-6"
+          >
+            <div
+              class="absolute top-0 left-0 transform border-2 -translate-x-4 -translate-y-1/2 flex items-center justify-center px-2 py-1 bg-white rounded-full"
+            >
               <svg
                 class="mr-2 w-5 h-5 text-gray-700"
                 xmlns="http://www.w3.org/2000/svg"
@@ -246,13 +302,18 @@
               <span class="font-medium text-sm">Питомец</span>
             </div>
 
-            <p v-if="man.type" class="font-medium">Тип: <span class="font-normal">{{man.type}}</span></p>
-            <p v-if="man.age" class="font-medium">Возраст: <span class="font-normal">{{man.age}}</span></p>
-            <p v-if="man.info" class="font-medium">Доп.информация: <span class="font-normal">{{man.info}}</span></p>
+            <p v-if="man.type" class="font-medium">
+              Тип: <span class="font-normal">{{ man.type }}</span>
+            </p>
+            <p v-if="man.age" class="font-medium">
+              Возраст: <span class="font-normal">{{ man.age }}</span>
+            </p>
+            <p v-if="man.info" class="font-medium">
+              Доп.информация: <span class="font-normal">{{ man.info }}</span>
+            </p>
           </div>
 
           <div v-if="composition.pets" class="mb-5 h-px bg-gray-400"></div>
-
         </div>
       </div>
 
@@ -260,20 +321,49 @@
         <div class="flex items-center">
           <span class="font-medium text-gray-600 mb-2">Просмотры квартир:</span>
         </div>
-        <div class="flex flex-col flex-grow rounded overflow-hidden border-2 border-gray-300">
-          <div v-for="(item, idx) in sortedReserve" :key="item + idx" class="w-full bg-white px-3 py-2 border-b flex items-center justify-between">
-
+        <div
+          class="flex flex-col flex-grow rounded overflow-hidden border-2 border-gray-300"
+        >
+          <div
+            v-for="(item, idx) in this.reserveArr"
+            :key="item + idx"
+            class="w-full bg-white px-3 py-2 border-b flex items-center justify-between"
+          >
             <div class="flex items-center flex-grow">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
               </svg>
 
-              <span class="ml-1 border-b border-dashed border-gray-400 text-sm">{{item.date | date('fullmonthDay') }} в {{ item.time }}</span>
+              <span class="ml-1 border-b border-dashed border-gray-400 text-sm"
+                >{{ item.date | date("fullmonthDay") }} в {{ item.time }}</span
+              >
             </div>
 
             <div class="flex items-center mr-2 pr-2 border-r border-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
               </svg>
 
               <span class="ml-1 text-sm">{{ takeAgentInfo(item.agent) }}</span>
@@ -281,20 +371,28 @@
 
             <div class="flex items-center">
               <a :href="item.obj.link" target="__blank">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
                 </svg>
               </a>
             </div>
-
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="flex flex-grow"></div>
-    
   </div>
 </template>
 
@@ -304,11 +402,11 @@ export default {
   props: ["info"],
   data: () => ({
     fio: "",
-    budget: 0,
+    budget: null,
     composition: null,
     compositionType: null,
     reserveArr: null,
-    agents: null
+    agents: null,
   }),
 
   watch: {
@@ -343,20 +441,24 @@ export default {
       // this.company = this.info.company ? this.info.company : "";
       this.budget = this.info.budget ? this.info.budget : 0;
       // this.adress = this.info.adress ? this.info.adress : "";
-      this.compositionType = this.info.compositionType ? this.info.compositionType : 0;
+      this.compositionType = this.info.compositionType
+        ? this.info.compositionType
+        : 0;
       this.composition = this.info.composition ? this.info.composition : 0;
     }
-
   },
 
   async mounted() {
-    this.updateReserve()
-    this.agents = await this.$store.dispatch('fetchAgents')
+    this.updateReserve();
+    this.agents = await this.$store.dispatch("fetchAgents");
   },
 
   methods: {
     async updateReserve() {
-        this.reserveArr = await this.$store.dispatch('fetchClientReserves', this.info.id)
+      this.reserveArr = await this.$store.dispatch(
+        "fetchClientReserves",
+        this.info.id
+      );
     },
 
     updateInfo(info) {
@@ -364,8 +466,8 @@ export default {
       // this.company = company;
       this.budget = info.budget;
       // this.adress = adress;
-      this.composition = info.composition
-      this.compositionType = info.compositionType
+      this.composition = info.composition;
+      this.compositionType = info.compositionType;
     },
 
     fioVerify() {
@@ -391,32 +493,31 @@ export default {
     },
 
     peoplesArr(type) {
-      if( type === 'Друзья' ) return this.composition.friends
-      if( type === 'Другой состав' ) return this.composition.peoples
-      else return this.composition
+      if (type === "Друзья") return this.composition.friends;
+      if (type === "Другой состав") return this.composition.peoples;
+      else return this.composition;
     },
 
     takeAgentInfo(id) {
-			if (this.agents) {
-				const agent = this.agents.filter((agent) => agent.id === id);
-				if (agent[0]) return agent[0].surname + ' ' + agent[0].name;
-			}
-		},
-
+      if (this.agents) {
+        const agent = this.agents.filter((agent) => agent.id === id);
+        if (agent[0]) return agent[0].surname + " " + agent[0].name;
+      }
+    },
   },
 
   computed: {
     sortedReserve() {
-      if(!this.reserveArr) return []
-      const result = this.reserveArr.sort( function(a, b) {
-        const dateA = new Date(a.date)
-        const dateB = new Date(b.date)
+      if (!this.reserveArr) return [];
+      const result = this.reserveArr.sort(function(a, b) {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
 
-        return dateA - dateB
-      })
+        return dateA - dateB;
+      });
 
-      return result
-    }
+      return result;
+    },
   },
 
   components: {

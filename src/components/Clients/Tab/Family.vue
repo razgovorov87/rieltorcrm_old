@@ -60,13 +60,15 @@
     </div>
 
     <div class="flex flex-col mt-10">
-      
-      <div v-for="(item, idx) in men" :key="item + idx" class="flex flex-col border-b pb-3 mb-2">
-
+      <div
+        v-for="(item, idx) in men"
+        :key="item + idx"
+        class="flex flex-col border-b pb-3 mb-2"
+      >
         <div class="flex items-center flex-grow mb-3">
-
-          <div class="flex items-center justify-center font-medium text-gray-700 flex-shrink-0 mr-4">
-
+          <div
+            class="flex items-center justify-center font-medium text-gray-700 flex-shrink-0 mr-4"
+          >
             <div class="flex items-center mr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -84,37 +86,62 @@
             </div>
 
             <div class="flex items-center">
-
-              <button class="focus:outline-none relative" @click="men[idx].openDialog = !men[idx].openDialog">
-                <svg xmlns="http://www.w3.org/2000/svg" class="transition rounded-md w-6 h-6 p-1 bg-gray-200 hover:bg-red-600 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              <button
+                class="focus:outline-none relative"
+                @click="men[idx].openDialog = !men[idx].openDialog"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="transition rounded-md w-6 h-6 p-1 bg-gray-200 hover:bg-red-600 hover:text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
                 </svg>
 
-                <div v-if="men[idx].openDialog" v-click-outside="() => {men[idx].openDialog = false}" class="absolute top-full right-0 mt-2 transform translate-x-1/2 bg-white border-2 border-gray-200 rounded-lg z-50 shadow-lg">
-                  <div class="flex flex-col items-center justify-center text-black py-1 px-3">
+                <div
+                  v-if="men[idx].openDialog"
+                  v-click-outside="
+                    () => {
+                      men[idx].openDialog = false;
+                    }
+                  "
+                  class="absolute top-full right-0 mt-2 transform translate-x-1/2 bg-white border-2 border-gray-200 rounded-lg z-50 shadow-lg"
+                >
+                  <div
+                    class="flex flex-col items-center justify-center text-black py-1 px-3"
+                  >
                     <span class="text-sm mb-1">Удалить?</span>
                     <div class="flex items-center text-sm">
-
-                      <div class="py-1 px-3 text-center bg-red-500 mr-2 text-white rounded cursor-pointer shadow" 
-                      @click.stop="() => {
-                        men[idx].openDialog = false
-                        men.splice(idx, 1)
-                      }">
+                      <div
+                        class="py-1 px-3 text-center bg-red-500 mr-2 text-white rounded cursor-pointer shadow"
+                        @click.stop="
+                          () => {
+                            men[idx].openDialog = false;
+                            men.splice(idx, 1);
+                          }
+                        "
+                      >
                         Да
                       </div>
 
-                      <div class="py-1 px-3 text-center bg-green-500 text-white rounded cursor-pointer shadow" @click.stop="men[idx].openDialog = false">
+                      <div
+                        class="py-1 px-3 text-center bg-green-500 text-white rounded cursor-pointer shadow"
+                        @click.stop="men[idx].openDialog = false"
+                      >
                         Отмена
                       </div>
-
                     </div>
                   </div>
                 </div>
-
               </button>
-
             </div>
-
           </div>
 
           <input
@@ -127,8 +154,11 @@
         </div>
 
         <div class="grid grid-cols-3 gap-3">
-
-          <InputGender :men="men[idx]" @changeGender="(gender) => men[idx].gender = gender" @openSave=" (bool) => $emit('openSave', bool)"/>
+          <InputGender
+            :men="men[idx]"
+            @changeGender="(gender) => (men[idx].gender = gender)"
+            @openSave="(bool) => $emit('openSave', bool)"
+          />
 
           <input
             v-model="men[idx].age"
@@ -146,7 +176,6 @@
             @input="$emit('openSave', true)"
           />
 
-          
           <input
             v-model="men[idx].national"
             type="text"
@@ -155,7 +184,6 @@
             @input="$emit('openSave', true)"
           />
 
-          
           <input
             v-model="men[idx].register"
             type="text"
@@ -171,51 +199,68 @@
             placeholder="Зарплата"
             @input="$emit('openSave', true)"
           />
-
         </div>
 
-        <textarea 
+        <textarea
           v-model="men[idx].info"
-          rows="2" 
-          class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:ring-2 ring-dividerBg flex mt-3" 
+          rows="2"
+          class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:ring-2 ring-dividerBg flex mt-3"
           placeholder="Дополнительная информация"
           @keydown.enter.exact.prevent
           @keydown.enter.shift.exact="newline"
-          @input="$emit('openSave', true)">
+          @input="$emit('openSave', true)"
+        >
         </textarea>
-
       </div>
-      
 
       <div class="flex justify-center items-center mb-4">
-        <span class="font-medium flex items-center cursor-pointer" 
-          @click="() => {
-            men.push({
-              fio: '',
-              gender: '',
-              age: '',
-              work: '',
-              national: '',
-              register: '',
-              salary: '',
-              info: '',
-              openDialog: false
-            })
-            $emit('openSave', true);
-          }">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <span
+          class="font-medium flex items-center cursor-pointer"
+          @click="
+            () => {
+              men.push({
+                fio: '',
+                gender: '',
+                age: '',
+                work: '',
+                national: '',
+                register: '',
+                salary: '',
+                info: '',
+                openDialog: false,
+              });
+              $emit('openSave', true);
+            }
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           Добавить человека
         </span>
       </div>
       <!-- Mans List -->
 
-      <div v-for="(kid, idx) in kids" :key="kid + idx" class="flex flex-col border-b pb-3 mb-2">
-
+      <div
+        v-for="(kid, idx) in kids"
+        :key="kid + idx"
+        class="flex flex-col border-b pb-3 mb-2"
+      >
         <div class="flex items-center flex-grow mb-3">
-
-          <div class="flex items-center justify-center font-medium text-gray-700 flex-shrink-0 mr-4">
+          <div
+            class="flex items-center justify-center font-medium text-gray-700 flex-shrink-0 mr-4"
+          >
             <div class="flex items-center mr-2">
               <svg
                 class="mr-2 w-5 h-5 text-gray-700"
@@ -233,35 +278,61 @@
             </div>
 
             <div class="flex items-center">
-
-              <button class="focus:outline-none relative" @click="kids[idx].openDialog = !kids[idx].openDialog">
-                <svg xmlns="http://www.w3.org/2000/svg" class="transition rounded-md w-6 h-6 p-1 bg-gray-200 hover:bg-red-600 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              <button
+                class="focus:outline-none relative"
+                @click="kids[idx].openDialog = !kids[idx].openDialog"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="transition rounded-md w-6 h-6 p-1 bg-gray-200 hover:bg-red-600 hover:text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
                 </svg>
 
-                <div v-if="kids[idx].openDialog" v-click-outside="() => {kids[idx].openDialog = false}" class="absolute top-full right-0 mt-2 transform translate-x-1/2 bg-white border-2 border-gray-200 rounded-lg z-50 shadow-lg">
-                  <div class="flex flex-col items-center justify-center text-black py-1 px-3">
+                <div
+                  v-if="kids[idx].openDialog"
+                  v-click-outside="
+                    () => {
+                      kids[idx].openDialog = false;
+                    }
+                  "
+                  class="absolute top-full right-0 mt-2 transform translate-x-1/2 bg-white border-2 border-gray-200 rounded-lg z-50 shadow-lg"
+                >
+                  <div
+                    class="flex flex-col items-center justify-center text-black py-1 px-3"
+                  >
                     <span class="text-sm mb-1">Удалить?</span>
                     <div class="flex items-center text-sm">
-
-                      <div class="py-1 px-3 text-center bg-red-500 mr-2 text-white rounded cursor-pointer shadow" 
-                      @click.stop="() => {
-                        kids[idx].openDialog = false
-                        kids.splice(idx, 1)
-                      }">
+                      <div
+                        class="py-1 px-3 text-center bg-red-500 mr-2 text-white rounded cursor-pointer shadow"
+                        @click.stop="
+                          () => {
+                            kids[idx].openDialog = false;
+                            kids.splice(idx, 1);
+                          }
+                        "
+                      >
                         Да
                       </div>
 
-                      <div class="py-1 px-3 text-center bg-green-500 text-white rounded cursor-pointer shadow" @click.stop="kids[idx].openDialog = false">
+                      <div
+                        class="py-1 px-3 text-center bg-green-500 text-white rounded cursor-pointer shadow"
+                        @click.stop="kids[idx].openDialog = false"
+                      >
                         Отмена
                       </div>
-
                     </div>
                   </div>
                 </div>
-                
               </button>
-
             </div>
           </div>
 
@@ -282,42 +353,61 @@
           />
         </div>
 
-        <textarea 
+        <textarea
           v-model="kids[idx].info"
-          rows="2" 
-          class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:ring-2 ring-dividerBg flex" 
+          rows="2"
+          class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:ring-2 ring-dividerBg flex"
           placeholder="Дополнительная информация"
           @keydown.enter.exact.prevent
           @keydown.enter.shift.exact="newline"
-          @input="$emit('openSave', true)">
+          @input="$emit('openSave', true)"
+        >
         </textarea>
-
       </div>
 
       <div class="flex justify-center items-center mb-4">
-        <span class="font-medium flex items-center cursor-pointer" 
-          @click="() => {
-            kids.push({
-              name: '',
-              age: '',
-              info: '',
-              openDialog: false
-            })
-            $emit('openSave', true);
-          }">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <span
+          class="font-medium flex items-center cursor-pointer"
+          @click="
+            () => {
+              kids.push({
+                name: '',
+                age: '',
+                info: '',
+                openDialog: false,
+              });
+              $emit('openSave', true);
+            }
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           Добавить ребенка
         </span>
       </div>
       <!-- Kid List -->
 
-      <div v-for="(pet, idx) in pets" :key="pet + idx" class="flex flex-col border-b pb-3 mb-2">
-
+      <div
+        v-for="(pet, idx) in pets"
+        :key="pet + idx"
+        class="flex flex-col border-b pb-3 mb-2"
+      >
         <div class="flex items-center flex-grow mb-3">
-
-          <div class="flex items-center justify-center font-medium text-gray-700 flex-shrink-0 mr-4">
+          <div
+            class="flex items-center justify-center font-medium text-gray-700 flex-shrink-0 mr-4"
+          >
             <div class="flex items-center mr-2">
               <svg
                 class="mr-2 w-5 h-5 text-gray-700"
@@ -336,35 +426,61 @@
             </div>
 
             <div class="flex items-center">
-
-              <button class="focus:outline-none relative" @click="pets[idx].openDialog = !pets[idx].openDialog">
-                <svg xmlns="http://www.w3.org/2000/svg" class="transition rounded-md w-6 h-6 p-1 bg-gray-200 hover:bg-red-600 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              <button
+                class="focus:outline-none relative"
+                @click="pets[idx].openDialog = !pets[idx].openDialog"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="transition rounded-md w-6 h-6 p-1 bg-gray-200 hover:bg-red-600 hover:text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
                 </svg>
 
-                <div v-if="pets[idx].openDialog" v-click-outside="() => {pets[idx].openDialog = false}" class="absolute top-full right-0 mt-2 transform translate-x-1/2 bg-white border-2 border-gray-200 rounded-lg z-50 shadow-lg">
-                  <div class="flex flex-col items-center justify-center text-black py-1 px-3">
+                <div
+                  v-if="pets[idx].openDialog"
+                  v-click-outside="
+                    () => {
+                      pets[idx].openDialog = false;
+                    }
+                  "
+                  class="absolute top-full right-0 mt-2 transform translate-x-1/2 bg-white border-2 border-gray-200 rounded-lg z-50 shadow-lg"
+                >
+                  <div
+                    class="flex flex-col items-center justify-center text-black py-1 px-3"
+                  >
                     <span class="text-sm mb-1">Удалить?</span>
                     <div class="flex items-center text-sm">
-
-                      <div class="py-1 px-3 text-center bg-red-500 mr-2 text-white rounded cursor-pointer shadow" 
-                      @click.stop="() => {
-                        pets[idx].openDialog = false
-                        pets.splice(idx, 1)
-                      }">
+                      <div
+                        class="py-1 px-3 text-center bg-red-500 mr-2 text-white rounded cursor-pointer shadow"
+                        @click.stop="
+                          () => {
+                            pets[idx].openDialog = false;
+                            pets.splice(idx, 1);
+                          }
+                        "
+                      >
                         Да
                       </div>
 
-                      <div class="py-1 px-3 text-center bg-green-500 text-white rounded cursor-pointer shadow" @click.stop="pets[idx].openDialog = false">
+                      <div
+                        class="py-1 px-3 text-center bg-green-500 text-white rounded cursor-pointer shadow"
+                        @click.stop="pets[idx].openDialog = false"
+                      >
                         Отмена
                       </div>
-
                     </div>
                   </div>
                 </div>
-                
               </button>
-
             </div>
           </div>
 
@@ -385,45 +501,54 @@
           />
         </div>
 
-        <textarea 
+        <textarea
           v-model="pets[idx].info"
-          rows="2" 
-          class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:ring-2 ring-dividerBg flex" 
+          rows="2"
+          class="w-full border-2 rounded shadow h-full px-2 py-1 focus:outline-none focus:ring-2 ring-dividerBg flex"
           placeholder="Дополнительная информация"
           @keydown.enter.exact.prevent
           @keydown.enter.shift.exact="newline"
-          @input="$emit('openSave', true)">
+          @input="$emit('openSave', true)"
+        >
         </textarea>
-
       </div>
 
       <div class="flex justify-center items-center mb-4">
-        <span class="font-medium flex items-center cursor-pointer" 
-          @click="() => {
-            pets.push({
-              type: '',
-              age: '',
-              info: '',
-              openDialog: false
-            })
-            $emit('openSave', true);
-          }">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <span
+          class="font-medium flex items-center cursor-pointer"
+          @click="
+            () => {
+              pets.push({
+                type: '',
+                age: '',
+                info: '',
+                openDialog: false,
+              });
+              $emit('openSave', true);
+            }
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           Добавить питомца
         </span>
       </div>
       <!-- Kid List -->
-
-      
-
     </div>
-
   </div>
 </template>
-
-
 
 <script>
 import InputGender from "@/components/Clients/Tab/Family/InputGender";
@@ -442,38 +567,42 @@ export default {
     men: [],
     kids: [],
     pets: [],
-    openConfirmDialog: false
+    openConfirmDialog: false,
   }),
 
   mounted() {
-    if(this.client.composition) {
-      this.family = this.client.compositionType ? this.client.compositionType : "";
+    if (this.client.composition) {
+      this.family = this.client.compositionType
+        ? this.client.compositionType
+        : "";
       this.men = this.client.composition.men ? this.client.composition.men : [];
-      this.kids = this.client.composition.kids ? this.client.composition.kids : [];
-      this.pets = this.client.composition.pets ? this.client.composition.pets : [];
+      this.kids = this.client.composition.kids
+        ? this.client.composition.kids
+        : [];
+      this.pets = this.client.composition.pets
+        ? this.client.composition.pets
+        : [];
     }
   },
 
   methods: {
     saveInfo() {
-      const data = {
+      const frontData = {
         men: this.men,
         kids: this.kids,
-        pets: this.pets
+        pets: this.pets,
       };
 
       this.$store.dispatch("saveClientComposition", [
         this.client.id,
-        data,
+        frontData,
         this.family,
       ]);
     },
-
-
   },
 
   components: {
-    InputGender
+    InputGender,
   },
 };
 </script>

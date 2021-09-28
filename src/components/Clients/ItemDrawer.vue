@@ -69,7 +69,11 @@
           <span class="text-gray-600 text-sm">Клиенты</span>
           <div class="flex items-center" v-if="client.status === 'Отказались'">
             <span class="uppercase font-medium text-white">Статус:</span>
-            <div class="mx-2 px-2 py-1 bg-red-600 font-medium text-white rounded">Отказались</div>
+            <div
+              class="mx-2 px-2 py-1 bg-red-600 font-medium text-white rounded"
+            >
+              Отказались
+            </div>
           </div>
           <div
             v-else
@@ -95,9 +99,11 @@
               <div
                 v-if="categoriesMenu"
                 class="absolute top-0 left-0 w-full bg-white z-20 rounded"
-                v-click-outside="() => {
-                  categoriesMenu = false
-                }"
+                v-click-outside="
+                  () => {
+                    categoriesMenu = false;
+                  }
+                "
               >
                 <div
                   v-for="category in categories"
@@ -128,7 +134,9 @@
             </div>
           </div>
         </div>
-        <horizontal-scroll class="flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-3 select-none">
+        <horizontal-scroll
+          class="flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-3 select-none"
+        >
           <span
             v-for="(tab, idx) in tabs"
             :key="tab.id"
@@ -152,10 +160,10 @@
         />
 
         <div v-show="selectableTab === 1">
-          <ProposedObj 
-            ref="proposedTab" 
-            :client="client" 
-            @openSave="openSave" 
+          <ProposedObj
+            ref="proposedTab"
+            :client="client"
+            @openSave="openSave"
             @openProposedObjectDialog="openProposedObjectDialog"
             @openReserveDialog="openReserveDialog"
             @successSave="loading = false"
@@ -165,7 +173,7 @@
         <div v-show="selectableTab === 2">
           <Family ref="familyTab" :client="client" @openSave="openSave" />
         </div>
-        
+
         <div v-show="selectableTab === 3">
           <Criterion ref="criterionTab" :client="client" @openSave="openSave" />
         </div>
@@ -196,7 +204,7 @@
       </transition>
     </div>
     <div class="w-4/12 h-full bg-gray-200 relative px-1.5">
-      <Logs :logs="client.logs" @saveNote="saveNote" ref="logsBlock"/>
+      <Logs :logs="client.logs" @saveNote="saveNote" ref="logsBlock" />
     </div>
     <div class="w-3/12 h-full bg-gray-200">
       <Info :info="client" @openSave="openSave" ref="infoBlock" />
@@ -207,13 +215,30 @@
       class="absolute inset-0 z-50 flex items-center justify-center py-10 bg-black bg-opacity-30"
     >
       <div class="bg-white w-full h-full my-10 mx-10 shadow-lg">
-        <ObjectList @selectObj="selectObj" @closeDialog="objectListDialog = false"/>
+        <ObjectList
+          @selectObj="selectObj"
+          @closeDialog="objectListDialog = false"
+        />
       </div>
     </div>
 
-    <RefuseDialog v-if="refuseDialog" :client="client"  @close="refuseDialog = false"/>
-    <ReserveDialog v-if="reserveDialog" :obj="reserveObj" @reserveObj="reserveObjDB" @close="reserveDialog = false" />
-    <ProposedObjectsDialog v-if="proposedObjectDialog" :info="proposedObjInfo" @saveObj="saveProposedObj" @close="proposedObjectDialog = false"/>
+    <RefuseDialog
+      v-if="refuseDialog"
+      :client="client"
+      @close="refuseDialog = false"
+    />
+    <ReserveDialog
+      v-if="reserveDialog"
+      :obj="reserveObj"
+      @reserveObj="reserveObjDB"
+      @close="reserveDialog = false"
+    />
+    <ProposedObjectsDialog
+      v-if="proposedObjectDialog"
+      :info="proposedObjInfo"
+      @saveObj="saveProposedObj"
+      @close="proposedObjectDialog = false"
+    />
     <div v-if="loading" class="absolute inset-0 z-50">
       <Loading />
     </div>
@@ -232,7 +257,7 @@ import RefuseDialog from "@/components/Clients/RefuseDialog";
 import ReserveDialog from "@/components/Clients/ReserveDialog";
 import ProposedObjectsDialog from "@/components/Clients/ProposedObjectsDialog";
 import ObjectList from "@/components/Admin/ObjectList";
-import HorizontalScroll from 'vue-horizontal-scroll'
+import HorizontalScroll from "vue-horizontal-scroll";
 export default {
   props: ["client"],
   data: () => ({
@@ -263,11 +288,11 @@ export default {
     refreshProposedObj: 0,
     proposedObjectDialog: false,
     proposedObjInfo: null,
-    loading: false
+    loading: false,
   }),
 
   mounted() {
-    if(this.client.status !== 'Отказались') {
+    if (this.client.status !== "Отказались") {
       this.categoriesId = this.categories.find(
         (category) => category.title === this.client.status
       ).id;
@@ -277,36 +302,41 @@ export default {
 
   methods: {
     openReserveDialog(obj) {
-      this.reserveObj = obj
-      this.reserveDialog = true
+      this.reserveObj = obj;
+      this.reserveDialog = true;
     },
 
     openProposedObjectDialog(data) {
-      this.proposedObjInfo = data
-      this.proposedObjectDialog = true
+      this.proposedObjInfo = data;
+      this.proposedObjectDialog = true;
     },
 
     saveProposedObj(json) {
-      this.loading = true
-      this.$refs.proposedTab.saveObj(json)
-      this.proposedObjInfo = null
-      this.proposedObjectDialog = false
+      this.loading = true;
+      this.$refs.proposedTab.saveObj(json);
+      this.proposedObjInfo = null;
+      this.proposedObjectDialog = false;
     },
 
     async reserveObjDB(data) {
-        try {
-          const clientId = this.client.id
-          await this.$store.dispatch('reserveObj', {data, clientId})
-          const log = await this.$store.dispatch('reserveObjLog', {data, clientId})
-          this.$refs.logsBlock.pushLog(log)
-          this.reserveDialog = false
-          this.$toasts.push({
-            type: 'success',
-            message: 'Просмотр успешно сохранен'
-          })
-          this.$refs.proposedTab.updateReserve()
-          this.$refs.infoBlock.updateReserve()
-        } catch (e) {throw e}
+      try {
+        const clientId = this.client.id;
+        await this.$store.dispatch("reserveObj", { data, clientId });
+        const log = await this.$store.dispatch("reserveObjLog", {
+          data,
+          clientId,
+        });
+        this.$refs.logsBlock.pushLog(log);
+        this.reserveDialog = false;
+        this.$toasts.push({
+          type: "success",
+          message: "Просмотр успешно сохранен",
+        });
+        this.$refs.proposedTab.updateReserve();
+        this.$refs.infoBlock.updateReserve();
+      } catch (e) {
+        throw e;
+      }
     },
 
     async saveEdit() {
@@ -319,17 +349,20 @@ export default {
         return;
       }
       let info = this.$refs.infoBlock.getClientInfo();
-      if(this.client.status !== 'Отказались') {
+      if (this.client.status !== "Отказались") {
         info.status = this.categories.find(
           (category) => category.id === this.categoriesId
         ).title;
       } else {
-        info.status = 'Отказались'
+        info.status = "Отказались";
       }
       info.clientId = this.client.id;
       this.$refs.proposedTab.saveLinks();
       this.$refs.houseTab.saveExceptions();
-      if (this.categoriesId !== this.startId && this.client.status !== 'Отказались') {
+      if (
+        this.categoriesId !== this.startId &&
+        this.client.status !== "Отказались"
+      ) {
         this.logCategory();
         this.startId = this.categoriesId;
       }
@@ -436,7 +469,7 @@ export default {
     ReserveDialog,
     RefuseDialog,
     HorizontalScroll,
-    ProposedObjectsDialog
+    ProposedObjectsDialog,
   },
 };
 </script>
