@@ -1,80 +1,129 @@
-import firebase from 'firebase/app';
+import axios from "axios";
+const SERVER_URL = "http://109.173.88.42:5000";
 
 export default {
-	actions: {
-		async fetchObjects({ dispatch }) {
-			const response = (
-				await firebase
-					.database()
-					.ref('/objects')
-					.once('value')
-			).val();
-			if (!response) return false;
-			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
-			return result;
-		},
+  actions: {
+    async fetchObjects({ dispatch }) {
+      const response = await axios.get(`${SERVER_URL}/fetchObjects`);
+      if (!response) return false;
+      const result = Object.keys(response.data).map((key) => ({
+        ...response.data[key],
+        id: key,
+      }));
+      return result;
+    },
 
-		async reserveObj({dispatch}, {data, clientId}) {
-			const uid = await dispatch('getUid')
-			await firebase.database().ref(`/reserves/`).push({
-				...data,
-				clientId,
-				createdAt: new Date().toString(),
-				author: uid
-			})
-			await firebase.database().ref(`/clients/${clientId}/reserves`).push(data)
-		},
+    async reserveObj({ dispatch }, { obj, clientId }) {
+      const author = await dispatch("getUid");
+      const data = {
+        obj,
+        clientId,
+        author,
+      };
+      await axios.post(`${SERVER_URL}/reserveObj`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
 
-		async fetchClientReserves({dispatch}, clientId){
-			const response = (await firebase.database().ref(`/clients/${clientId}/reserves`).once('value')).val()
-			if (!response) return false;
-			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
-			return result;
-		},
+    async fetchClientReserves({ dispatch }, clientId) {
+      const data = {
+        clientId,
+      };
+      const response = await axios.post(
+        `${SERVER_URL}/fetchClientReserves`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response) return false;
+      const result = Object.keys(response.data.message).map((key) => ({
+        ...response.data.message[key],
+        id: key,
+      }));
+      return result;
+    },
 
-		async fetchClientObjects({dispatch}, clientId){
-			const response = (await firebase.database().ref(`/clients/${clientId}/proposedObjects`).once('value')).val()
-			if (!response) return false;
-			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
-			return result;
-		},
+    async fetchClientObjects({ dispatch }, clientId) {
+      const data = {
+        clientId,
+      };
+      const response = await axios.post(
+        `${SERVER_URL}/fetchClientObjects`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response) return false;
+      const result = Object.keys(response.data).map((key) => ({
+        ...response.data[key],
+        id: key,
+      }));
+      return result;
+    },
 
-		async fetchReserves({dispatch}){
-			const response = (await firebase.database().ref(`/reserves`).once('value')).val()
-			if (!response) return false;
-			const result = Object.keys(response).map((key) => ({ ...response[key], id: key }));
-			return response;
-		},
+    async fetchReserves({ dispatch }) {
+      const response = await axios.get(`${SERVER_URL}/fetchReserves`);
+      if (!response) return false;
+      const result = Object.keys(response.data).map((key) => ({
+        ...response.data[key],
+        id: key,
+      }));
+      return result;
+    },
 
-		async pushResult({dispatch}, {reverse, result}) {
-			await firebase.database().ref(`reserves/${reverse.id}`).update({
-				resultAt: new Date().toISOString(),
-				result,
-			}) 
+    async pushResult({ dispatch }, { reverse, result }) {
+      const data = {
+        reverseId: reverse.id,
+      };
+      await axios.post(`${SERVER_URL}/pushResult`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
 
-		},
+    async addNewObject({ dispatch, commit }, object) {
+      const uid = await dispatch("getUid");
+      const data = {
+        ...object,
+        authorId: uid,
+      };
+      await axios.post(`${SERVER_URL}/addNewObject`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
 
-		async addNewObject({ dispatch, commit }, object) {
-			const uid = await dispatch('getUid');
-			await firebase
-				.database()
-				.ref(`/objects`)
-				.push({
-					...object,
-					createdAt: new Date().toString(),
-					author: uid,
-				});
-		},
+    async saveInterestingObj({ dispatch }, { client, obj }) {
+      const data = {
+        ...obj,
+        clientId: client.id,
+      };
+      await axios.post(`${SERVER_URL}/saveInterestingObj`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
 
-		async saveInterestingObj({ dispatch }, { client, obj }) {
-			await firebase
-				.database()
-				.ref(`/clients/${client.id}/interestingObj/`)
-				.set(obj);
-		},
-
-		async deleteObj({dispatch}, obj) {
-			await firebase.database().ref(`/objects/${obj.id}`).remove()
-		}
-	},
+    async deleteObj({ dispatch }, obj) {
+      const data = {
+        objectId: obj.id,
+      };
+      await axios.post(`${SERVER_URL}/deleteObj`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+  },
 };

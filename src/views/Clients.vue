@@ -22,14 +22,17 @@
         @closeDrawer="itemsDrawer = false"
         @reloadList="
           () => {
-            fetchClients(true)
+            fetchClients(true);
           }
         "
       />
     </transition>
 
-    <NewClients v-if="newClientDialog" :clients="newClients" @close="newClientDialog = false" />
-
+    <NewClients
+      v-if="newClientDialog"
+      :clients="newClients"
+      @close="newClientDialog = false"
+    />
   </div>
 </template>
 
@@ -54,7 +57,7 @@ export default {
     refreshList: 0,
     refreshList2: 1,
     newClientDialog: false,
-    newClients: []
+    newClients: [],
   }),
 
   async mounted() {
@@ -69,7 +72,6 @@ export default {
     },
 
     async fetchClients(bool) {
-      await this.$store.dispatch("fetchClients");
       this.clients = await this.$store.dispatch("fetchUserClients");
       if (bool) {
         this.refreshList++;
@@ -78,11 +80,13 @@ export default {
     },
 
     async checkNewClients() {
-      const uid = await this.$store.dispatch('getUid')
-      const matched = this.clients.filter(client => client.agent === uid && client.notification === true)
-      if(matched.length !== 0) {
-        this.newClients = matched
-        this.newClientDialog = true
+      print(this.clients);
+      const matched = this.clients.filter(
+        (client) => client.notification === true
+      );
+      if (matched.length !== 0) {
+        this.newClients = matched;
+        this.newClientDialog = true;
       }
     },
 
@@ -97,7 +101,7 @@ export default {
     ClientsList,
     ItemDrawer,
     NoData,
-    NewClients
+    NewClients,
   },
 };
 </script>
