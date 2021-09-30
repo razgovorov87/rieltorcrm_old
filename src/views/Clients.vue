@@ -80,7 +80,6 @@ export default {
     },
 
     async checkNewClients() {
-      print(this.clients);
       const matched = this.clients.filter(
         (client) => client.notification === true
       );

@@ -150,7 +150,6 @@ export default {
     },
 
     async deleteUser() {
-      print("asas");
       await this.$store.dispatch("deleteUser", this.deleteAgent);
       this.verifyDelete = false;
       this.deleteAgent = null;

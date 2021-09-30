@@ -1,5 +1,5 @@
 import axios from "axios";
-const SERVER_URL = "http://109.173.88.42:5000";
+const SERVER_URL = process.env.VUE_APP_API_URL;
 
 export default {
   actions: {
