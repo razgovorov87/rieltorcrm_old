@@ -1,6 +1,6 @@
 import axios from "axios";
 import firebase from "firebase/app";
-const SERVER_URL = "http://109.173.88.42:5000";
+const SERVER_URL = process.env.VUE_APP_API_URL;
 
 export default {
   actions: {
@@ -46,7 +46,6 @@ export default {
         const email = login + "@median24.ru";
         await firebase.auth().createUserWithEmailAndPassword(email, password);
         const uid = await dispatch("getUid");
-        print(uid);
         const data = {
           login,
           surname,
